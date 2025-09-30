@@ -28,9 +28,11 @@ const AgentSelector: React.FC = () => {
     return (
         <Dropdown>
             <Dropdown.Trigger className="agent-selector">
-                <Icons name="Bot" />
-                <span>{selectedAgent ? selectedAgent.name : 'Select an Agent'}</span>
-                <Icons name="ChevronDown" />
+                <span>
+                    <Icons name="Bot" className="icon-bot"/>
+                    <span>{selectedAgent ? selectedAgent.name : 'Select an Agent'}</span>
+                    <Icons name="ChevronDown" className="icon-chevron" />
+                </span>
             </Dropdown.Trigger>
             <Dropdown.Menu>
                 {agents.map(agent => (

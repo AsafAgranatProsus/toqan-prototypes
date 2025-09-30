@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import Portal from './Portal';
 import { useClickOutside } from '../hooks/useClickOutside';
+import './Dropdown.css';
 
 interface DropdownContextType {
   isOpen: boolean;
@@ -28,9 +29,14 @@ const useDropdown = () => {
   return context;
 };
 
+interface DropdownRootProps {
+  children: React.ReactNode;
+  priority?: 'primary' | 'secondary' | 'tertiary';
+}
+
 // Fix: Renamed Dropdown to DropdownRoot to use with Object.assign for creating a properly typed compound component.
 // This resolves the error in MainContent.tsx where Dropdown.Trigger props were not being recognized.
-const DropdownRoot = ({ children }: { children: React.ReactNode }) => {
+const DropdownRoot = ({ children, priority }: DropdownRootProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -98,9 +104,14 @@ const DropdownRoot = ({ children }: { children: React.ReactNode }) => {
     },
   });
 
+  const dropdownContainerClasses = [
+    'dropdown-container',
+    priority ? `dropdown--${priority}` : '',
+  ].filter(Boolean).join(' ');
+
   return (
     <DropdownContext.Provider value={{ isOpen, toggle, close, triggerRef, menuRef, getItemProps }}>
-      <div className="dropdown-container">{children}</div>
+      <div className={dropdownContainerClasses}>{children}</div>
     </DropdownContext.Provider>
   );
 };

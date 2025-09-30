@@ -1,9 +1,24 @@
 .user-message {
-    background-color: #3182ce;
-    color: white;
     border-radius: 8px;
-    padding: 10px 15px;
+    /* padding: 10px 15px; */
     max-width: 80%;
     align-self: flex-end;
     margin-bottom: 20px;
+    max-width: none;
+    display: flex;
+    justify-content: flex-end;
+    
+    .message-bubble {
+        text-align: left;
+        word-break: break-word;
+        border-radius: 1.25rem 1.25rem 0px;
+        padding: 0.25rem 1rem;
+        background-color: rgb(233, 239, 247);
+        white-space: pre-wrap;
+        display: block;
+    }
+    p {
+
+        /* line-height: 30px; */
+    }
 }

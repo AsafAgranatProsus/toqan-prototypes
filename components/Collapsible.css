@@ -1,0 +1,30 @@
+.collapsible {
+  width: 100%;
+}
+.collapsible-content {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.4s cubic-bezier(0.05, 0.84, 0.31, 1);
+}
+
+.collapsible-content[data-state='open'] {
+  height: var(--collapsible-content-height);
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--collapsible-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}

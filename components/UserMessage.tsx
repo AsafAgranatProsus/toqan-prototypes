@@ -8,7 +8,9 @@ interface UserMessageProps {
 const UserMessage: React.FC<UserMessageProps> = ({ message }) => {
   return (
     <div className="user-message">
-      <p>{message}</p>
+      <div className="message-bubble">
+        <p>{message}</p>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@
 .message-container {
     /* background-color: #f0f4f8; */
     border-radius: 8px;
-    padding: 20px;
+    /* padding: 20px; */
     font-family: soehne, "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
 
@@ -75,8 +75,12 @@
 
 /* Language name display in the code block header */
 .code-block__language {
-    font-weight: 500;
-    color: #2d3748;
+
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    font-style: normal;
+    color: rgb(102, 126, 153);
 }
 
 /* Copy button in the code block header */

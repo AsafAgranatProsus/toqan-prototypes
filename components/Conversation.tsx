@@ -3,9 +3,9 @@ import Message from './Message';
 import ChatInput from './ChatInput';
 import { Icons } from './Icons';
 import Button from './Button';
-import Dropdown from './Dropdown';
 import Reasoning from './Reasoning';
 import UserMessage from './UserMessage';
+import Collapsible from './Collapsible';
 import './Conversation.css';
 
 interface ConversationProps {
@@ -27,16 +27,19 @@ const Conversation: React.FC<ConversationProps> = ({ message }) => {
         <div className="messages-container">
 
           <UserMessage message={message} />
-          <Dropdown>
-            <Dropdown.Trigger className="reasoning-dropdown-trigger">
-              <span>Reasoning</span>
-              <Icons name="ChevronDown" />
-            </Dropdown.Trigger>
-            <Dropdown.Menu>
-              <Reasoning />
-            </Dropdown.Menu>
-          </Dropdown>
-          <Message />
+        <div className="assistant-message">
+            <Collapsible>
+              <Collapsible.Trigger className="reasoning-dropdown-trigger dropdown-container--secondary">
+                <span>Reasoning</span>
+                <Icons name="ChevronDown" />
+              </Collapsible.Trigger>
+              <Collapsible.Content>
+                <Reasoning />
+              </Collapsible.Content>
+            </Collapsible>
+            <Message />
+          </div>
+
         </div>
       </div>
 
