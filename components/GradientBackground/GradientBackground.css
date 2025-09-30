@@ -1,0 +1,31 @@
+.gradient-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.gradient-blobs {
+  filter: blur(120px);
+}
+
+.gradient-blob {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, top, left, width, height;
+  transition: all 5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.gradient-grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  mix-blend-mode: exclusion;
+  background-image: url(https://arc.net/noise-light.png);
+}

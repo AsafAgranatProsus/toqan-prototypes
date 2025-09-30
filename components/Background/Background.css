@@ -1,0 +1,18 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 100;
+  transition: opacity 0.3s ease-in-out, visibility 0.31s ease-in-out;
+  background-color: var(--backdrop-bg, rgba(8, 24, 43, 0.15));
+  backdrop-filter: blur(8px);
+}
+
+.background.show {
+  opacity: 1;
+  visibility: visible;
+}

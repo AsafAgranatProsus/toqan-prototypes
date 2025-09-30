@@ -8,6 +8,7 @@ import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import GradientBackground from '../GradientBackground/GradientBackground';
 import OldGradientBackground from '../OldGradientBackground/OldGradientBackground';
 import Conversation from '../Conversation/Conversation';
+import './MainContent.css';
 
 const models: Model[] = [
     { id: '1', name: 'Claude Sonnet 4', description: 'Recommended for most tasks', tag: 'Recommended' },

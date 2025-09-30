@@ -4,6 +4,7 @@ import { Icons } from '../Icons/Icons';
 import { Logo } from '../Logo/Logo';
 import Button from '../Button/Button';
 import Tag from '../Tag/Tag';
+import './Sidebar.css';
 
 const navItems: NavItem[] = [
     { id: 'conversations', label: 'Conversations', icon: 'MessageSquare' },

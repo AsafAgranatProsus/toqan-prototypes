@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import './GradientBackground.css';
 
 interface Blob {
   id: number;
