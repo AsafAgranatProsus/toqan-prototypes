@@ -1,0 +1,9 @@
+.user-message {
+    background-color: #3182ce;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    max-width: 80%;
+    align-self: flex-end;
+    margin-bottom: 20px;
+}

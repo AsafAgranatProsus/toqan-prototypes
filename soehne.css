@@ -1,0 +1,41 @@
+@font-face {
+  font-family: "Soehne";
+  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-buch.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Soehne";
+  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-halbfett.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Soehne";
+  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-fett.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Soehne";
+  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-buch-kursiv.woff2") format("woff2");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Soehne";
+  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-halbfett-kursiv.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Soehne";
+  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-fett-kursiv.woff2") format("woff2");
+  font-weight: bold;
+  font-style: italic;
+}

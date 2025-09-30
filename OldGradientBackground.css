@@ -1,0 +1,85 @@
+.iVIluc {
+    width: 48rem;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    opacity: 0.3;
+    z-index: -1;
+    animation: 180s 
+ease-in-out 0s infinite normal none running hWuqhH;
+    filter: blur(60px);
+}
+
+.iVIluc > * {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.iVIluc > :nth-child(1) > div {
+    animation-delay: 1s;
+    animation-direction: alternate-reverse;
+}
+
+.iVIluc > :nth-child(2) > div {
+    animation-delay: 3s;
+    animation-direction: alternate-reverse;
+}
+
+.iVIluc > :nth-child(3) > div {
+    animation-delay: 6s;
+    animation-direction: alternate-reverse;
+}
+
+.iVIluc > * > * {
+    animation-name: exObNy;
+    animation-duration: 6s;
+    animation-timing-function: 
+ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.haaigm {
+    width: 28rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: rgb(68, 38, 217);
+    transform: translate(25%, -25%);
+}
+
+.eKfdwI {
+    width: 22rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: rgb(2, 230, 255);
+    transform: translate(-25%, -25%);
+}
+
+.kilBdr {
+    width: 17rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: rgb(0, 204, 102);
+    transform: translate(10%, 45%);
+}
+
+@keyframes hWuqhH 
+{
+0% {
+    transform: rotate(0deg);
+}
+
+100% {
+    transform: rotate(360deg);
+}
+}
+
+@keyframes exObNy {
+0% {
+    transform: scale(0.5);
+}
+
+100% {
+    transform: scale(1);
+}
+}

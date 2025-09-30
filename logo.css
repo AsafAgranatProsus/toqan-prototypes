@@ -1,0 +1,42 @@
+/* ============================================= */
+/*            _components/logo.css               */
+/* ============================================= */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--theme-text-accent);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.logo:hover {
+    color: var(--theme-btn-primary-bg-hover);
+}
+
+.logo__mark {
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover .logo__mark {
+    transform: rotate(15deg);
+}
+
+.logo__text {
+  font-weight: 700;
+  font-size: 1.75rem;
+  letter-spacing: -1px;
+  color: var(--theme-text-main);
+}
+
+/* New branding styles for logo */
+.new-branding-logo {
+    gap: var(--space-3);
+}
+
+.new-branding-logo .logo__text {
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+    visibility: visible; /* Override visibility-hidden */
+}
