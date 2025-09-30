@@ -1,6 +1,7 @@
 import React from 'react';
-import { Icons } from './Icons';
-import type { IconName } from '../types';
+import { Icons } from '../Icons/Icons';
+import type { IconName } from '../../types';
+import './Button.css';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'tertiary';

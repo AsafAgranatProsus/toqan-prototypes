@@ -6,8 +6,8 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import Portal from './Portal';
-import { useClickOutside } from '../hooks/useClickOutside';
+import Portal from '../Portal/Portal';
+import { useClickOutside } from '../../hooks/useClickOutside';
 import './Dropdown.css';
 
 interface DropdownContextType {

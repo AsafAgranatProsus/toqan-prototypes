@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from './components/Sidebar';
-import MainContent from './components/MainContent';
+import Sidebar from './components/Sidebar/Sidebar';
+import MainContent from './components/MainContent/MainContent';
 import { useViewport } from './hooks/useViewport';
 
 const App: React.FC = () => {

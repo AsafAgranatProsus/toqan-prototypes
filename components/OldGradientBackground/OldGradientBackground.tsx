@@ -1,5 +1,5 @@
 import React from 'react';
-import '../OldGradientBackground.css';
+import './OldGradientBackground.css';
 
 const OldGradientBackground: React.FC = () => {
   return (

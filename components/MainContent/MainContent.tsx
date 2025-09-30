@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import ChatInput from './ChatInput';
-import { Icons } from './Icons';
-import Button from './Button';
-import Dropdown from './Dropdown';
-import type { Model } from '../types';
-import { useFeatureFlags } from '../context/FeatureFlagContext';
-import GradientBackground from './GradientBackground';
-import OldGradientBackground from './OldGradientBackground';
-import Conversation from './Conversation';
+import ChatInput from '../ChatInput/ChatInput';
+import { Icons } from '../Icons/Icons';
+import Button from '../Button/Button';
+import Dropdown from '../Dropdown/Dropdown';
+import type { Model } from '../../types';
+import { useFeatureFlags } from '../../context/FeatureFlagContext';
+import GradientBackground from '../GradientBackground/GradientBackground';
+import OldGradientBackground from '../OldGradientBackground/OldGradientBackground';
+import Conversation from '../Conversation/Conversation';
 
 const models: Model[] = [
     { id: '1', name: 'Claude Sonnet 4', description: 'Recommended for most tasks', tag: 'Recommended' },

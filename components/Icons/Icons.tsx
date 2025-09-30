@@ -19,7 +19,7 @@ import {
   Database,
   Mail, Trash, Terminal
 } from 'lucide-react';
-import type { IconName } from '../types';
+import type { IconName } from '../../types';
 
 interface IconProps extends LucideProps {
   name: IconName;

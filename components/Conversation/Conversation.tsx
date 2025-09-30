@@ -1,11 +1,11 @@
 import React from 'react';
-import Message from './Message';
-import ChatInput from './ChatInput';
-import { Icons } from './Icons';
-import Button from './Button';
-import Reasoning from './Reasoning';
-import UserMessage from './UserMessage';
-import Collapsible from './Collapsible';
+import Message from '../Message/Message';
+import ChatInput from '../ChatInput/ChatInput';
+import { Icons } from '../Icons/Icons';
+import Button from '../Button/Button';
+import Reasoning from '../Reasoning/Reasoning';
+import UserMessage from '../UserMessage/UserMessage';
+import Collapsible from '../Collapsible/Collapsible';
 import './Conversation.css';
 
 interface ConversationProps {

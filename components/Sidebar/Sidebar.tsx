@@ -1,9 +1,9 @@
 import React from 'react';
-import type { NavItem, Conversation } from '../types';
-import { Icons } from './Icons';
-import { Logo } from './Logo';
-import Button from './Button';
-import Tag from './Tag';
+import type { NavItem, Conversation } from '../../types';
+import { Icons } from '../Icons/Icons';
+import { Logo } from '../Logo/Logo';
+import Button from '../Button/Button';
+import Tag from '../Tag/Tag';
 
 const navItems: NavItem[] = [
     { id: 'conversations', label: 'Conversations', icon: 'MessageSquare' },
