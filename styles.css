@@ -96,7 +96,7 @@
   --old-toqan-purple: rgb(68, 38, 217);
 
   /* widths and heights */
-  --max-width-main: 768px;
+  --max-width-main: 50rem; /* 768px; */
 }
 
 

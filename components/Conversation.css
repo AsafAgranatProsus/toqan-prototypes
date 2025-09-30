@@ -52,8 +52,10 @@
 
 .messages-container {
     width: var(--max-width-main);
+    /* width: 50rem; */
     max-width: 100%;
     margin: 0 auto;
+    padding: 0px 1.5rem;
 }
 
 .reasoning-dropdown-trigger {
