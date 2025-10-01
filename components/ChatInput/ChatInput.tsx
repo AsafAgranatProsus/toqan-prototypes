@@ -2,19 +2,17 @@ import React, { useState } from 'react';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import './ChatInput.css';
+import { useScenarios } from '../../context/ScenarioContext';
 
-interface ChatInputProps {
-  onSend: (message: string) => void;
-}
-
-const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
+const ChatInput: React.FC = () => {
   const [message, setMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const hasText = message.trim().length > 0;
+  const { setActiveScenario } = useScenarios();
 
   const handleSend = () => {
     if (hasText) {
-      onSend(message);
+      setActiveScenario(message);
       setMessage('');
     }
   };

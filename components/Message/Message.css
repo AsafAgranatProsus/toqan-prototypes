@@ -1,15 +1,17 @@
 /* Main container for the message */
-.message-container {
+.messages-container {
     /* background-color: #f0f4f8; */
     border-radius: 8px;
     /* padding: 20px; */
-    font-family: soehne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* font-family: soehne, "Helvetica Neue", Helvetica, Arial, sans-serif; */
     color: #333;
 
     > * + * {
         margin: 1rem 0px 0px;
     }
 }
+
+
 
 /* Strong text used for emphasis and headings */
 .text-strong {

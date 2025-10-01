@@ -9,12 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-dom": "^19.1.1",
+    "html-react-parser": "^5.2.6",
+    "katex": "^0.16.10",
+    "lucide-react": "^0.417.0",
     "react": "^19.1.1",
-    "lucide-react": "^0.417.0"
+    "react-dom": "^19.1.1",
+    "react-katex": "^3.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@types/react-katex": "^3.0.4",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"

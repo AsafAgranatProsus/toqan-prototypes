@@ -1,0 +1,77 @@
+/* ============================================= */
+/*            _reset.css                         */
+/* ============================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* margin: 0;
+  padding: 0; */
+}
+
+html,
+body {
+  height: 100%;
+  font-size: var(--font-size-base, 16px);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--theme-bg-app);
+  color: var(--theme-text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--theme-selection-bg);
+  color: var(--theme-text-selection);
+}
+
+::-moz-selection {
+  background: var(--theme-selection-bg);
+  color: var(--theme-text-selection);
+}
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input {
+  font-family: inherit;
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+  margin: inherit;
+  font-weight: 500;
+}
+
+table {
+  border-spacing: 0px;
+    border-collapse: collapse;
+    display: block;
+    margin-top: 0px;
+    margin-bottom: 16px;
+    width: max-content;
+    font-variant-numeric: tabular-nums;
+  td, th {
+    padding: 8px;
+    border: 1px solid rgb(200, 216, 234);
+  }
+
+  th {
+        font-weight: 500;
+    text-align: left;
+  }
+}

@@ -30,13 +30,13 @@
 }
 
 /* New branding styles for logo */
-.new-branding-logo {
+/* .new-branding-logo {
     gap: var(--space-3);
-}
+} */
 
-.new-branding-logo .logo__text {
+/* .new-branding-logo .logo__text {
     font-weight: 600;
     font-size: 1.5rem;
     letter-spacing: -0.5px;
     visibility: visible; /* Override visibility-hidden */
-}
+} */

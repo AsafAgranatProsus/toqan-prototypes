@@ -1,5 +1,3 @@
-
-
 export interface Conversation {
   id: string;
   title: string;
@@ -40,4 +38,12 @@ export interface Model {
   name: string;
   description: string;
   tag?: 'Recommended' | 'Beta';
+}
+
+export type ScenarioView = 'before' | 'after';
+
+export interface Scenario {
+  prompt: string;
+  outputBefore: string;
+  outputAfter: string;
 }

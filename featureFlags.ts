@@ -1,3 +1,5 @@
 export const featureFlags = {
-  enableNewBranding: false,
+  newBranding: false,
+  newTypography: false,
+  newTables: false,
 };

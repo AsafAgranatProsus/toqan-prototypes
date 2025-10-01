@@ -50,6 +50,12 @@
     scroll-behavior: smooth;
 }
 
+.html-content {
+    > * + * {
+        margin: 1rem 0px 0px;
+    }
+}
+
 .messages-container {
     width: var(--max-width-main);
     /* width: 50rem; */

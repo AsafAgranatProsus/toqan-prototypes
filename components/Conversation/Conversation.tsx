@@ -7,12 +7,17 @@ import Reasoning from '../Reasoning/Reasoning';
 import UserMessage from '../UserMessage/UserMessage';
 import Collapsible from '../Collapsible/Collapsible';
 import './Conversation.css';
+import { Scenario, ScenarioView } from '../../types';
+import HtmlRenderer from '../HtmlRenderer/HtmlRenderer';
 
 interface ConversationProps {
-  message: string;
+  activeScenario: Scenario;
+  scenarioView: ScenarioView;
 }
 
-const Conversation: React.FC<ConversationProps> = ({ message }) => {
+const Conversation: React.FC<ConversationProps> = ({ activeScenario, scenarioView }) => {
+  const output = scenarioView === 'before' ? activeScenario.outputBefore : activeScenario.outputAfter;
+
   return (
     <div className="conversation">
       <header className="conversation-header">
@@ -25,9 +30,8 @@ const Conversation: React.FC<ConversationProps> = ({ message }) => {
       </header>
       <div className="conversation-body">
         <div className="messages-container">
-
-          <UserMessage message={message} />
-        <div className="assistant-message">
+          <UserMessage message={activeScenario.prompt} />
+          <div className="assistant-message">
             <Collapsible>
               <Collapsible.Trigger className="reasoning-dropdown-trigger dropdown-container--secondary">
                 <span>Reasoning</span>
@@ -37,14 +41,15 @@ const Conversation: React.FC<ConversationProps> = ({ message }) => {
                 <Reasoning />
               </Collapsible.Content>
             </Collapsible>
-            <Message />
+            <div className="html-content prose modular-scale vertical-rhythm">
+              <HtmlRenderer html={output} />
+            </div>
           </div>
-
         </div>
       </div>
 
       <div className="conversation-footer">
-        <ChatInput onSend={() => { }} />
+        <ChatInput />
         <p className="main-content__privacy-note">
           Toqan ensures your data stays secure and private.
         </p>

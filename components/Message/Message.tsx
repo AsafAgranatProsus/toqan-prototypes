@@ -3,7 +3,7 @@ import './Message.css';
 
 const Message: React.FC = () => {
   return (
-    <div className="message-container"><h1>🎨 <strong className="text-strong">Toqan's UI Elements Boilerplate</strong></h1>
+    <div className="message-container modular-scale vertical-rhythm"><h1>🎨 <strong className="text-strong">Toqan's UI Elements Boilerplate</strong></h1>
       <p className="body-text">Here's my complete arsenal of formatting and display elements:</p>
       <h2><strong className="text-strong">Text Formatting Elements</strong></h2>
       <h3><strong className="text-strong">Basic Text Styles</strong></h3>

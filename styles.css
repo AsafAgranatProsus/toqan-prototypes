@@ -1,53 +1,13 @@
 /* ============================================= */
 /*            _imports.css                       */
 /* ============================================= */
-@import url("soehne.css");
+@import url("styles/soehne.css");
 
-/* ============================================= */
-/*            _fonts.css                       */
-/* ============================================= */
+@import url("styles/reset.css");
 
-@font-face {
-  font-family: "Soehne";
-  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-buch.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
+  @import url("styles/typography.css");
 
-@font-face {
-  font-family: "Soehne";
-  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-halbfett.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Soehne";
-  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-fett.woff2") format("woff2");
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Soehne";
-  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-buch-kursiv.woff2") format("woff2");
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Soehne";
-  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-halbfett-kursiv.woff2") format("woff2");
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Soehne";
-  src: url("https://raw.githubusercontent.com/AsafAgranat/fonts/main/soehne-fett-kursiv.woff2") format("woff2");
-  font-weight: bold;
-  font-style: italic;
-}
+  @import url("styles/tables.css");
 
 
 /* ============================================= */
@@ -61,11 +21,6 @@
   --font-family: "Soehne", var(--sans-serif-system-stack);
   --font-family-serif: var(--serif-system-stack);
   --font-family-monospace: var(var(--monospace-system-stack));
-
-  .new-branding {
-    --font-family: 'Host Grotesk', var(--sans-serif-system-stack);
-    --font-family-serif: 'Cormorant Garamond', var(--serif-system-stack);
-  }
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -101,57 +56,7 @@
 }
 
 
-/* ============================================= */
-/*            _reset.css                         */
-/* ============================================= */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body {
-  height: 100%;
-  font-size: var(--font-size-base, 16px)
-}
-
-body {
-  font-family: var(--font-family);
-  background-color: var(--theme-bg-app);
-  color: var(--theme-text-main);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-  background: var(--theme-selection-bg);
-  color: var(--theme-text-selection);
-}
-
-::-moz-selection {
-  background: var(--theme-selection-bg);
-  color: var(--theme-text-selection);
-}
-
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  font-family: inherit;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-input {
-  font-family: inherit;
-}
+@import url("reset.css");
 
 /* ============================================= */
 /*            _layout.css                        */
@@ -474,7 +379,7 @@ input {
   gap: 0.25rem;
   font-size: 0.875rem;
 
-  > span {
+  >span {
     position: relative;
     display: flex;
     align-items: center;
@@ -750,12 +655,9 @@ input {
 /*           _feature-flags.css                  */
 /* ============================================= */
 /* Styles applied when the 'new-branding' class is on the body */
-.new-branding {}
 
 /* Example of a more specific override */
-.new-branding .main-content__title {
-  letter-spacing: -0.05em;
-}
+
 
 /* ============================================= */
 /*           _old-toqan.css                      */

@@ -1,0 +1,105 @@
+/* styles/typography.css */
+
+:root {
+  --min-width: 320px;
+  --max-width: 992px;
+
+  --min-font: 14px;
+  --max-font: 18px;
+
+  --min-baseline: 1.5rem;
+  --max-baseline: 1.75rem;
+
+  /* Fluid font-size */
+  --fluid-font-size: clamp(var(--min-font),
+      calc(var(--min-font) + (var(--max-font) - var(--min-font)) * ((100vw - var(--min-width)) / (var(--max-width) - var(--min-width)))),
+      var(--max-font));
+
+  /* Fluid line-height (baseline) */
+  --baseline: clamp(var(--min-baseline),
+      calc(var(--min-baseline) + (var(--max-baseline) - var(--min-baseline)) * ((100vw - var(--min-width)) / (var(--max-width) - var(--min-width)))),
+      var(--max-baseline));
+}
+
+.prose {
+
+
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong {
+    font-weight: 500;
+  }
+
+  p>code {
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background-color: rgb(233, 239, 247);
+    border: 1px solid rgb(200, 216, 234);
+  }
+}
+
+.new-typography {
+
+  .prose {
+    --font-family: 'Host Grotesk', var(--sans-serif-system-stack);
+    --font-family-serif: 'Cormorant Garamond', var(--serif-system-stack);
+    font-family: var(--font-family);
+    /* font-size: var(--fluid-font-size); */
+    /* line-height: var(--baseline); */
+    p {
+      margin-bottom: .25rem;
+      + ul {
+        margin-top: 0.25rem;
+      }
+    }
+  }
+
+  .modular-scale {
+    /* --ratio: 1.4; */
+    /* You can still use a ratio */
+    ul {
+      margin-top: .5rem
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p,
+    ul,
+    ol,
+    blockquote {
+      /* margin: 0;
+      margin-bottom: var(--baseline / 2); */
+    }
+
+    /* h1 {
+      font-size: calc(1em * var(--ratio) * var(--ratio) * var(--ratio));
+      line-height: calc(var(--baseline) * 2);
+    }
+
+    h2 {
+      font-size: calc(1em * var(--ratio) * var(--ratio));
+      line-height: calc(var(--baseline) * 1.5);
+    }
+
+    h3 {
+      font-size: calc(1em * var(--ratio));
+      line-height: var(--baseline);
+    } */
+  }
+
+  table {
+    th, strong {
+      font-weight: 700;
+    }
+  }
+}

@@ -2,9 +2,14 @@ import React, { useEffect } from 'react';
 
 export const useClickOutside = (
   ref: React.RefObject<HTMLElement>,
-  handler: (event: MouseEvent | TouchEvent) => void
+  handler: (event: MouseEvent | TouchEvent) => void,
+  enabled: boolean = true
 ) => {
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     const listener = (event: MouseEvent | TouchEvent) => {
       if (!ref.current || ref.current.contains(event.target as Node)) {
         return;
@@ -19,5 +24,5 @@ export const useClickOutside = (
       document.removeEventListener('mousedown', listener);
       document.removeEventListener('touchstart', listener);
     };
-  }, [ref, handler]);
+  }, [ref, handler, enabled]);
 };

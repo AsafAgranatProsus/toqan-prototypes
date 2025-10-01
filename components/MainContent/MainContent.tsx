@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ChatInput from '../ChatInput/ChatInput';
 import { Icons } from '../Icons/Icons';
 import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
-import type { Model } from '../../types';
+import type { Model, ScenarioView } from '../../types';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import GradientBackground from '../GradientBackground/GradientBackground';
 import OldGradientBackground from '../OldGradientBackground/OldGradientBackground';
 import Conversation from '../Conversation/Conversation';
 import './MainContent.css';
+import { useScenarios } from '../../context/ScenarioContext';
 
 const models: Model[] = [
     { id: '1', name: 'Claude Sonnet 4', description: 'Recommended for most tasks', tag: 'Recommended' },
@@ -24,7 +25,7 @@ const agents = [
 ];
 
 const AgentSelector: React.FC = () => {
-    const [selectedAgent, setSelectedAgent] = useState<{ id: string, name: string } | null>(null);
+    const [selectedAgent, setSelectedAgent] = React.useState<{ id: string, name: string } | null>(null);
 
     return (
         <Dropdown>
@@ -51,7 +52,7 @@ const AgentSelector: React.FC = () => {
 };
 
 const ModelSelector: React.FC = () => {
-    const [selectedModel, setSelectedModel] = useState(models[0]);
+    const [selectedModel, setSelectedModel] = React.useState(models[0]);
 
     return (
         <Dropdown>
@@ -88,17 +89,12 @@ const ModelSelector: React.FC = () => {
 interface MainContentProps {
     onMenuClick: () => void;
     isMobile: boolean;
+    scenarioView: ScenarioView;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile }) => {
+const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenarioView }) => {
     const { flags } = useFeatureFlags();
-    const [message, setMessage] = useState('');
-    const [messageSent, setMessageSent] = useState(false);
-
-    const handleSend = (message: string) => {
-        setMessage(message);
-        setMessageSent(true);
-    };
+    const { activeScenario } = useScenarios();
 
     const title = flags.enableNewBranding
         ? "Welcome to the new Toqan"
@@ -116,11 +112,11 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile }) => {
                         {isMobile && (
                             <Button variant="tertiary" icon="Menu" onClick={onMenuClick} aria-label="Open menu" />
                         )}
-                        {!messageSent && <ModelSelector />}
+                        {!activeScenario && <ModelSelector />}
                     </header>
 
-                    {messageSent ? (
-                        <Conversation message={message} />
+                    {activeScenario ? (
+                        <Conversation activeScenario={activeScenario} scenarioView={scenarioView} />
                     ) : (
                         <div className="main-content__body">
                             <div className="main-content__inner">
@@ -134,7 +130,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile }) => {
                                         </div>
                                     )}
 
-                                    <ChatInput onSend={handleSend} />
+                                    <ChatInput />
 
                                     <p className="main-content__privacy-note">
                                         Toqan ensures your data stays secure and private.

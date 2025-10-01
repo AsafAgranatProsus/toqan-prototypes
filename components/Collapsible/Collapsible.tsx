@@ -19,7 +19,7 @@ export const useCollapsible = () => {
   return context;
 };
 
-const CollapsibleRoot: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const CollapsibleRoot: React.FC<{ children: React.ReactNode, closeOnOutsideClick?: boolean }> = ({ children, closeOnOutsideClick = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ const CollapsibleRoot: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (triggerRef.current && !triggerRef.current.contains(event.target as Node)) {
       close();
     }
-  });
+  }, closeOnOutsideClick);
 
   return (
     <CollapsibleContext.Provider value={{ isOpen, toggle, triggerRef, contentRef }}>
