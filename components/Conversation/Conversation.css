@@ -45,9 +45,13 @@
     width: 100%;
     background-image: linear-gradient(rgb(255, 255, 255), rgb(248, 250, 252));
     overscroll-behavior-y: contain;
-    scrollbar-color: rgb(233, 239, 247) transparent;
+    scrollbar-color: #D1D5DB transparent;
     scrollbar-width: thin;
     scroll-behavior: smooth;
+}
+
+.theme-dark .conversation-body {
+    scrollbar-color: #48484A transparent;
 }
 
 .html-content {

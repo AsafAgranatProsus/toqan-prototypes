@@ -46,11 +46,13 @@
 }
 
 .new-typography {
-
-  .prose {
     --font-family: 'Host Grotesk', var(--sans-serif-system-stack);
     --font-family-serif: 'Cormorant Garamond', var(--serif-system-stack);
-    font-family: var(--font-family);
+  
+    
+
+  .prose {
+    /* font-family: var(--font-family); */
     /* font-size: var(--fluid-font-size); */
     /* line-height: var(--baseline); */
     p {

@@ -2,4 +2,8 @@ export const featureFlags = {
   newBranding: false,
   newTypography: false,
   newTables: false,
+  newBubble: false,
+  plays: true,
+  builtByOther: true,
+  themes: false,
 };

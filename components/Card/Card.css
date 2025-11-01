@@ -1,0 +1,99 @@
+.card {
+  --card-shadow-corner-top-left: -36px -8px 0 -35px #ddd, -4px -36px 0 -35px #ddd, -5px -5px 0 -5px #c5c5c5, -20px -20px 30px -30px #3e3e3e;
+  border-radius: var(--radius, var(--border-radius-xl));
+  padding: var(--space-6);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  /* border: 1px solid var(--theme-border); */
+  position: relative;
+  overflow: hidden;
+  background-color: var(--theme-bg-input);
+  /* box-shadow: var(--card-shadow-corner-top-left); */
+  /* align-items: center;
+  justify-content: center; */
+}
+
+.theme-dark .card {
+  filter: invert(1);
+}
+
+.card-avatar {
+  position: absolute;
+  z-index: 2;
+  right: -10%;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  circle {
+    filter: blur(10px);
+  }
+}
+
+.card-grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 3;
+  /* opacity: 0.15; */
+  /* pointer-events: none;
+  mix-blend-mode: exclusion;
+    background-size: 150%;
+    filter: contrast(2.5); */
+    opacity: 0.5;
+    /* z-index: 1; */
+    pointer-events: none;
+    mix-blend-mode: luminosity;
+    filter: saturate(0.1);
+}
+
+
+
+.card::before {
+  /* content: ''; */
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: radial-gradient(circle at var(--x) var(--y), var(--color) 0%, transparent var(--radius));
+  filter: blur(40px);
+  z-index: 0;
+}
+
+.card::after {
+  /* content: ''; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-title, 
+.card-description {
+  margin: 0;
+  position: relative;
+  z-index: 4;
+}
+
+.card-title {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.card-description {
+  font-size: 14px;
+  color: inherit;
+  opacity: 0.8;
+}

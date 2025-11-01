@@ -2,14 +2,31 @@ import React from 'react';
 import './Toggle.css';
 
 interface ToggleProps {
-  label: string;
+  label?: string;
+  leftOption?: string;
+  rightOption?: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  variant?: 'classic' | 'button';
 }
 
-const Toggle: React.FC<ToggleProps> = ({ label, checked, onChange }) => {
+const Toggle: React.FC<ToggleProps> = ({ label, leftOption, rightOption, checked, onChange, variant = 'classic' }) => {
+  if (variant === 'button') {
+    return (
+      <button className="toggle-container button-variant" onClick={() => onChange(!checked)}>
+        <div className={`toggle-highlight ${checked ? 'right' : 'left'}`} />
+        <div className={`toggle-option ${!checked ? 'active' : ''}`}>
+          {leftOption}
+        </div>
+        <div className={`toggle-option ${checked ? 'active' : ''}`}>
+          {rightOption}
+        </div>
+      </button>
+    );
+  }
+
   return (
-    <label className="toggle-container">
+    <label className="toggle-container classic-variant">
       <span className="toggle-label">{label}</span>
       <input
         type="checkbox"

@@ -4,6 +4,8 @@ import { Icons } from '../Icons/Icons';
 import { Logo } from '../Logo/Logo';
 import Button from '../Button/Button';
 import Tag from '../Tag/Tag';
+import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
+import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import './Sidebar.css';
 
 const navItems: NavItem[] = [
@@ -56,6 +58,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
+    const { flags } = useFeatureFlags();
     const sidebarClasses = [
         'sidebar',
         isMobile ? 'sidebar--mobile' : '',
@@ -114,6 +117,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
                     <Icons name="User" className="menu-item__icon" />
                     <span>Account</span>
                 </a>
+                {flags.themes && <ThemeToggle />}
             </div>
         </aside>
     );

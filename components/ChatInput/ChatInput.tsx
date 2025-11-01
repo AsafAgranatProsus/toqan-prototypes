@@ -3,12 +3,13 @@ import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import './ChatInput.css';
 import { useScenarios } from '../../context/ScenarioContext';
+import { scenarios } from '../../context/scenarios';
 
 const ChatInput: React.FC = () => {
   const [message, setMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const hasText = message.trim().length > 0;
-  const { setActiveScenario } = useScenarios();
+  const { setActiveScenario, scenarios } = useScenarios();
 
   const handleSend = () => {
     if (hasText) {
@@ -20,6 +21,17 @@ const ChatInput: React.FC = () => {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSend();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const isNumberKey = /^[1-9]$/.test(e.key);
+    if (isNumberKey && e.altKey) {
+      e.preventDefault();
+      const scenarioIndex = parseInt(e.key, 10) - 1;
+      if (scenarios[scenarioIndex]) {
+        setMessage(scenarios[scenarioIndex].prompt);
+      }
     }
   };
 
@@ -42,6 +54,7 @@ const ChatInput: React.FC = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           placeholder="Message Toqan"
           className="chat-input-field"
         />

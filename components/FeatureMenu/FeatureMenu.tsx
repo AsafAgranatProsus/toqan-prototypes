@@ -21,7 +21,8 @@ const FeatureMenu: React.FC<FeatureMenuProps> = ({ scenarioView, setScenarioView
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.shiftKey && event.key === '?') {
+      console.log(event.key)
+      if (event.altKey && event.key === '/') {
         setIsOpen(prev => !prev);
       }
       if (event.key === 'Escape') {
@@ -66,7 +67,9 @@ const FeatureMenu: React.FC<FeatureMenuProps> = ({ scenarioView, setScenarioView
       <hr />
       <h3>Scenario View</h3>
       <Toggle
-        label={scenarioView === 'before' ? 'Before' : 'After'}
+        variant="button"
+        leftOption="Before"
+        rightOption="After"
         checked={scenarioView === 'after'}
         onChange={(checked) => {
           setScenarioView(checked ? 'after' : 'before');

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "boring-avatars": "^2.0.4",
     "html-react-parser": "^5.2.6",
     "katex": "^0.16.10",
     "lucide-react": "^0.417.0",

@@ -3,6 +3,7 @@ export interface Theme {
   colors: {
     // Backgrounds
     bgApp: string;
+    bgAppLighter: string;
     bgSidebar: string;
     bgSidebarMobile: string;
     bgMain: string;
@@ -52,6 +53,7 @@ export const lightTheme: Theme = {
   colors: {
     // Backgrounds
     bgApp: '#F9FAFB',
+    bgAppLighter: '#FFFFFF',
     bgSidebar: '#FFFFFF',
     bgSidebarMobile: 'rgba(255, 255, 255, 0.95)',
     bgMain: '#F9FAFB',
@@ -89,7 +91,7 @@ export const lightTheme: Theme = {
     tagDateText: 'rgb(68, 38, 217)',
     
     // Borders
-    border: '#E5E7EB',
+    border: '#c8d8ea',
 
     // FX / Gradients
     gradientMelange: [
@@ -102,53 +104,54 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   name: 'dark',
   colors: {
-    // Backgrounds
-    bgApp: '#111010',
-    bgSidebar: '#1C1C1E',
-    bgSidebarMobile: 'rgba(28, 28, 30, 0.95)',
-    bgMain: '#111010',
-    bgInput: '#2C2C2E',
-    bgItemSelected: '#3A3A3C',
-    bgMenu: '#1C1C1E',
+    // Backgrounds - Contemporary dark theme with subtle depth
+    bgApp: '#0A0A0B',              // Deep black base
+    bgSidebar: '#141416', 
+    bgAppLighter: '#000000',          // Elevated surface with slight contrast
+    bgSidebarMobile: 'rgba(20, 20, 22, 0.98)', // Near-opaque for mobile
+    bgMain: '#0A0A0B',              // Match app background
+    bgInput: '#1E1E20',             // Input fields - subtle elevation
+    bgItemSelected: '#252528',       // Selected states - clear hierarchy
+    bgMenu: '#1A1A1C',                // Dropdowns - elevated surface
 
-    // Text
-    textMain: '#F2F2F7',
-    textSecondary: '#E5E5EA',
-    textTertiary: '#98989D',
-    textLight: '#FFFFFF',
-    textAccent: '#0A84FF',
-    textLink: '#0A84FF',
-    textSelection: '#FFFFFF',
-    selectionBg: '#0A84FF',
+    // Text - High contrast for WCAG AAA accessibility
+    textMain: '#F5F5F7',            // Primary text - excellent contrast
+    textSecondary: '#D1D1D6',       // Secondary text - good contrast
+    textTertiary: '#8E8E93',        // Tertiary text - readable
+    textLight: '#FFFFFF',           // Light text for dark backgrounds
+    textAccent: '#5B8FFF',          // Accent blue - vibrant but not harsh
+    textLink: '#5B8FFF',            // Links match accent
+    textSelection: '#FFFFFF',       // Selected text color
+    selectionBg: '#3D5EFF',         // Selection highlight - good contrast
 
-    // Buttons
-    btnPrimaryBg: '#0A84FF',
-    btnPrimaryBgHover: '#007AFF',
-    btnPrimaryText: '#FFFFFF',
-    btnSecondaryBg: '#3A3A3C',
-    btnSecondaryBgHover: '#48484A',
-    btnSecondaryText: '#F2F2F7',
-    btnTertiaryBg: 'transparent',
-    btnTertiaryBgHover: '#3A3A3C',
-    btnTertiaryText: '#F2F2F7',
+    // Buttons - Modern, accessible button styles
+    btnPrimaryBg: '#3D5EFF',        // Primary blue - strong but not overwhelming
+    btnPrimaryBgHover: '#5B8FFF',   // Lighter on hover
+    btnPrimaryText: '#FFFFFF',      // White text for maximum contrast
+    btnSecondaryBg: '#1E1E20',       // Secondary button background
+    btnSecondaryBgHover: '#252528',  // Hover state
+    btnSecondaryText: '#D1D1D6',     // Accessible text color
+    btnTertiaryBg: 'transparent',    // Transparent background
+    btnTertiaryBgHover: '#1E1E20',  // Subtle hover
+    btnTertiaryText: '#D1D1D6',     // Readable text
     
-    // Tags
-    tagBetaBg: 'rgba(10, 132, 255, 0.2)',
-    tagBetaText: '#0A84FF',
-    tagRecommendedBg: 'rgba(175, 82, 222, 0.2)',
-    tagRecommendedText: '#AF52DE',
-    tagDateBg: 'rgba(10, 132, 255, 0.2)',
-    tagDateText: '#0A84FF',
+    // Tags - Vibrant but accessible tag colors
+    tagBetaBg: 'rgba(91, 143, 255, 0.15)',      // Subtle blue background
+    tagBetaText: '#5B8FFF',                      // Blue text
+    tagRecommendedBg: 'rgba(175, 82, 222, 0.15)', // Subtle purple background
+    tagRecommendedText: '#AF52DE',               // Purple text
+    tagDateBg: 'rgba(91, 143, 255, 0.12)',      // Date tag background
+    tagDateText: '#5B8FFF',                      // Date tag text
     
-    // Borders
-    border: '#3A3A3C',
+    // Borders - Subtle separation
+    border: '#2A2A2D',              // Border color - visible but not harsh
 
-    // FX / Gradients
+    // FX / Gradients - Contemporary gradient palette
     gradientMelange: [
-      'rgba(10, 132, 255, 0.5)', // blue
-      'rgba(175, 82, 222, 0.5)', // purple
-      'rgba(255, 59, 48, 0.5)',  // red
-      'rgba(52, 199, 89, 0.5)',  // green
+      'rgba(91, 143, 255, 0.4)',   // Blue
+      'rgba(175, 82, 222, 0.4)',   // Purple
+      'rgba(255, 85, 85, 0.3)',    // Coral red
+      'rgba(85, 217, 158, 0.3)',   // Mint green
     ],
   },
 };

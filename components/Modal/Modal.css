@@ -8,7 +8,11 @@
   transition: opacity 0.3s cubic-bezier(0.05, 0.84, 0.31, 1), transform 0.5s cubic-bezier(0.05, 0.84, 0.31, 1), visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
   z-index: 101;
   /* animation: 0.3s cubic-bezier(0.05, 0.84, 0.31, 1) 0.1s 1 normal forwards running modal; */
-
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  border-radius: var(--border-radius-xl);
+  overflow: hidden;
+  display: flex;
 }
 
 .modal-container.show {
@@ -18,15 +22,57 @@
 }
 
 .modal-content {
-  background-color: var(--theme-bg-primary);
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-6);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  /* padding: var(--space-6); */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   min-width: 320px;
-  background-color: var(--modal-bg-primary, white);
+  background-color: var(--theme-bg-menu);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0.25rem 0.5rem 0px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: auto;
+  max-height: 100%; 
+}
+
+.theme-dark .modal-content {
+  filter: invert(1);
+}
+
+.theme-dark .modal-content h1,
+.theme-dark .modal-content h2,
+.theme-dark .modal-content h3,
+.theme-dark .modal-content h4,
+.theme-dark .modal-content h5,
+.theme-dark .modal-content h6 {
+  filter: invert(1);
+}
+
+.theme-dark .modal-content .close-button {
+  filter: invert(1);
+}
+
+.theme-dark .modal-content button[class*="primary"] {
+  filter: invert(1);
+}
+
+.modal-grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  /* opacity: 0.15; */
+  z-index: 1;
+  pointer-events: none;
+  /* mix-blend-mode: exclusion;
+  background-size: 150%;
+  filter: contrast(2.5); */
+  opacity: 0.5;
+    z-index: 3;
+    pointer-events: none;
+    mix-blend-mode: luminosity;
+    filter: contrast(0.1);
 }
 
 @keyframes modal {

@@ -10,6 +10,8 @@ import OldGradientBackground from '../OldGradientBackground/OldGradientBackgroun
 import Conversation from '../Conversation/Conversation';
 import './MainContent.css';
 import { useScenarios } from '../../context/ScenarioContext';
+import BuiltByOthers from '../BuiltByOthers/BuiltByOthers';
+import Plays from '../Plays/Plays';
 
 const models: Model[] = [
     { id: '1', name: 'Claude Sonnet 4', description: 'Recommended for most tasks', tag: 'Recommended' },
@@ -31,7 +33,7 @@ const AgentSelector: React.FC = () => {
         <Dropdown>
             <Dropdown.Trigger className="agent-selector">
                 <span>
-                    <Icons name="Bot" className="icon-bot"/>
+                    <Icons name="Bot" className="icon-bot" />
                     <span>{selectedAgent ? selectedAgent.name : 'Select an Agent'}</span>
                     <Icons name="ChevronDown" className="icon-chevron" />
                 </span>
@@ -96,7 +98,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
     const { flags } = useFeatureFlags();
     const { activeScenario } = useScenarios();
 
-    const title = flags.enableNewBranding
+    const title = flags.newBranding
         ? "Welcome to the new Toqan"
         : "How can Toqan help you today?";
 
@@ -106,6 +108,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                 <div className="main-content-inner-wrapper">
                     {/* <GradientBackground /> */}
                     <div className="main-content__old-gradient-wrapper">
+                        {/* <div className="main-content-grain"></div> */}
                         <OldGradientBackground />
                     </div>
                     <header className="main-content__header">
@@ -124,7 +127,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                     {title}
                                 </h1>
                                 <div className="main-content__chat-section">
-                                    {!flags.enableNewBranding && (
+                                    {!flags.newBranding && (
                                         <div className="main-content__agent-selector">
                                             <AgentSelector />
                                         </div>
@@ -136,7 +139,12 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                         Toqan ensures your data stays secure and private.
                                     </p>
                                 </div>
+                                <div className="galleries">
+                                    {flags.plays && <Plays />}
+                                    {/* {flags.builtByOther && <BuiltByOthers />} */}
+                                </div>
                             </div>
+
                         </div>
                     )}
                 </div>

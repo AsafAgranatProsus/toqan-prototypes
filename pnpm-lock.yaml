@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      boring-avatars:
+        specifier: ^2.0.4
+        version: 2.0.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       html-react-parser:
         specifier: ^5.2.6
         version: 5.2.6(@types/react@19.1.17)(react@19.1.1)
@@ -446,6 +449,12 @@ packages:
   baseline-browser-mapping@2.8.6:
     resolution: {integrity: sha512-wrH5NNqren/QMtKUEEJf7z86YjfqW/2uw3IL3/xpqZUC95SSVIFXYQeeGjL6FT/X68IROu6RMehZQS5foy2BXw==}
     hasBin: true
+
+  boring-avatars@2.0.4:
+    resolution: {integrity: sha512-xhZO/w/6aFmRfkaWohcl2NfyIy87gK5SBbys8kctZeTGF1Apjpv/10pfUuv+YEfVPkESU/h2Y6tt/Dwp+bIZPw==}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
 
   browserslist@4.26.2:
     resolution: {integrity: sha512-ECFzp6uFOSB+dcZ5BK/IBaGWssbSYBHvuMeMt3MMFyhI0Z8SqGgEkBLARgpRH3hutIgPVsALcMwbDrJqPxQ65A==}
@@ -1036,6 +1045,11 @@ snapshots:
       - supports-color
 
   baseline-browser-mapping@2.8.6: {}
+
+  boring-avatars@2.0.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+    dependencies:
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
 
   browserslist@4.26.2:
     dependencies:

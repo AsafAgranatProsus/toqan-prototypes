@@ -5,13 +5,13 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--theme-text-accent);
+  color: var(--theme-text-main);
   cursor: pointer;
   transition: var(--transition-fast);
 }
 
 .logo:hover {
-    color: var(--theme-btn-primary-bg-hover);
+    color: var(--theme-text-accent);
 }
 
 .logo__mark {

@@ -219,5 +219,5 @@ export const scenarios: Scenario[] = [
 </ul>
 </div>`,
   },
-  // I will add more scenarios here as the user provides them.
+  
 ];

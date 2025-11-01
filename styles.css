@@ -36,7 +36,8 @@
   --border-radius-sm: 0.25rem;
   --border-radius-md: 0.5rem;
   --border-radius-lg: calc(-1px + 1rem);
-  ;
+  --border-radius-xl:  2rem;
+  
   --border-radius-full: 9999px;
 
   /* Transitions */
@@ -53,6 +54,13 @@
   /* widths and heights */
   --max-width-main: 50rem;
   /* 768px; */
+
+
+ 
+
+  .theme-dark {
+   
+  }
 }
 
 
@@ -66,6 +74,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background-color: var(--theme-bg-app);
 }
 
 .app-layout {
@@ -73,7 +82,7 @@
   height: 100%;
   position: relative;
   z-index: 1;
-  background-color: transparent;
+  background-color: var(--theme-bg-app);
 }
 
 /* ============================================= */
@@ -81,14 +90,15 @@
 /* ============================================= */
 .sidebar {
   width: 280px;
-  background: transparent;
+  background: var(--theme-bg-sidebar);
   display: flex;
   flex-direction: column;
   padding: var(--space-4);
   flex-shrink: 0;
-  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, background-color var(--transition-fast);
   z-index: 20;
   gap: 1rem;
+  
 }
 
 .sidebar__header-container {
@@ -131,17 +141,21 @@
   overflow: hidden;
   position: relative;
   /* padding: 0 .5rem; */
+}
 
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    height: 1px;
-    top: 28px;
-    left: 0px;
-    width: 100%;
-    background-image: linear-gradient(to right, rgb(200, 216, 234), rgb(248, 250, 252));
-  }
+.sidebar__recent::before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 1px;
+  top: 28px;
+  left: 0px;
+  width: 100%;
+  background: var(--theme-border);
+}
+
+.theme-light .sidebar__recent::before {
+  background-image: linear-gradient(to right, rgb(200, 216, 234), rgb(248, 250, 252));
 }
 
 .sidebar__section-title {
@@ -169,6 +183,11 @@
 .sidebar__footer {
   padding-top: var(--space-4);
   border-top: 1px solid var(--theme-border);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
 /* Mobile specific styles */
@@ -281,15 +300,15 @@
 /* ============================================= */
 /*         _components/main-content.css          */
 /* ============================================= */
-.main-content {
+/* .main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
   position: relative;
-}
+} */
 
-.main-content__header {
+/* .main-content__header { */
 
   /* padding: var(--space-3) var(--space-6);
   border-bottom: 1px solid var(--theme-border);
@@ -298,7 +317,7 @@
   align-items: center;
   gap: var(--space-4);
   flex-shrink: 0; */
-  .dropdown__button {
+  /* .dropdown__button {
     width: auto;
     display: flex;
     align-items: center;
@@ -315,18 +334,19 @@
     padding: 0.5rem 0.75rem;
     gap: 0.5rem;
     font-size: 1rem;
-  }
-}
+  } */
+/* } */
 
-.main-content__body {
+/* .main-content__body {
   flex-grow: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   padding: var(--space-8);
   overflow-y: auto;
-}
-
+} */
+/* 
 .main-content__inner {
   max-width: 800px;
   width: 100%;
@@ -335,15 +355,16 @@
   flex-direction: column;
   align-items: center;
   gap: 32px;
-}
+  margin-top: 8vh
+} */
 
-.main-content__title {
+/* .main-content__title {
   font-size: 2.5rem;
   font-weight: 500;
   color: var(--theme-text-main);
-}
+} */
 
-.main-content__chat-section {
+/* .main-content__chat-section {
   max-width: 800px;
   width: 100%;
   padding-bottom: 5vh;
@@ -398,8 +419,8 @@
     width: 20px;
     height: 20px;
   }
-}
-
+} */
+/* 
 .main-content__privacy-note {
   font-size: 0.875rem;
   color: var(--theme-text-tertiary);
@@ -411,7 +432,7 @@
   font-size: 0.75rem;
   color: rgb(102, 126, 153);
   font-weight: 400
-}
+} */
 
 
 /* ============================================= */
@@ -568,20 +589,64 @@
 /* ============================================= */
 /*            _utilities.css                     */
 /* ============================================= */
+/* Global scrollbar styles - thin thumb, transparent track, no arrows */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #D1D5DB transparent;
+}
+
+.theme-dark * {
+  scrollbar-color: #48484A transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #D1D5DB;
+  border-radius: 3px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.theme-dark *::-webkit-scrollbar-thumb {
+  background-color: #48484A;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #9CA3AF;
+}
+
+.theme-dark *::-webkit-scrollbar-thumb:hover {
+  background-color: #5A5A5C;
+}
+
+/* Remove scrollbar arrows (up/down buttons) */
+*::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Custom scrollbar with theme colors */
 .custom-scrollbar {
   /* For Firefox - scrollbar thumb and track colors */
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  /* Initially hidden */
+  scrollbar-color: #D1D5DB transparent;
 }
 
-.custom-scrollbar:hover {
-  /* For Firefox - show scrollbar on hover */
-  scrollbar-color: #ccc transparent;
+.theme-dark .custom-scrollbar {
+  scrollbar-color: #48484A transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -589,20 +654,28 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: transparent;
-  /* Initially hidden for WebKit browsers */
-  border-radius: 10px;
+  background-color: #D1D5DB;
+  border-radius: 3px;
   transition: background-color 0.2s ease-in-out;
 }
 
-.custom-scrollbar:hover::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  /* Show on hover for WebKit browsers */
+.theme-dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #48484A;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #aaa;
-  /* Darken on thumb hover */
+  background-color: #9CA3AF;
+}
+
+.theme-dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #5A5A5C;
+}
+
+/* Remove scrollbar arrows for custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .font-serif {
@@ -663,7 +736,7 @@
 /*           _old-toqan.css                      */
 /* ============================================= */
 
-.old-toqan {
+/* .old-toqan { */
 
 
   .app-layout {
@@ -673,12 +746,10 @@
   }
 
   .sidebar {
-    /* background-color: var(--theme-bg-sidebar);
-  border-radius: var(--border-radius-lg);
-  border: 1px solid var(--theme-border); */
     width: 260px;
-    /* padding: var(--space-4) var(--space-3); */
     padding: 1.5rem;
+    background: transparent;
+
 
     .new__button {
       border-radius: .5rem;
@@ -717,33 +788,38 @@
   }
 
   .main-content {
-    background-color: var(--theme-bg-main);
-    /* Use white */
-
-    overflow: hidden;
-    /* Contain the gradient */
+       overflow: hidden;
     padding: 1rem 1rem 0px;
   }
 
   .main-content-wrapper {
-    /* border-radius: var(--border-radius-lg); */
-    /* border: 1px solid var(--theme-border); */
     padding: 1px 1px 0px;
     border-radius: 1rem;
-    background-image: linear-gradient(rgb(200, 216, 234), rgb(248, 250, 252));
     height: 100%;
     position: relative;
+    padding: 1px 1px 0px;
+    border-radius: 1rem;
+    /* background-image: linear-gradient(rgb(200, 216, 234), rgb(248, 250, 252)); */
+    background-image: linear-gradient( var(--theme-border), var(--theme-bg-app));
+
   }
+
 
   .main-content-inner-wrapper {
     border-radius: calc(-1px + 1rem);
     height: 100%;
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(248, 250, 252));
+    /* background: var(--theme-bg-main); */
     background-position: 0px 0px;
     background-repeat: no-repeat;
-    transition: border-radius 0.4s cubic-bezier(0.05, 0.84, 0.31, 1);
+    transition: border-radius 0.4s cubic-bezier(0.05, 0.84, 0.31, 1), background-color var(--transition-fast);
     display: flex;
-    ;
+    background-image: linear-gradient(var(--theme-bg-app-lighter), var(--theme-bg-app));
+  }
+
+  .theme-light .main-content-inner-wrapper {
+    border-radius: calc(-1px + 1rem);
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
   }
 
   .main-content__header {
@@ -763,9 +839,9 @@
     position: absolute;
     z-index: 100;
     background-color: var(--theme-bg-menu);
-    border: 1px solid #c8d8ea;
+    border: 1px solid var(--theme-border);
     border-radius: var(--border-radius-md);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
     padding: var(--space-2);
     min-width: 320px;
     max-height: 300px;
@@ -775,23 +851,23 @@
     list-style-type: none;
     margin: 0px;
     padding: 0px;
-    background: rgb(255, 255, 255);
     position: fixed;
     z-index: 200;
     max-height: 16rem;
     overflow-y: auto;
-    border: 1px solid rgb(200, 216, 234);
-    outline: rgb(233, 239, 247) solid 2px;
 
     /* opacity: 0; */
     /* visibility: hidden; */
     /* transform: scale(0.95); */
     /* pointer-events: none; */
 
-    scrollbar-color: rgb(200, 216, 234) transparent;
+    scrollbar-color: #D1D5DB transparent;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    box-shadow: rgba(70, 124, 185, 0.2) 0px 0.125rem 0.25rem 0px;
+  }
+
+  .theme-dark .toqan-model-selector {
+    scrollbar-color: #48484A transparent;
     /* top: 75px;
     left: 293px; */
     right: auto;
@@ -824,17 +900,7 @@
     z-index: 1;
   }
 
-  .main-content__body {
-
-    display: flex;
-    flex-flow: row;
-    gap: 0px;
-    flex: 1 1 0%;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
+  
 
   .sidebar__header-container {
     /* padding: 0 var(--space-3) 1.5rem; */
@@ -854,16 +920,14 @@
 
   /* Chat Input styling */
   .chat-input-container {
-    background-color: #FFFFFF;
+    background-color: var(--theme-bg-input);
     box-shadow: none;
     border: 1px solid var(--theme-border);
     padding: 0.5rem 0.5rem 0.5rem 0.75rem;
     max-width: 48rem;
     width: 100%;
     border-radius: 1rem;
-    border: 1px solid rgb(200, 216, 234);
-    box-shadow: rgba(70, 124, 185, 0.2) 0px 0.125rem 0.25rem 0px;
-    background: rgb(255, 255, 255);
+    box-shadow: 0px 0.125rem 0.25rem 0px rgba(0, 0, 0, 0.1);
     gap: .5rem
   }
 
@@ -893,6 +957,12 @@
     place-content: center;
     z-index: 1;
   }
+
+  
+/* } */
+
+.theme-dark .main-content__old-gradient-wrapper {
+  filter: invert(1);
 }
 
 .assistant-message {

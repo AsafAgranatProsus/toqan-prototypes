@@ -27,11 +27,18 @@ export type IconName =
   | 'Mic'
   | 'ArrowUp'
   | 'ChevronDown'
+  | 'ChevronLeft'
+  | 'ChevronRight'
   | 'Menu'
   | 'Plus'
   | 'Mail'
   | 'Trash'
-  | 'Terminal';
+  | 'Terminal'
+  | 'X'
+  | 'Sparkles'
+  | 'Sun'
+  | 'Moon'
+  | 'Robot';
 
 export interface Model {
   id: string;
