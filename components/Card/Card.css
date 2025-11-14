@@ -12,9 +12,7 @@
   justify-content: center; */
 }
 
-.theme-dark .card {
-  filter: invert(1);
-}
+/* NOTE: Removed filter:invert hack - now uses tokens that adapt automatically */
 
 .card-avatar {
   position: absolute;
@@ -48,7 +46,7 @@
     /* z-index: 1; */
     pointer-events: none;
     mix-blend-mode: luminosity;
-    filter: saturate(0.1);
+    /* filter: saturate(0.1); */
 }
 
 

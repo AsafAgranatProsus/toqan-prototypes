@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
+import { useDesignSystem } from '../../context/DesignSystemContext';
 import Toggle from '../Toggle/Toggle';
 import './FeatureMenu.css';
 import { ScenarioView } from '../../types';
@@ -18,6 +19,7 @@ interface FeatureMenuProps {
 const FeatureMenu: React.FC<FeatureMenuProps> = ({ scenarioView, setScenarioView }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { flags, setFlag } = useFeatureFlags();
+  const { themeMode, toggleTheme, designSystem, isNewDesign } = useDesignSystem();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -53,28 +55,56 @@ const FeatureMenu: React.FC<FeatureMenuProps> = ({ scenarioView, setScenarioView
 
   return (
     <div className="feature-menu">
-      <h3>Feature Flags</h3>
-      {Object.keys(flags).map(flag => (
+      <div className="feature-menu-section">
+        <h3>Design System</h3>
+        <div className="design-system-info">
+          <p className="info-text">
+            <strong>Current Design:</strong> {isNewDesign ? 'NEW (Live Toqan)' : 'OLD (Mockup)'}
+          </p>
+          <p className="info-text">
+            <strong>Theme Mode:</strong> {themeMode}
+          </p>
+        </div>
         <Toggle
-          key={flag}
-          label={toSentenceCase(flag)}
-          checked={flags[flag as keyof typeof flags]}
+          variant="button"
+          leftOption="Light"
+          rightOption="Dark"
+          checked={themeMode === 'dark'}
+          onChange={() => toggleTheme()}
+        />
+      </div>
+      
+      <hr />
+      
+      <div className="feature-menu-section">
+        <h3>Feature Flags</h3>
+        <p className="helper-text">Toggle "New Branding" to switch design systems</p>
+        {Object.keys(flags).map(flag => (
+          <Toggle
+            key={flag}
+            label={toSentenceCase(flag)}
+            checked={flags[flag as keyof typeof flags]}
+            onChange={(checked) => {
+              setFlag(flag as keyof typeof flags, checked);
+            }}
+          />
+        ))}
+      </div>
+      
+      <hr />
+      
+      <div className="feature-menu-section">
+        <h3>Scenario View</h3>
+        <Toggle
+          variant="button"
+          leftOption="Before"
+          rightOption="After"
+          checked={scenarioView === 'after'}
           onChange={(checked) => {
-            setFlag(flag as keyof typeof flags, checked);
+            setScenarioView(checked ? 'after' : 'before');
           }}
         />
-      ))}
-      <hr />
-      <h3>Scenario View</h3>
-      <Toggle
-        variant="button"
-        leftOption="Before"
-        rightOption="After"
-        checked={scenarioView === 'after'}
-        onChange={(checked) => {
-          setScenarioView(checked ? 'after' : 'before');
-        }}
-      />
+      </div>
     </div>
   );
 };

@@ -67,16 +67,29 @@ const Content: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
     const innerElement = innerContentRef.current;
 
     if (contentElement && innerElement) {
-      const resizeObserver = new ResizeObserver(() => {
+      const updateHeight = () => {
         requestAnimationFrame(() => {
-          const height = innerElement.getBoundingClientRect().height;
+          // Use scrollHeight to capture full content including overflow
+          const height = innerElement.scrollHeight;
           contentElement.style.setProperty('--collapsible-content-height', `${height}px`);
         });
-      });
+      };
+
+      const resizeObserver = new ResizeObserver(updateHeight);
       resizeObserver.observe(innerElement);
-      return () => resizeObserver.disconnect();
+      
+      // Initial height calculation
+      updateHeight();
+      
+      // Recalculate after a small delay to ensure all content is rendered
+      const timeoutId = setTimeout(updateHeight, 100);
+      
+      return () => {
+        resizeObserver.disconnect();
+        clearTimeout(timeoutId);
+      };
     }
-  }, [contentRef]);
+  }, [contentRef, isOpen]); // Added isOpen as dependency
   
   return (
     <div ref={contentRef} className="collapsible-content" data-state={isOpen ? 'open' : 'closed'}>

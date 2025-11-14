@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles.css';
-import { ThemeProvider } from './context/ThemeContext';
+import { DesignSystemProvider } from './context/DesignSystemContext';
 import { FeatureFlagProvider } from './context/FeatureFlagContext';
 import { ScenarioProvider } from './context/ScenarioContext';
 
@@ -16,9 +16,9 @@ root.render(
   <React.StrictMode>
     <FeatureFlagProvider>
       <ScenarioProvider>
-        <ThemeProvider>
+        <DesignSystemProvider>
           <App />
-        </ThemeProvider>
+        </DesignSystemProvider>
       </ScenarioProvider>
     </FeatureFlagProvider>
   </React.StrictMode>

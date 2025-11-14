@@ -1,0 +1,219 @@
+/* ============================================= */
+/*              BUTTON COMPONENT                 */
+/* Refactored to use Design System Tokens       */
+/* ============================================= */
+
+/* ===== BASE BUTTON STYLES ===== */
+.btn {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  
+  /* Typography */
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-default);
+  line-height: var(--line-height-normal);
+  
+  /* Spacing */
+  padding: var(--space-3) var(--space-4);
+  
+  /* Appearance */
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  
+  /* Accessibility */
+  user-select: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary-default);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== BUTTON VARIANTS ===== */
+
+/* Primary Button - Main actions */
+.btn--primary {
+  background-color: var(--color-primary-default);
+  color: var(--color-text-light);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.btn--primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Secondary Button - Secondary actions */
+.btn--secondary {
+  background-color: var(--color-ui-active);
+  color: var(--color-text-default);
+  border: 1px solid var(--color-ui-border);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-ui-border);
+}
+
+.btn--secondary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Tertiary Button - Subtle actions */
+.btn--tertiary {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.btn--tertiary:hover:not(:disabled) {
+  background-color: var(--color-ui-active);
+  color: var(--color-text-default);
+}
+
+.btn--tertiary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* ===== BUTTON SHAPES ===== */
+
+.btn--rounded {
+  border-radius: var(--radius-default);
+}
+
+.btn--circle {
+  border-radius: var(--radius-full);
+}
+
+/* ===== BUTTON SIZES ===== */
+
+/* Icon-Only Button */
+.btn--icon-only {
+  width: var(--size-button-height);
+  height: var(--size-button-height);
+  padding: 0;
+}
+
+/* Small Button */
+.btn--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-body-sm);
+}
+
+/* Large Button */
+.btn--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-body-md);
+}
+
+/* ===== ICON STYLES ===== */
+
+/* Icon inside button */
+.btn > svg {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  flex-shrink: 0;
+}
+
+.btn--sm > svg {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+.btn--lg > svg {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+/* ===== LOADING STATE ===== */
+
+.btn--loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn--loading::after {
+  content: '';
+  position: absolute;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== BUTTON GROUPS ===== */
+
+.btn-group {
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.btn-group--attached .btn {
+  border-radius: 0;
+}
+
+.btn-group--attached .btn:first-child {
+  border-top-left-radius: var(--radius-default);
+  border-bottom-left-radius: var(--radius-default);
+}
+
+.btn-group--attached .btn:last-child {
+  border-top-right-radius: var(--radius-default);
+  border-bottom-right-radius: var(--radius-default);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-body-sm);
+  }
+  
+  .btn--lg {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+/* ===== NOTES FOR DEVELOPERS ===== */
+
+/*
+  Button Component - Token Usage Guide
+  
+  ✅ USES NEW TOKENS:
+  - All colors: --color-primary-*, --color-ui-*, --color-text-*
+  - All spacing: --space-*
+  - All typography: --font-size-*, --font-weight-*
+  - All sizes: --icon-size-*, --size-button-*
+  - All radius: --radius-*
+  - All transitions: --transition-*
+  
+  🧪 TESTING CHECKLIST:
+  □ OLD Design + Light Mode
+  □ OLD Design + Dark Mode  
+  □ NEW Design + Light Mode
+  □ NEW Design + Dark Mode
+  
+  📝 NO HARDCODED VALUES!
+  This component is fully tokenized and works across all
+  design systems and theme modes.
+*/
+

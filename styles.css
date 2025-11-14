@@ -2,69 +2,24 @@
 /*            _imports.css                       */
 /* ============================================= */
 @import url("styles/soehne.css");
-
 @import url("styles/reset.css");
-
-  @import url("styles/typography.css");
-
-  @import url("styles/tables.css");
+@import url("tokens.css");  /* Design System Tokens - MUST be imported before other styles */
+@import url("styles/typography.css");
+@import url("styles/tables.css");
 
 
 /* ============================================= */
-/*            _variables.css                     */
+/*            _legacy-variables.css              */
+/*   These will be removed after full migration */
 /* ============================================= */
 :root {
-  --sans-serif-system-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  --serif-system-stack: Georgia, 'Times New Roman', serif;
-  --monospace-system-stack: monospace;
-
-  --font-family: "Soehne", var(--sans-serif-system-stack);
-  --font-family-serif: var(--serif-system-stack);
-  --font-family-monospace: var(var(--monospace-system-stack));
-
-  /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-
-  /* Borders */
-  --border-radius-sm: 0.25rem;
-  --border-radius-md: 0.5rem;
-  --border-radius-lg: calc(-1px + 1rem);
-  --border-radius-xl:  2rem;
-  
-  --border-radius-full: 9999px;
-
-  /* Transitions */
-  --transition-fast: all 0.2s ease-in-out;
-
-  /* Grain Effect */
+  /* Grain Effect - Design-specific, not in tokens yet */
   --grain-opacity: 0.15;
-  /* Controls the visibility of the grain */
   --grain-blend-mode: overlay;
-  /* Blend mode for the grain (e.g., overlay, soft-light) */
 
+  /* Legacy purple - keep for backward compatibility */
   --old-toqan-purple: rgb(68, 38, 217);
-
-  /* widths and heights */
-  --max-width-main: 50rem;
-  /* 768px; */
-
-
- 
-
-  .theme-dark {
-   
-  }
 }
-
-
-@import url("reset.css");
 
 /* ============================================= */
 /*            _layout.css                        */
@@ -151,11 +106,15 @@
   top: 28px;
   left: 0px;
   width: 100%;
-  background: var(--theme-border);
+  background: var(--color-ui-border);
 }
 
 .theme-light .sidebar__recent::before {
-  background-image: linear-gradient(to right, rgb(200, 216, 234), rgb(248, 250, 252));
+  background-image: linear-gradient(to right, var(--color-ui-border), var(--color-ui-background));
+}
+
+.theme-dark .sidebar__recent::before {
+  background-image: linear-gradient(to right, var(--color-ui-border), var(--color-ui-background));
 }
 
 .sidebar__section-title {
@@ -327,9 +286,9 @@
     position: relative;
     transition: background-color 0.2s, color 0.2s;
     line-height: 1;
-    background-color: rgb(255, 255, 255);
-    color: rgb(28, 49, 74);
-    border: 1px solid rgb(200, 216, 234);
+    background-color: var(--color-ui-background-elevated);
+    color: var(--color-text-default);
+    border: 1px solid var(--color-ui-border);
     box-shadow: rgba(70, 124, 185, 0.2) 0px 1px 2px 0px;
     padding: 0.5rem 0.75rem;
     gap: 0.5rem;
@@ -383,22 +342,22 @@
 
 
 
-.agent-selector {
-  width: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  transition: background-color 0.2s, color 0.2s;
-  line-height: 1;
-  background-color: transparent;
-  color: rgb(28, 49, 74);
-  padding: 0.5rem 0.75rem;
-  gap: 0.25rem;
-  font-size: 0.875rem;
+  .agent-selector {
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s, color 0.2s;
+    line-height: 1;
+    background-color: transparent;
+    color: var(--color-text-default);
+    padding: 0.5rem 0.75rem;
+    gap: 0.25rem;
+    font-size: 0.875rem;
 
   >span {
     position: relative;
@@ -430,7 +389,7 @@
   padding: 0.5rem;
   text-align: center;
   font-size: 0.75rem;
-  color: rgb(102, 126, 153);
+  color: var(--color-text-tertiary);
   font-weight: 400
 } */
 
@@ -589,14 +548,11 @@
 /* ============================================= */
 /*            _utilities.css                     */
 /* ============================================= */
-/* Global scrollbar styles - thin thumb, transparent track, no arrows */
+
+/* Global scrollbar styles - automatically adapt to theme */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #D1D5DB transparent;
-}
-
-.theme-dark * {
-  scrollbar-color: #48484A transparent;
+  scrollbar-color: var(--color-ui-border) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -609,21 +565,13 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #D1D5DB;
+  background-color: var(--color-ui-border);
   border-radius: 3px;
   transition: background-color 0.2s ease-in-out;
 }
 
-.theme-dark *::-webkit-scrollbar-thumb {
-  background-color: #48484A;
-}
-
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #9CA3AF;
-}
-
-.theme-dark *::-webkit-scrollbar-thumb:hover {
-  background-color: #5A5A5C;
+  background-color: var(--color-ui-active);
 }
 
 /* Remove scrollbar arrows (up/down buttons) */
@@ -637,11 +585,7 @@
 .custom-scrollbar {
   /* For Firefox - scrollbar thumb and track colors */
   scrollbar-width: thin;
-  scrollbar-color: #D1D5DB transparent;
-}
-
-.theme-dark .custom-scrollbar {
-  scrollbar-color: #48484A transparent;
+  scrollbar-color: var(--color-ui-border) transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -654,21 +598,13 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #D1D5DB;
+  background-color: var(--color-ui-border);
   border-radius: 3px;
   transition: background-color 0.2s ease-in-out;
 }
 
-.theme-dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #48484A;
-}
-
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #9CA3AF;
-}
-
-.theme-dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #5A5A5C;
+  background-color: var(--color-ui-active);
 }
 
 /* Remove scrollbar arrows for custom scrollbar */
@@ -816,7 +752,7 @@
     background-image: linear-gradient(var(--theme-bg-app-lighter), var(--theme-bg-app));
   }
 
-  .theme-light .main-content-inner-wrapper {
+  .main-content-inner-wrapper {
     border-radius: calc(-1px + 1rem);
     background-position: 0px 0px;
     background-repeat: no-repeat;
@@ -856,20 +792,10 @@
     max-height: 16rem;
     overflow-y: auto;
 
-    /* opacity: 0; */
-    /* visibility: hidden; */
-    /* transform: scale(0.95); */
-    /* pointer-events: none; */
-
-    scrollbar-color: #D1D5DB transparent;
+    /* Scrollbar uses tokens automatically */
+    scrollbar-color: var(--color-ui-border) transparent;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-  }
-
-  .theme-dark .toqan-model-selector {
-    scrollbar-color: #48484A transparent;
-    /* top: 75px;
-    left: 293px; */
     right: auto;
     overflow: auto;
     width: auto !important;

@@ -1,11 +1,10 @@
 import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useDesignSystem } from '../../context/DesignSystemContext';
 import { Icons } from '../Icons/Icons';
 import './ThemeToggle.css';
 
 export const ThemeToggle: React.FC = () => {
-  const { themeName, toggleTheme } = useTheme();
-  const isDark = themeName === 'dark';
+  const { themeMode, toggleTheme, isDark } = useDesignSystem();
 
   return (
     <button

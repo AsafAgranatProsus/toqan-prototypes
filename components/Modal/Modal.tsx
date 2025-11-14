@@ -8,18 +8,25 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   backgroundColor?: string;
+  containerProps?: any; // For framer-motion props
 }
 
-const Modal: React.FC<ModalProps> = ({ show, onClose, children, backgroundColor }) => {
+const Modal: React.FC<ModalProps> = ({ show, onClose, children, backgroundColor, containerProps }) => {
+  const Container = containerProps?.as || 'div';
+  const { as, ...restContainerProps } = containerProps || {};
+  
   return (
     <Portal>
       <Background show={show} onClick={onClose} />
-      <div className={`modal-container ${show ? 'show' : ''}`}>
+      <Container 
+        className={`modal-container ${show ? 'show' : ''}`}
+        {...restContainerProps}
+      >
         <div className="modal-content" style={backgroundColor ? { backgroundColor } : undefined}>
           <div className="modal-grain"></div>
           {children}
         </div>
-      </div>
+      </Container>
     </Portal>
   );
 };

@@ -10,17 +10,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
-    border-bottom: 1px solid #e2e8f0;
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+    border-bottom: 1px solid var(--color-ui-border);
 }
 
 .conversation-title {
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-body-md);
+    line-height: var(--line-height-normal);
     font-style: normal;
     color: inherit;
-
 }
 
 .action-buttons {
@@ -28,12 +27,12 @@
     gap: 4px;
 
     button {
-        width: 28px;
-        height: 28px;
+        width: var(--icon-size-lg);
+        height: var(--icon-size-lg);
 
         svg {
-            width: 12px;
-            height: 12px
+            width: var(--icon-size-xs);
+            height: var(--icon-size-xs);
         }
     }
 }
@@ -41,17 +40,13 @@
 .conversation-body {
     flex-grow: 1;
     overflow-y: auto;
-    padding-left: .5rem;
+    padding-left: var(--space-2);
     width: 100%;
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(248, 250, 252));
+    background-image: linear-gradient(var(--color-ui-background-elevated), var(--color-ui-background));
     overscroll-behavior-y: contain;
-    scrollbar-color: #D1D5DB transparent;
+    scrollbar-color: var(--color-ui-border) transparent;
     scrollbar-width: thin;
     scroll-behavior: smooth;
-}
-
-.theme-dark .conversation-body {
-    scrollbar-color: #48484A transparent;
 }
 
 .html-content {
@@ -62,34 +57,27 @@
 
 .messages-container {
     width: var(--max-width-main);
-    /* width: 50rem; */
     max-width: 100%;
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: var(--space-8) var(--space-6);
 }
 
 .reasoning-dropdown-trigger {
-    
     cursor: pointer;
-    margin-bottom: 10px;
-    
-     padding: 0.25rem 0px 0.25rem 0.25rem;
-    border-radius: 0.5rem;
-    border: 1px solid rgb(200, 216, 234);
+    margin-bottom: var(--space-3);
+    padding: var(--space-1) 0px var(--space-1) var(--space-1);
+    border-radius: var(--radius-default);
+    border: 1px solid var(--color-ui-border);
     line-height: 1;
-    color: rgb(102, 126, 153);
-    display: flex
-;
+    color: var(--color-text-tertiary);
+    display: flex;
     align-items: center;
-    gap: 0.125rem;
+    gap: var(--space-1);
 
     svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    svg {
-        transition: transform 0.3s cubic-bezier(0.05, 0.84, 0.31, 1);
+        width: var(--icon-size-sm);
+        height: var(--icon-size-sm);
+        transition: transform 0.3s var(--easing-in-out);
     }
 
     &[data-state='open'] svg {
@@ -98,11 +86,9 @@
 }
 
 .conversation-footer {
-    /* padding: 20px;
-    border-top: 1px solid #e2e8f0; */
     display: flex;
     flex-direction: column;
-    gap: .25rem;
+    gap: var(--space-1);
     align-items: center;
-    padding-bottom: 1rem
+    padding-bottom: var(--space-4);
 }

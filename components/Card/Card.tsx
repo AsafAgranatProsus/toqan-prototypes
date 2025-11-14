@@ -1,5 +1,6 @@
 import React from 'react';
 import Avatar from 'boring-avatars';
+import { useDesignSystem } from '../../context/DesignSystemContext';
 import './Card.css';
 
 interface CardProps {
@@ -53,11 +54,19 @@ const getRandomPosition = (name: string): { top: string; left: string } => {
   };
 };
 
-export const AVATAR_COLORS = ["#dae2cb", "#bfe2da", "#98e5e6", "#b6a3fc", "#f9cbda"];
+// Light mode colors (pastel)
+export const AVATAR_COLORS_LIGHT = ["#dae2cb", "#bfe2da", "#98e5e6", "#b6a3fc", "#f9cbda"];
+
+// Dark mode colors (darker, more muted versions)
+export const AVATAR_COLORS_DARK = ["#3a4a3b", "#2a4a4a", "#2a4a5a", "#3a2a5a", "#4a2a3a"];
 
 const Card: React.FC<CardProps> = ({ title, description, style, avatarName }) => {
+  const { isDark } = useDesignSystem();
   const name = avatarName || title;
-  const backgroundColor = getColorFromName(name, AVATAR_COLORS);
+  
+  // Choose color palette based on theme
+  const colorPalette = isDark ? AVATAR_COLORS_DARK : AVATAR_COLORS_LIGHT;
+  const backgroundColor = getColorFromName(name, colorPalette);
   const textColor = getTextColor(backgroundColor);
   const avatarPosition = getRandomPosition(name);
 
@@ -66,7 +75,7 @@ const Card: React.FC<CardProps> = ({ title, description, style, avatarName }) =>
       <div className="card-avatar" > {/* style={avatarPosition} */}
         <Avatar
           name={name}
-          colors={AVATAR_COLORS}
+          colors={colorPalette}
           variant="bauhaus"
           size={180}
         />

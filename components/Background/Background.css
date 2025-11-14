@@ -7,12 +7,22 @@
   opacity: 0;
   visibility: hidden;
   z-index: 100;
-  transition: opacity 0.3s ease-in-out, visibility 0.31s ease-in-out;
-  background-color: var(--backdrop-bg, rgba(8, 24, 43, 0.15));
-  backdrop-filter: blur(8px);
+  transition: opacity 0.3s ease-in-out, visibility 0.31s ease-in-out, backdrop-filter 0.3s ease-in-out;
+  background-color: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(0px);
+}
+
+.theme-dark .background {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .background.show {
   opacity: 1;
   visibility: visible;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+.theme-dark .background.show {
+  background-color: rgba(0, 0, 0, 0.6);
 }

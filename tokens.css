@@ -1,0 +1,392 @@
+/* ============================================
+   TOQAN DESIGN TOKENS
+   Two-Layer System:
+   1. Design System (old vs new) - controlled by feature flag
+   2. Theme Mode (light vs dark) - user preference
+   ============================================ */
+
+/* ============================================
+   DESIGN-AGNOSTIC TOKENS
+   These remain constant across all designs
+   ============================================ */
+
+:root {
+  /* Spacing - consistent across designs */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* Font Families - consistent */
+  --font-family-default: 'Soehne', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family: var(--font-family-default); /* Alias for backward compatibility */
+  --font-family-serif: Georgia, 'Times New Roman', serif;
+  --font-family-monospace: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+
+  /* Animation - consistent */
+  --easing-in-out: cubic-bezier(0.05, 0.84, 0.31, 1);
+  --transition-fast: all 0.2s var(--easing-in-out);
+  --transition-medium: all 0.3s var(--easing-in-out);
+  --transition-slow: all 0.4s var(--easing-in-out);
+
+  /* Z-Index Scale - consistent */
+  --z-base: 1;
+  --z-sidebar: 20;
+  --z-dropdown: 100;
+  --z-modal: 200;
+  --z-tooltip: 300;
+
+  /* Dimensions - consistent */
+  --max-width-main: 50rem;  /* 800px */
+  --sidebar-width: 280px;
+}
+
+/* ============================================
+   OLD DESIGN SYSTEM (Current Mockup)
+   Default - no class needed
+   ============================================ */
+
+:root {
+  /* ===== COLORS ===== */
+  
+  /* Primary Colors */
+  --color-primary-default: #4426d9;
+  --color-primary-hover: #361fad;
+  --color-primary-background: rgba(68, 38, 217, 0.2);
+  --color-primary-light: #E0E7FF;
+  
+  /* UI Colors */
+  --color-ui-background: #F9FAFB;
+  --color-ui-background-elevated: #FFFFFF;
+  --color-ui-border: #c8d8ea;
+  --color-ui-active: #e9eff7;
+  --color-ui-shadow: rgba(112, 144, 176, 0.2);
+  --color-ui-white: #FFFFFF;
+  --color-ui-black: #000000;
+  --color-ui-modal: rgba(17, 24, 39, 0.15);
+  
+  /* Text Colors */
+  --color-text-default: #111827;
+  --color-text-secondary: #374151;
+  --color-text-tertiary: #6B7280;
+  --color-text-light: #FFFFFF;
+  --color-text-placeholder: #9CA3AF;
+  --color-text-accent: #4F46E5;
+  
+  /* Status Colors */
+  --color-info-default: #4F46E5;
+  --color-info-background: #E0E7FF;
+  --color-error-default: #DC2626;
+  --color-error-background: #FEE2E2;
+  --color-error-hover: #B91C1C;
+  --color-warning-default: #D97706;
+  --color-warning-background: #FEF3C7;
+  --color-success-default: #059669;
+  --color-success-background: #D1FAE5;
+  
+  /* Tag Colors */
+  --color-tag-date-bg: rgba(68, 38, 217, 0.2);
+  --color-tag-date-text: rgb(68, 38, 217);
+  --color-tag-beta-bg: #E0E7FF;
+  --color-tag-beta-text: #3730A3;
+  --color-tag-recommended-bg: #EDE9FE;
+  --color-tag-recommended-text: #5B21B6;
+
+  /* ===== BORDER RADIUS ===== */
+  --radius-sm: 0.25rem;      /* 4px */
+  --radius-default: 0.5rem;  /* 8px */
+  --radius-md: 0.75rem;      /* 12px */
+  --radius-lg: 1rem;         /* 16px */
+  --radius-xl: 2rem;         /* 32px */
+  --radius-full: 9999px;
+
+  /* ===== SHADOWS ===== */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-default: 0 2px 4px var(--color-ui-shadow);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-input: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* ===== TYPOGRAPHY ===== */
+  
+  /* Font Sizes - Body */
+  --font-size-base: 1rem;          /* 16px - base font size */
+  --font-size-body-xs: 0.75rem;    /* 12px */
+  --font-size-body-sm: 0.875rem;   /* 14px */
+  --font-size-body-md: 1rem;       /* 16px */
+  
+  /* Font Sizes - Heading */
+  --font-size-heading-xs: 1rem;      /* 16px */
+  --font-size-heading-sm: 1.125rem;  /* 18px */
+  --font-size-heading-md: 1.5rem;    /* 24px */
+  --font-size-heading-lg: 2rem;      /* 32px */
+  --font-size-heading-xl: 2.5rem;    /* 40px */
+  
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ===== ICON SIZES ===== */
+  --icon-size-xs: 12px;
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+  --icon-size-xl: 32px;
+
+  /* ===== COMPONENT SIZES ===== */
+  --size-button-height: 40px;
+  --size-input-height: 36px;
+
+  /* ===== GRADIENTS ===== */
+  --gradient-panel-background: linear-gradient(to bottom, var(--color-ui-white), var(--color-ui-background));
+  --gradient-panel-border-horizontal: linear-gradient(to right, var(--color-ui-border), var(--color-ui-background));
+  --gradient-panel-border-vertical: linear-gradient(to bottom, var(--color-ui-border), var(--color-ui-background));
+}
+
+/* OLD DESIGN - Dark Mode */
+.theme-dark:not(.design-new) {
+  /* Primary Colors */
+  --color-primary-default: #5B8FFF;
+  --color-primary-hover: #7BA5FF;
+  --color-primary-background: rgba(91, 143, 255, 0.15);
+  
+  /* UI Colors */
+  --color-ui-background: #0A0A0B;
+  --color-ui-background-elevated: #141416;
+  --color-ui-border: #2A2A2D;
+  --color-ui-active: #252528;
+  --color-ui-shadow: rgba(0, 0, 0, 0.4);
+  --color-ui-white: #1E1E20;
+  --color-ui-black: #FFFFFF;
+  --color-ui-modal: rgba(0, 0, 0, 0.5);
+  
+  /* Text Colors */
+  --color-text-default: #F5F5F7;
+  --color-text-secondary: #D1D1D6;
+  --color-text-tertiary: #8E8E93;
+  --color-text-light: #FFFFFF;
+  --color-text-placeholder: #6B6B70;
+  --color-text-accent: #5B8FFF;
+  
+  /* Status Colors */
+  --color-info-default: #5B8FFF;
+  --color-info-background: rgba(91, 143, 255, 0.15);
+  --color-error-default: #FF5555;
+  --color-error-background: rgba(255, 85, 85, 0.15);
+  --color-error-hover: #FF7070;
+  --color-warning-default: #FFB020;
+  --color-warning-background: rgba(255, 176, 32, 0.15);
+  --color-success-default: #55D98A;
+  --color-success-background: rgba(85, 217, 138, 0.15);
+  
+  /* Tag Colors */
+  --color-tag-date-bg: rgba(91, 143, 255, 0.15);
+  --color-tag-date-text: #5B8FFF;
+  --color-tag-beta-bg: rgba(91, 143, 255, 0.15);
+  --color-tag-beta-text: #5B8FFF;
+  --color-tag-recommended-bg: rgba(175, 82, 222, 0.15);
+  --color-tag-recommended-text: #AF52DE;
+}
+
+/* ============================================
+   NEW DESIGN SYSTEM (Live Toqan Tokens)
+   Activated via .design-new class
+   ============================================ */
+
+.design-new {
+  /* ===== COLORS ===== */
+  
+  /* Primary Colors */
+  --color-primary-default: hsl(250 70% 50%);
+  --color-primary-hover: hsl(250 70% 40%);
+  --color-primary-background: hsl(250 70% 50% / 0.2);
+  --color-primary-light: hsl(250 70% 90%);
+  
+  /* UI Colors */
+  --color-ui-background: hsl(212 45% 98%);
+  --color-ui-background-elevated: hsl(0 0% 100%);
+  --color-ui-border: hsl(212 45% 85%);
+  --color-ui-active: hsl(212 45% 94%);
+  --color-ui-shadow: hsl(212 45% 50% / 0.20);
+  --color-ui-white: hsl(0 0% 100%);
+  --color-ui-black: hsl(0 0% 0%);
+  --color-ui-modal: hsl(212 69% 10% / 0.15);
+  
+  /* Text Colors */
+  --color-text-default: hsl(212 45% 20%);
+  --color-text-secondary: hsl(212 20% 40%);
+  --color-text-tertiary: hsl(212 20% 50%);
+  --color-text-light: hsl(0 0% 100%);
+  --color-text-placeholder: hsl(212 20% 70%);
+  --color-text-accent: hsl(250 70% 50%);
+  
+  /* Status Colors */
+  --color-info-default: hsl(226 55% 50%);
+  --color-info-background: hsl(224 71% 97%);
+  --color-error-default: hsl(3 77% 54%);
+  --color-error-background: hsl(3 76% 90%);
+  --color-error-hover: hsl(3 77% 44%);
+  --color-warning-default: hsl(46 92% 41%);
+  --color-warning-background: hsl(46 100% 58% / 0.19);
+  --color-success-default: hsl(131 62% 44%);
+  --color-success-background: hsl(131 70% 58% / 0.19);
+  
+  /* Tag Colors - NEW design uses same as status colors */
+  --color-tag-date-bg: hsl(250 70% 50% / 0.2);
+  --color-tag-date-text: hsl(250 70% 50%);
+  --color-tag-beta-bg: hsl(224 71% 97%);
+  --color-tag-beta-text: hsl(226 55% 50%);
+  --color-tag-recommended-bg: hsl(260 60% 95%);
+  --color-tag-recommended-text: hsl(260 60% 40%);
+
+  /* ===== BORDER RADIUS ===== */
+  /* Same as old design - can customize if needed */
+  --radius-sm: 0.25rem;
+  --radius-default: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 2rem;
+  --radius-full: 9999px;
+
+  /* ===== SHADOWS ===== */
+  --shadow-sm: 0 1px 0.125rem 0 var(--color-ui-shadow);
+  --shadow-default: 0 0.125rem 0.25rem 0 var(--color-ui-shadow);
+  --shadow-md: 0 4px 12px hsl(212 45% 50% / 0.1);
+  --shadow-lg: 0 10px 15px -3px hsl(212 45% 50% / 0.15);
+  --shadow-modal: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.1);
+  --shadow-input: 0 0.125rem 0.25rem 0 var(--color-ui-shadow);
+
+  /* Typography remains same - can customize if needed */
+  /* Component sizes remain same - can customize if needed */
+  
+  /* ===== GRADIENTS ===== */
+  --gradient-panel-background: linear-gradient(to bottom, var(--color-ui-white), var(--color-ui-background));
+  --gradient-panel-border-horizontal: linear-gradient(to right, var(--color-ui-border), var(--color-ui-background));
+  --gradient-panel-border-vertical: linear-gradient(to bottom, var(--color-ui-border), var(--color-ui-background));
+}
+
+/* NEW DESIGN - Dark Mode */
+.design-new.theme-dark {
+  /* Primary Colors */
+  --color-primary-default: hsl(250 70% 60%);
+  --color-primary-hover: hsl(250 70% 70%);
+  --color-primary-background: hsl(250 70% 60% / 0.2);
+  
+  /* UI Colors */
+  --color-ui-background: hsl(212 45% 8%);
+  --color-ui-background-elevated: hsl(212 45% 12%);
+  --color-ui-border: hsl(212 45% 20%);
+  --color-ui-active: hsl(212 45% 15%);
+  --color-ui-shadow: hsl(0 0% 0% / 0.4);
+  --color-ui-white: hsl(212 45% 10%);
+  --color-ui-black: hsl(0 0% 100%);
+  --color-ui-modal: hsl(0 0% 0% / 0.5);
+  
+  /* Text Colors */
+  --color-text-default: hsl(212 45% 95%);
+  --color-text-secondary: hsl(212 20% 80%);
+  --color-text-tertiary: hsl(212 20% 70%);
+  --color-text-light: hsl(0 0% 100%);
+  --color-text-placeholder: hsl(212 20% 50%);
+  --color-text-accent: hsl(250 70% 60%);
+  
+  /* Status Colors */
+  --color-info-default: hsl(226 55% 60%);
+  --color-info-background: hsl(224 71% 20%);
+  --color-error-default: hsl(3 77% 60%);
+  --color-error-background: hsl(3 76% 20%);
+  --color-error-hover: hsl(3 77% 70%);
+  --color-warning-default: hsl(46 92% 55%);
+  --color-warning-background: hsl(46 100% 58% / 0.2);
+  --color-success-default: hsl(131 62% 55%);
+  --color-success-background: hsl(131 70% 58% / 0.2);
+  
+  /* Tag Colors - NEW dark mode */
+  --color-tag-date-bg: hsl(250 70% 60% / 0.2);
+  --color-tag-date-text: hsl(250 70% 60%);
+  --color-tag-beta-bg: hsl(224 71% 20%);
+  --color-tag-beta-text: hsl(226 55% 60%);
+  --color-tag-recommended-bg: hsl(260 60% 20%);
+  --color-tag-recommended-text: hsl(260 60% 70%);
+  
+  /* Shadows adjusted for dark mode */
+  --shadow-sm: 0 1px 0.125rem 0 rgba(0, 0, 0, 0.3);
+  --shadow-default: 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   LEGACY SUPPORT
+   Backward compatibility with old token names
+   These mappings ensure old code using --theme-* tokens
+   automatically adapts to both light/dark modes
+   ============================================ */
+
+:root {
+  /* Map old theme-* tokens to new color-* tokens */
+  --theme-bg-app: var(--color-ui-background);
+  --theme-bg-app-lighter: var(--color-ui-background-elevated);
+  --theme-bg-sidebar: var(--color-ui-background-elevated);
+  --theme-bg-sidebar-mobile: var(--color-ui-background-elevated);
+  --theme-bg-main: var(--color-ui-background);
+  --theme-bg-input: var(--color-ui-background-elevated);
+  --theme-bg-menu: var(--color-ui-background-elevated);
+  --theme-bg-item-selected: var(--color-ui-active);
+  
+  --theme-text-main: var(--color-text-default);
+  --theme-text-secondary: var(--color-text-secondary);
+  --theme-text-tertiary: var(--color-text-tertiary);
+  --theme-text-light: var(--color-text-light);
+  
+  --theme-border: var(--color-ui-border);
+  
+  --theme-btn-primary-bg: var(--color-primary-default);
+  --theme-btn-primary-bg-hover: var(--color-primary-hover);
+  --theme-btn-primary-text: var(--color-text-light);
+  --theme-btn-secondary-bg: var(--color-ui-active);
+  --theme-btn-secondary-bg-hover: var(--color-ui-border);
+  --theme-btn-secondary-text: var(--color-text-secondary);
+  --theme-btn-tertiary-bg: transparent;
+  --theme-btn-tertiary-bg-hover: var(--color-ui-active);
+  --theme-btn-tertiary-text: var(--color-text-secondary);
+  
+  --theme-tag-date-bg: var(--color-tag-date-bg);
+  --theme-tag-date-text: var(--color-tag-date-text);
+  --theme-tag-beta-bg: var(--color-tag-beta-bg);
+  --theme-tag-beta-text: var(--color-tag-beta-text);
+  --theme-tag-recommended-bg: var(--color-tag-recommended-bg);
+  --theme-tag-recommended-text: var(--color-tag-recommended-text);
+  
+  /* Text selection colors */
+  --theme-selection-bg: var(--color-primary-default);
+  --theme-text-selection: var(--color-text-light);
+  
+  /* Map old border-radius-* to new radius-* */
+  --border-radius-sm: var(--radius-sm);
+  --border-radius-md: var(--radius-default);
+  --border-radius-lg: var(--radius-lg);
+  --border-radius-xl: var(--radius-xl);
+  --border-radius-full: var(--radius-full);
+}
+
+/* 
+  NOTE: Legacy tokens automatically adapt to dark mode
+  because they reference color-* tokens which change
+  based on .theme-dark class. No dark mode overrides needed here!
+*/
+

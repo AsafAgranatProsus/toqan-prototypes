@@ -2,10 +2,10 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
+  /* transform handled by framer-motion */
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s cubic-bezier(0.05, 0.84, 0.31, 1), transform 0.5s cubic-bezier(0.05, 0.84, 0.31, 1), visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
+  transition: opacity 0.3s cubic-bezier(0.05, 0.84, 0.31, 1), visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
   z-index: 101;
   /* animation: 0.3s cubic-bezier(0.05, 0.84, 0.31, 1) 0.1s 1 normal forwards running modal; */
   max-width: calc(100vw - 2rem);
@@ -16,17 +16,16 @@
 }
 
 .modal-container.show {
-  transform: translate(-50%, -50%) scale(1);
+  /* transform handled by framer-motion */
   opacity: 1;
   visibility: visible;
 }
 
 .modal-content {
   /* padding: var(--space-6); */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-modal);
   min-width: 320px;
   background-color: var(--theme-bg-menu);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0.25rem 0.5rem 0px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -34,26 +33,7 @@
   max-height: 100%; 
 }
 
-.theme-dark .modal-content {
-  filter: invert(1);
-}
-
-.theme-dark .modal-content h1,
-.theme-dark .modal-content h2,
-.theme-dark .modal-content h3,
-.theme-dark .modal-content h4,
-.theme-dark .modal-content h5,
-.theme-dark .modal-content h6 {
-  filter: invert(1);
-}
-
-.theme-dark .modal-content .close-button {
-  filter: invert(1);
-}
-
-.theme-dark .modal-content button[class*="primary"] {
-  filter: invert(1);
-}
+/* NOTE: Removed filter:invert hacks - now uses tokens that adapt automatically */
 
 .modal-grain {
   position: absolute;
@@ -72,7 +52,7 @@
     z-index: 3;
     pointer-events: none;
     mix-blend-mode: luminosity;
-    filter: contrast(0.1);
+    /* filter: contrast(0.1); */
 }
 
 @keyframes modal {

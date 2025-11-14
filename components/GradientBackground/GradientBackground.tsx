@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useDesignSystem } from '../../context/DesignSystemContext';
 import './GradientBackground.css';
 
 interface Blob {
@@ -11,8 +11,20 @@ interface Blob {
 }
 
 const GradientBackground: React.FC = () => {
-  const { theme } = useTheme();
-  const colors = theme.colors.gradientMelange;
+  const { isDark } = useDesignSystem();
+  
+  // Gradient colors for light and dark themes
+  const colors = isDark
+    ? [
+        'rgba(91, 143, 255, 0.4)',   // Blue
+        'rgba(175, 82, 222, 0.4)',   // Purple
+        'rgba(255, 85, 85, 0.3)',    // Coral red
+        'rgba(85, 217, 158, 0.3)',   // Mint green
+      ]
+    : [
+        'rgba(196, 181, 253, 0.5)',
+        'rgba(165, 243, 252, 0.4)',
+      ];
 
   const generateBlob = (id: number): Blob => ({
     id,

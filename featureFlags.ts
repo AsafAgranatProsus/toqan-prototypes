@@ -4,6 +4,8 @@ export const featureFlags = {
   newTables: false,
   newBubble: false,
   plays: true,
-  builtByOther: true,
+  builtByOther: false,
   themes: false,
+  showDesignSystemDemo: false,
+  showThemeDebugger: false,
 };
