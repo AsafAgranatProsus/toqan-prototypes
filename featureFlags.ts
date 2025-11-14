@@ -6,6 +6,5 @@ export const featureFlags = {
   plays: true,
   builtByOther: false,
   themes: false,
-  showDesignSystemDemo: false,
   showThemeDebugger: false,
 };

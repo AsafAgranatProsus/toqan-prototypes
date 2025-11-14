@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ChatInput from '../ChatInput/ChatInput';
 import { Icons } from '../Icons/Icons';
 import Button from '../Button/Button';
@@ -12,6 +12,7 @@ import './MainContent.css';
 import { useScenarios } from '../../context/ScenarioContext';
 import BuiltByOthers from '../BuiltByOthers/BuiltByOthers';
 import Plays from '../Plays/Plays';
+import gsap from 'gsap';
 
 const models: Model[] = [
     { id: '1', name: 'Claude Sonnet 4', description: 'Recommended for most tasks', tag: 'Recommended' },
@@ -97,20 +98,48 @@ interface MainContentProps {
 const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenarioView }) => {
     const { flags } = useFeatureFlags();
     const { activeScenario } = useScenarios();
+    const [showGradient, setShowGradient] = useState(true);
+    const gradientRef = useRef<HTMLDivElement>(null);
 
     const title = flags.newBranding
         ? "Welcome to the new Toqan"
         : "How can Toqan help you today?";
+
+    // Fade out and remove gradient when entering conversation view
+    useEffect(() => {
+        if (activeScenario && gradientRef.current) {
+            gsap.to(gradientRef.current, {
+                opacity: 0,
+                duration: 0.4,
+                ease: 'power2.out',
+                onComplete: () => {
+                    setShowGradient(false);
+                }
+            });
+        } else if (!activeScenario && !showGradient) {
+            // Fade back in when returning to home view
+            setShowGradient(true);
+            if (gradientRef.current) {
+                gsap.fromTo(
+                    gradientRef.current,
+                    { opacity: 0 },
+                    { opacity: 1, duration: 0.4, ease: 'power2.in' }
+                );
+            }
+        }
+    }, [activeScenario, showGradient]);
 
     return (
         <main className="main-content">
             <div className="main-content-wrapper">
                 <div className="main-content-inner-wrapper">
                     {/* <GradientBackground /> */}
-                    <div className="main-content__old-gradient-wrapper">
-                        {/* <div className="main-content-grain"></div> */}
-                        <OldGradientBackground />
-                    </div>
+                    {showGradient && (
+                        <div className="main-content__old-gradient-wrapper" ref={gradientRef}>
+                            {/* <div className="main-content-grain"></div> */}
+                            <OldGradientBackground />
+                        </div>
+                    )}
                     <header className="main-content__header">
                         {isMobile && (
                             <Button variant="tertiary" icon="Menu" onClick={onMenuClick} aria-label="Open menu" />

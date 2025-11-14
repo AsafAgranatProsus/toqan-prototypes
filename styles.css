@@ -6,6 +6,7 @@
 @import url("tokens.css");  /* Design System Tokens - MUST be imported before other styles */
 @import url("styles/typography.css");
 @import url("styles/tables.css");
+@import url("styles/utilities.css");
 
 
 /* ============================================= */
@@ -19,6 +20,10 @@
 
   /* Legacy purple - keep for backward compatibility */
   --old-toqan-purple: rgb(68, 38, 217);
+}
+
+#root {
+  display: contents;
 }
 
 /* ============================================= */

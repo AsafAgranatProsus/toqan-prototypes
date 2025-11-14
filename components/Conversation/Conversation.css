@@ -42,7 +42,7 @@
     overflow-y: auto;
     padding-left: var(--space-2);
     width: 100%;
-    background-image: linear-gradient(var(--color-ui-background-elevated), var(--color-ui-background));
+    /* background-image: linear-gradient(var(--color-ui-background-elevated), var(--color-ui-background)); */
     overscroll-behavior-y: contain;
     scrollbar-color: var(--color-ui-border) transparent;
     scrollbar-width: thin;
