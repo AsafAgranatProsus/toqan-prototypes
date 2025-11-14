@@ -19,30 +19,30 @@ const App: React.FC = () => {
   // Show Design System Demo if flag is enabled
   if (flags.showDesignSystemDemo) {
     return (
-      <>
+      <ScenarioProvider>
         <FeatureMenu scenarioView={scenarioView} setScenarioView={setScenarioView} />
         <DesignSystemDemo />
         {flags.showThemeDebugger && <ThemeDebugger />}
-      </>
+      </ScenarioProvider>
     );
   }
 
   // Normal app
   return (
-    <div className="app-container">
-      <FeatureMenu scenarioView={scenarioView} setScenarioView={setScenarioView} />
-      <div className="app-layout">
-        <Sidebar isOpen={isSidebarOpen} setOpen={setSidebarOpen} isMobile={isMobile} />
-        <ScenarioProvider>
+    <ScenarioProvider>
+      <div className="app-container">
+        <FeatureMenu scenarioView={scenarioView} setScenarioView={setScenarioView} />
+        <div className="app-layout">
+          <Sidebar isOpen={isSidebarOpen} setOpen={setSidebarOpen} isMobile={isMobile} />
           <MainContent
             onMenuClick={() => setSidebarOpen(!isSidebarOpen)}
             isMobile={isMobile}
             scenarioView={scenarioView}
           />
-        </ScenarioProvider>
+        </div>
+        {flags.showThemeDebugger && <ThemeDebugger />}
       </div>
-      {flags.showThemeDebugger && <ThemeDebugger />}
-    </div>
+    </ScenarioProvider>
   );
 };
 

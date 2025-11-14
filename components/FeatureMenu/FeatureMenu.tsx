@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import { useDesignSystem } from '../../context/DesignSystemContext';
+import { useScenarios } from '../../context/ScenarioContext';
 import Toggle from '../Toggle/Toggle';
 import './FeatureMenu.css';
 import { ScenarioView } from '../../types';
@@ -20,6 +21,7 @@ const FeatureMenu: React.FC<FeatureMenuProps> = ({ scenarioView, setScenarioView
   const [isOpen, setIsOpen] = useState(false);
   const { flags, setFlag } = useFeatureFlags();
   const { themeMode, toggleTheme, designSystem, isNewDesign } = useDesignSystem();
+  const { activeScenario } = useScenarios();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -94,7 +96,7 @@ const FeatureMenu: React.FC<FeatureMenuProps> = ({ scenarioView, setScenarioView
       <hr />
       
       <div className="feature-menu-section">
-        <h3>Scenario View</h3>
+        <h3>{activeScenario ? `scenario: ${activeScenario.title}` : 'Scenario View'}</h3>
         <Toggle
           variant="button"
           leftOption="Before"

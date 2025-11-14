@@ -1,4 +1,5 @@
 export interface Scenario {
+  title: string;
   prompt: string;
   outputBefore: string;
   outputAfter: string;
@@ -6,6 +7,7 @@ export interface Scenario {
 
 export const scenarios: Scenario[] = [
   {
+    title: "chat with math",
     prompt: "explain the difference between sigmoid activation function and relu and swish",
     outputBefore: `<h1>Activation Functions Comparison: Sigmoid vs ReLU vs Swish</h1>
 <h2><strong class='sc-eOzmre DpLZr'>Sigmoid Activation Function</strong></h2>

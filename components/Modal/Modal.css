@@ -55,6 +55,8 @@
     /* filter: contrast(0.1); */
 }
 
+
+
 @keyframes modal {
   0% {
     transform: scale(0.97);
