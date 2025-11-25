@@ -7,4 +7,8 @@ export const featureFlags = {
   builtByOther: false,
   themes: false,
   showThemeDebugger: false,
+  conversationPin: false,
+  conversationRename: false,
+  conversationWrap: false,
+  conversationCollapsible: false,
 };

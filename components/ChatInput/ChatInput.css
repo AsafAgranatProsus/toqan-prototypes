@@ -1,0 +1,53 @@
+/* ============================================= */
+/*            CHAT INPUT COMPONENT               */
+/* ============================================= */
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  background-color: var(--theme-bg-input);
+  border-radius: var(--border-radius-full);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--theme-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.chat-input-field {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background-color: transparent;
+  color: var(--theme-text-main);
+}
+
+.chat-input-field::placeholder {
+  color: var(--theme-text-tertiary);
+}
+
+/* Old Toqan Design Overrides */
+.chat-input-container {
+  background-color: var(--theme-bg-input);
+  box-shadow: 0px 0.125rem 0.25rem 0px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--theme-border);
+  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+  max-width: 48rem;
+  width: 100%;
+  border-radius: 1rem;
+  gap: .5rem;
+}
+
+.chat-input-prefix {
+  display: flex;
+  gap: .25rem;
+  margin-left: -0.25rem;
+}
+
+.chat-input-prefix button,
+.chat-input-suffix button {
+  height: 36px;
+  width: 36px;
+}
+

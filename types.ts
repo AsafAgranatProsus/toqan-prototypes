@@ -3,6 +3,7 @@ export interface Conversation {
   title: string;
   date: string;
   tag: string;
+  pinned?: boolean;
 }
 
 export interface NavItem {

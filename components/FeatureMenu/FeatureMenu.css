@@ -119,17 +119,10 @@
 }
 
 .feature-menu-link {
-  /* display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-default);
-  text-decoration: none; */
-  color: var(--color-warning-default);
-  /* background: var(--color-ui-active);
-  transition: all 0.2s ease;
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium); */
+  gap: 0.5rem;
+  
   
   svg {
     width: 18px;
@@ -255,3 +248,41 @@
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
+/* Collapsible menu styles */
+.feature-menu-collapsible-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.feature-menu-collapsible-trigger:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.feature-menu-collapsible-trigger .chevron-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.feature-menu-collapsible-trigger[data-state="open"] .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.feature-menu-collapsible-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  padding-left:1.25rem;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './Tag.css';
 
 interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: React.ReactNode;

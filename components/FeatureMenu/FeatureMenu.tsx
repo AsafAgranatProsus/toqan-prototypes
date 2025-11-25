@@ -4,6 +4,7 @@ import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import { useDesignSystem } from '../../context/DesignSystemContext';
 import { useScenarios } from '../../context/ScenarioContext';
 import Toggle from '../Toggle/Toggle';
+import Collapsible from '../Collapsible/Collapsible';
 import { Icons } from '../Icons/Icons';
 import gsap from 'gsap';
 import './FeatureMenu.css';
@@ -115,80 +116,7 @@ const FeatureMenu: React.FC = () => {
     }
   }, [isOpen, isMinimized]);
 
-  // Animate minimize/expand
-  useEffect(() => {
-    if (!menuRef.current || !contentRef.current || !cogRef.current) return;
-
-    // if (isMinimized) {
-    //   const tl = gsap.timeline();
-
-    //   // Fade out and shrink content
-    //   tl.to(contentRef.current, {
-    //     opacity: 0,
-    //     scale: 0.95,
-    //     duration: 0.2,
-    //     ease: 'power2.in',
-    //   });
-
-    //   // Morph menu to cog icon
-    //   tl.to(menuRef.current, {
-    //     width: 56,
-    //     height: 56,
-    //     borderRadius: '50%',
-    //     padding: 0,
-    //     duration: 0.3,
-    //     ease: 'power3.inOut',
-    //   }, '-=0.1');
-
-    //   // Show and rotate cog icon
-    //   tl.fromTo(
-    //     cogRef.current,
-    //     { scale: 0, rotation: -180, opacity: 0 },
-    //     { 
-    //       scale: 1, 
-    //       rotation: 0, 
-    //       opacity: 1,
-    //       duration: 0.3,
-    //       ease: 'back.out(1.7)',
-    //     },
-    //     '-=0.2'
-    //   );
-    // } else if (isOpen) {
-    //   const tl = gsap.timeline();
-
-    //   // Rotate and hide cog icon
-    //   tl.to(cogRef.current, {
-    //     scale: 0,
-    //     rotation: 180,
-    //     opacity: 0,
-    //     duration: 0.2,
-    //     ease: 'power2.in',
-    //   });
-
-    //   // Expand menu from cog
-    //   tl.to(menuRef.current, {
-    //     width: 320,
-    //     height: 'auto',
-    //     borderRadius: 8,
-    //     padding: 20,
-    //     duration: 0.3,
-    //     ease: 'power3.inOut',
-    //   }, '-=0.1');
-
-    //   // Fade in and scale up content
-    //   tl.fromTo(
-    //     contentRef.current,
-    //     { opacity: 0, scale: 0.95 },
-    //     {
-    //       opacity: 1,
-    //       scale: 1,
-    //       duration: 0.25,
-    //       ease: 'power2.out',
-    //     },
-    //     '-=0.1'
-    //   );
-    // }
-  }, [isMinimized, isOpen]);
+ 
 
   const handleMinimize = () => {
     setIsMinimized(true);
@@ -269,13 +197,13 @@ const FeatureMenu: React.FC = () => {
       <div className="feature-menu-content" ref={contentRef}>
         {/* Header with buttons */}
         <div className="feature-menu-header">
-          <button
+          {/* <button
             className="feature-menu-button feature-menu-minimize"
             onClick={handleMinimize}
             aria-label="Minimize"
           >
             <Icons name="Minimize2" />
-          </button>
+          </button> */}
           <button
             className="feature-menu-button feature-menu-close"
             onClick={handleClose}
@@ -323,43 +251,154 @@ const FeatureMenu: React.FC = () => {
         <hr />
 
         <div className="feature-menu-section">
-          <h3>Typography Testing</h3>
-          <div className="typography-controls">
-            <div className="font-selector">
-              <label htmlFor="sans-serif-font">Sans-serif</label>
-              <select
-                id="sans-serif-font"
-                value={sansSerifFont}
-                onChange={(e) => setSansSerifFont(e.target.value)}
-                className="font-dropdown"
-              >
-                {SANS_SERIF_FONTS.map(font => (
-                  <option key={font} value={font}>{font}</option>
-                ))}
-              </select>
-            </div>
-            <div className="font-selector">
-              <label htmlFor="serif-font">Serif</label>
-              <select
-                id="serif-font"
-                value={serifFont}
-                onChange={(e) => setSerifFont(e.target.value)}
-                className="font-dropdown"
-              >
-                {SERIF_FONTS.map(font => (
-                  <option key={font} value={font}>{font}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <hr />
-
-        <div className="feature-menu-section">
           <h3>Feature Flags</h3>
-          {/* <p className="helper-text">Toggle "New Branding" to switch design systems</p> */}
-          {Object.keys(flags).map(flag => (
+          
+          <Collapsible closeOnOutsideClick={false}>
+            <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+              <span>New branding</span>
+              <Icons name="ChevronDown" className="chevron-icon" />
+            </Collapsible.Trigger>
+            <Collapsible.Content>
+              <div className="feature-menu-collapsible-content">
+                <Toggle
+                  label="New Branding"
+                  checked={flags.newBranding}
+                  onChange={(checked) => setFlag('newBranding', checked)}
+                />
+                <Toggle
+                  label="New Typography"
+                  checked={flags.newTypography}
+                  onChange={(checked) => setFlag('newTypography', checked)}
+                />
+                <Toggle
+                  label="New Bubble"
+                  checked={flags.newBubble}
+                  onChange={(checked) => setFlag('newBubble', checked)}
+                />
+                <Toggle
+                  label="New Tables"
+                  checked={flags.newTables}
+                  onChange={(checked) => setFlag('newTables', checked)}
+                />
+              </div>
+            </Collapsible.Content>
+          </Collapsible>
+
+          <Collapsible closeOnOutsideClick={false}>
+            <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+              <span>Conversations</span>
+              <Icons name="ChevronDown" className="chevron-icon" />
+            </Collapsible.Trigger>
+            <Collapsible.Content>
+              <div className="feature-menu-collapsible-content">
+                <Toggle
+                  label="Conversation: Pin"
+                  checked={flags.conversationPin}
+                  onChange={(checked) => setFlag('conversationPin', checked)}
+                />
+                <Toggle
+                  label="Conversation: Rename"
+                  checked={flags.conversationRename}
+                  onChange={(checked) => setFlag('conversationRename', checked)}
+                />
+                <Toggle
+                  label="Conversation: Wrap"
+                  checked={flags.conversationWrap}
+                  onChange={(checked) => setFlag('conversationWrap', checked)}
+                />
+                <Toggle
+                  label="Conversation: Collapsible"
+                  checked={flags.conversationCollapsible}
+                  onChange={(checked) => setFlag('conversationCollapsible', checked)}
+                />
+              </div>
+            </Collapsible.Content>
+          </Collapsible>
+
+          <Collapsible closeOnOutsideClick={false}>
+            <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+              <span>Discovery</span>
+              <Icons name="ChevronDown" className="chevron-icon" />
+            </Collapsible.Trigger>
+            <Collapsible.Content>
+              <div className="feature-menu-collapsible-content">
+                <Toggle
+                  label="Plays"
+                  checked={flags.plays}
+                  onChange={(checked) => setFlag('plays', checked)}
+                />
+                <Toggle
+                  label="Built By Others"
+                  checked={flags.builtByOther}
+                  onChange={(checked) => setFlag('builtByOther', checked)}
+                />
+              </div>
+            </Collapsible.Content>
+          </Collapsible>
+
+          <Collapsible closeOnOutsideClick={false}>
+            <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+              <span>Personalization</span>
+              <Icons name="ChevronDown" className="chevron-icon" />
+            </Collapsible.Trigger>
+            <Collapsible.Content>
+              <div className="feature-menu-collapsible-content">
+                <Toggle
+                  label="Color mode"
+                  checked={flags.themes}
+                  onChange={(checked) => setFlag('themes', checked)}
+                />
+                <Toggle
+                  label="Show Theme Debugger"
+                  checked={flags.showThemeDebugger}
+                  onChange={(checked) => setFlag('showThemeDebugger', checked)}
+                />
+              </div>
+            </Collapsible.Content>
+          </Collapsible>
+
+          <Collapsible closeOnOutsideClick={false}>
+            <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+              <span>Typography</span>
+              <Icons name="ChevronDown" className="chevron-icon" />
+            </Collapsible.Trigger>
+            <Collapsible.Content>
+              <div className="feature-menu-collapsible-content">
+                <div className="typography-controls">
+                  <div className="font-selector">
+                    <label htmlFor="sans-serif-font">Sans-serif</label>
+                    <select
+                      id="sans-serif-font"
+                      value={sansSerifFont}
+                      onChange={(e) => setSansSerifFont(e.target.value)}
+                      className="font-dropdown"
+                    >
+                      {SANS_SERIF_FONTS.map(font => (
+                        <option key={font} value={font}>{font}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="font-selector">
+                    <label htmlFor="serif-font">Serif</label>
+                    <select
+                      id="serif-font"
+                      value={serifFont}
+                      onChange={(e) => setSerifFont(e.target.value)}
+                      className="font-dropdown"
+                    >
+                      {SERIF_FONTS.map(font => (
+                        <option key={font} value={font}>{font}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </Collapsible.Content>
+          </Collapsible>
+
+          {Object.keys(flags).filter(flag => 
+            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'plays', 'builtByOther', 'themes', 'showThemeDebugger'].includes(flag)
+          ).map(flag => (
             <Toggle
               key={flag}
               label={toSentenceCase(flag)}

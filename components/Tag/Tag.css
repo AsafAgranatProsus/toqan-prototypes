@@ -1,0 +1,37 @@
+/* ============================================= */
+/*              TAG COMPONENT                    */
+/* ============================================= */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 400;
+  border-radius: var(--border-radius-full);
+  white-space: nowrap;
+  margin: 0px 0.5rem;
+  padding: 0px 0.5rem;
+  flex: 0 0 auto;
+  width: fit-content;
+}
+
+.tag--md {
+  padding: 0 var(--space-2);
+  font-size: 0.75rem;
+}
+
+.tag--sm {
+  padding: 0 var(--space-2);
+  font-size: 0.625rem;
+}
+
+.tag--primary {
+  background-color: var(--theme-tag-date-bg);
+  color: var(--theme-tag-date-text);
+  text-transform: capitalize;
+}
+
+.tag--beta {
+  background-color: var(--theme-tag-beta-bg);
+  color: var(--theme-tag-beta-text);
+}
+

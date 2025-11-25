@@ -19,8 +19,8 @@ export const useCollapsible = () => {
   return context;
 };
 
-const CollapsibleRoot: React.FC<{ children: React.ReactNode, closeOnOutsideClick?: boolean }> = ({ children, closeOnOutsideClick = true }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const CollapsibleRoot: React.FC<{ children: React.ReactNode, closeOnOutsideClick?: boolean, defaultOpen?: boolean }> = ({ children, closeOnOutsideClick = true, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
@@ -45,6 +45,7 @@ const Trigger: React.FC<{ children: React.ReactNode; className?: string }> = ({
   className,
 }) => {
   const { toggle, triggerRef, isOpen } = useCollapsible();
+  
   return (
     <button
       ref={triggerRef}
@@ -52,6 +53,7 @@ const Trigger: React.FC<{ children: React.ReactNode; className?: string }> = ({
       className={className}
       data-state={isOpen ? 'open' : 'closed'}
       aria-expanded={isOpen}
+      type="button"
     >
       {children}
     </button>
