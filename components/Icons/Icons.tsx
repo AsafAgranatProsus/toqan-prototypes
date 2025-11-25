@@ -10,6 +10,7 @@ import {
   Paperclip,
   Mic,
   ArrowUp,
+  ArrowRight,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -19,9 +20,19 @@ import {
   SquarePen,
   Plug,
   Database,
-  Mail, Trash, Terminal, X, Sparkles,
+  Mail,
+  Trash,
+  Terminal,
+  X,
+  Sparkles,
   Sun,
-  Moon
+  Moon,
+  Copy,
+  Check,
+  Settings,
+  Minimize2,
+  ExternalLink,
+  Layout
 } from 'lucide-react';
 import type { IconName } from '../../types';
 
@@ -56,6 +67,7 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   Paperclip,
   Mic,
   ArrowUp,
+  ArrowRight,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -68,6 +80,12 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   Sparkles,
   Sun,
   Moon,
+  Copy,
+  Check,
+  Settings,
+  Minimize2,
+  ExternalLink,
+  Layout,
   Robot
 };
 

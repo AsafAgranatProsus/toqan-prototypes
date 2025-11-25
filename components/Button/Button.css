@@ -85,6 +85,24 @@
   transform: translateY(1px);
 }
 
+/* Icon Button - Icon-only actions, round by default */
+.btn--icon {
+  background-color: var(--color-ui-background-elevated);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-ui-border);
+  padding: var(--space-2);
+}
+
+.btn--icon:hover:not(:disabled) {
+  background-color: var(--color-ui-active);
+  color: var(--color-text-default);
+  border-color: var(--color-ui-border);
+}
+
+.btn--icon:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
 /* ===== BUTTON SHAPES ===== */
 
 .btn--rounded {

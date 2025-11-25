@@ -26,6 +26,7 @@ export type IconName =
   | 'Paperclip'
   | 'Mic'
   | 'ArrowUp'
+  | 'ArrowRight'
   | 'ChevronDown'
   | 'ChevronLeft'
   | 'ChevronRight'
@@ -38,6 +39,12 @@ export type IconName =
   | 'Sparkles'
   | 'Sun'
   | 'Moon'
+  | 'Copy'
+  | 'Check'
+  | 'Settings'
+  | 'Minimize2'
+  | 'ExternalLink'
+  | 'Layout'
   | 'Robot';
 
 export interface Model {

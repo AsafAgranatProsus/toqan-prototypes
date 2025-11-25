@@ -4,7 +4,7 @@ import type { IconName } from '../../types';
 import './Button.css';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
   shape?: 'rounded' | 'circle';
   icon?: IconName;
   iconPosition?: 'left' | 'right';
@@ -13,7 +13,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
-  shape = 'rounded',
+  shape,
   icon,
   iconPosition = 'left',
   children,
@@ -21,11 +21,14 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const isIconOnly = icon && !children;
+  
+  // Icon variant is round by default, but shape can override
+  const buttonShape = shape || (variant === 'icon' ? 'circle' : 'rounded');
 
   const classNames = [
     'btn',
     `btn--${variant}`,
-    `btn--${shape}`,
+    `btn--${buttonShape}`,
     isIconOnly ? 'btn--icon-only' : '',
     className
   ].filter(Boolean).join(' ');

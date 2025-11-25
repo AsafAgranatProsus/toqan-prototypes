@@ -1,27 +1,49 @@
+/* ============================================
+   DESIGN SYSTEM DEMO - STRUCTURED LAYOUT
+   ============================================ */
+
+/* 1. ESTABLISH VERTICAL RHYTHM */
 .design-system-demo {
   min-height: 100vh;
   background: var(--color-ui-background);
   color: var(--color-text-default);
-  padding: var(--space-8) var(--space-6);
+  padding: 0 var(--space-6);
+  max-height: 100%;
+  overflow-y: auto;
+  padding-bottom: var(--space-16);
 }
 
-.demo-header {
+/* 2. CONSISTENT CONTAINER */
+.demo-header,
+.demo-controls,
+.demo-content {
   max-width: 1200px;
-  margin: 0 auto var(--space-8);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 3. HEADER - Clear hierarchy */
+.demo-header {
+  margin-bottom: var(--space-10);
+  padding-top: var(--space-8);
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-ui-border);
 }
 
 .demo-header h1 {
   font-size: var(--font-size-heading-xl);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   margin: 0;
+  line-height: 1.2;
 }
 
 .demo-meta {
   display: flex;
   gap: var(--space-2);
+  flex-shrink: 0;
 }
 
 .demo-badge {
@@ -34,51 +56,143 @@
   text-transform: capitalize;
 }
 
+/* 4. CONTROLS - Consistent spacing */
 .demo-controls {
-  max-width: 1200px;
-  margin: 0 auto var(--space-12);
+  margin-bottom: var(--space-12);
   display: flex;
   gap: var(--space-3);
+  flex-wrap: wrap;
 }
 
+/* 5. CONTENT - Consistent rhythm (multiples of 8) */
 .demo-content {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-16);
 }
 
-/* Color Sections */
-.color-section {
+/* 6. SECTIONS - Split layout structure */
+.demo-section-split {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-4);
 }
 
-.color-section h2 {
+/* 7. SECTION HEADERS - Clear hierarchy */
+.demo-section-split>h2 {
   font-size: var(--font-size-heading-md);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   margin: 0;
   color: var(--color-text-default);
+  letter-spacing: -0.01em;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-ui-background);
+  padding-bottom: var(--space-3);
+  padding-top: var(--space-6);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
 }
 
-.color-grid {
+/* 8. SPLIT LAYOUT - Two-column grid */
+.split-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-6);
+  grid-template-columns: 1fr 1fr;
+  /* gap: var(--space-16); */
+  align-items: start;
 }
 
+@media (max-width: 768px) {
+  .split-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
+
+/* 9. SPLIT COLUMNS */
+.split-tokens,
+.split-examples {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+
+  /* &:after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 100%;
+    background: var(--color-ui-border);
+    position: absolute;
+    top: 0;
+  } */
+}
+
+.split-tokens {
+ padding-right: var(--space-8);
+ /* border-right: 1px solid var(--color-ui-border); */
+}
+.split-examples {
+  padding-left: var(--space-8);
+  border-left: 1px solid var(--color-ui-border);
+  
+}
+
+/* .split-tokens:after {
+    right: calc(-1 * var(--space-8));
+}
+
+.split-examples:after {
+  left: calc(-1 * var(--space-8) - 1px);
+} */
+
+.split-subtitle {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--font-size-body-sm);
+}
+
+/* 10. COLOR LISTS - Vertical stacking */
+.color-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* 11. EXAMPLES CONTAINER */
+.examples-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+/* 12. COLOR SWATCHES - Clean presentation */
 .color-swatch {
   display: flex;
-  gap: var(--space-4);
+  gap: var(--space-3);
   align-items: flex-start;
+  position: relative;
+  padding: var(--space-2);
+  margin: calc(-1 * var(--space-2));
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease;
+}
+
+.color-swatch:hover,
+.color-swatch:focus-within {
+  background-color: var(--color-ui-active);
 }
 
 .color-swatch-box {
-  width: 80px;
-  height: 80px;
-  border-radius: var(--radius-default);
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
   border: 1px solid var(--color-ui-border);
 }
@@ -88,6 +202,7 @@
   flex-direction: column;
   gap: var(--space-1);
   flex: 1;
+  min-width: 0;
 }
 
 .color-swatch-name {
@@ -105,37 +220,25 @@
 .color-swatch-description {
   font-size: var(--font-size-body-sm);
   color: var(--color-text-tertiary);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
-/* Other Sections */
-.demo-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.demo-section h2 {
-  font-size: var(--font-size-heading-md);
-  font-weight: var(--font-weight-medium);
-  margin: 0;
-}
-
-/* Spacing Demo */
+/* 13. SPACING DEMO - Clean list */
 .spacing-demo {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .spacing-item {
   display: flex;
   align-items: center;
   gap: var(--space-4);
+  padding: var(--space-2) 0;
 }
 
 .spacing-bar {
-  height: 32px;
+  height: 24px;
   border-radius: var(--radius-sm);
   transition: all 0.2s ease;
 }
@@ -144,47 +247,52 @@
   font-family: var(--font-family-monospace);
   font-size: var(--font-size-body-sm);
   color: var(--color-text-secondary);
-  min-width: 100px;
+  min-width: 120px;
 }
 
-/* Radius Demo */
+/* 14. RADIUS DEMO - Grid display */
 .radius-demo {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  /* display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); */
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
 }
 
 .radius-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   gap: var(--space-2);
+  align-items: center;
+  justify-content: flex-start;
+
 }
 
 .radius-box {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border: 1px solid var(--color-ui-border);
 }
 
-.radius-item code {
+/* .radius-item code {
+  font-family: var(--font-family-monospace);
   font-size: var(--font-size-body-xs);
   color: var(--color-text-secondary);
-}
+  text-align: center;
+} */
 
-/* Typography Demo */
+/* 15. TYPOGRAPHY DEMO - Clean list */
 .typography-demo {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: 0;
 }
 
 .typography-item {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
   padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--color-ui-border);
 }
 
 .typography-item:last-child {
@@ -198,18 +306,22 @@
 .typography-item p {
   margin: 0;
   font-weight: var(--font-weight-medium);
+  line-height: 1.2;
 }
 
-.typography-item code {
+/* .typography-item code {
+  font-family: var(--font-family-monospace);
   font-size: var(--font-size-body-xs);
   color: var(--color-text-tertiary);
-}
+} */
 
-/* Shadow Demo */
+/* 16. SHADOW DEMO - Grid display */
 .shadow-demo {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: var(--space-6);
+  /* display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .shadow-box {
@@ -218,18 +330,117 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-ui-border);
+  padding: var(--space-3);
+  width: 200px;
 }
 
-.shadow-box code {
+/* .shadow-box code {
+  font-family: var(--font-family-monospace);
   font-size: var(--font-size-body-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+} */
+
+/* 17. EXAMPLE COMPONENTS - Styled UI elements */
+.example-badge {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.example-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.example-alert,
+.example-notification {
+  border-radius: var(--radius-default);
+  font-size: var(--font-size-body-sm);
+}
+
+.example-box {
+  padding: var(--space-3);
+  background: var(--color-ui-background-elevated);
+  border: 1px solid var(--color-ui-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-body-sm);
+  text-align: center;
+}
+
+/* .component-tokens code {
+  display: block;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-md);
+} */
+
+/* 18. TOKEN NAME STYLING - Consistent token representation */
+.token-name {
+  font-family: var(--font-family-monospace);
+  font-size: var(--font-size-body-sm);
+  color: var(--color-primary-default);
+  /* background: var(--color-primary-light); */
+  /* padding: var(--space-1) var(--space-2); */
+  /* border-radius: var(--radius-sm); */
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+/* Token names inside code blocks */
+.component-tokens .token-name {
+  background: none;
+  padding: 0;
+  display: inline;
+}
+
+/* Color swatch hex display */
+.color-swatch-hex .token-name {
+  background: none;
+  padding: 0;
+  font-size: var(--font-size-body-sm);
+}
+
+/* 19. COLOR SWATCH COPY BUTTON */
+.color-swatch-copy {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  background: var(--color-ui-background-elevated);
+  border: 1px solid var(--color-ui-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
   color: var(--color-text-secondary);
 }
 
-/* Button Demo */
-.button-demo {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  align-items: center;
+.color-swatch:hover .color-swatch-copy,
+.color-swatch:focus-within .color-swatch-copy,
+.color-swatch-copy:focus {
+  opacity: 1;
+}
+
+.color-swatch-copy:hover {
+  background: var(--color-primary-default);
+  border-color: var(--color-primary-default);
+  color: var(--color-text-light);
+  transform: scale(1.05);
+}
+
+.color-swatch-copy:active {
+  transform: scale(0.95);
+}
+
+.color-swatch-copy svg {
+  width: 16px;
+  height: 16px;
 }

@@ -159,6 +159,8 @@ function MyComponent() {
 
 ### Spacing
 
+**Base scale: 8px (0.5rem) with consistent multipliers**
+
 | Token | Value | Usage |
 |-------|-------|-------|
 | `--space-1` | 0.25rem (4px) | Minimal gaps |
@@ -167,6 +169,14 @@ function MyComponent() {
 | `--space-4` | 1rem (16px) | Standard spacing |
 | `--space-6` | 1.5rem (24px) | Medium spacing |
 | `--space-8` | 2rem (32px) | Large spacing |
+| `--space-10` | 2.5rem (40px) | Extra large spacing |
+| `--space-12` | 3rem (48px) | Section spacing |
+| `--space-16` | 4rem (64px) | Major sections |
+| `--space-20` | 5rem (80px) | Hero spacing |
+| `--space-24` | 6rem (96px) | Large hero spacing |
+| `--space-32` | 8rem (128px) | Extra large layout |
+| `--space-40` | 10rem (160px) | Massive spacing |
+| `--space-48` | 12rem (192px) | Maximum spacing |
 
 ### Border Radius
 
@@ -181,12 +191,20 @@ function MyComponent() {
 
 ### Typography
 
+**Modular scale: 1.333 ratio (perfect fourth) for dramatic hierarchy**
+
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--font-size-body-xs` | 0.75rem | Very small text |
-| `--font-size-body-sm` | 0.875rem | Small text |
-| `--font-size-body-md` | 1rem | Body text |
-| `--font-size-heading-*` | 1-2.5rem | Headings |
+| `--font-size-body-xs` | 0.75rem (12px) | Very small text |
+| `--font-size-body-sm` | 0.875rem (14px) | Small text |
+| `--font-size-body-md` | 1rem (16px) | Body text |
+| `--font-size-body-lg` | 1.125rem (18px) | Large body text |
+| `--font-size-heading-xs` | 1rem (16px) | Smallest headings |
+| `--font-size-heading-sm` | 1.333rem (21px) | Small headings |
+| `--font-size-heading-md` | 1.777rem (28px) | Medium headings |
+| `--font-size-heading-lg` | 2.369rem (38px) | Large headings |
+| `--font-size-heading-xl` | 3.157rem (51px) | Extra large headings |
+| `--font-size-heading-2xl` | 4.209rem (67px) | Hero headings |
 | `--font-weight-regular` | 400 | Normal text |
 | `--font-weight-medium` | 500 | Medium weight |
 | `--font-weight-semibold` | 600 | Semi-bold |

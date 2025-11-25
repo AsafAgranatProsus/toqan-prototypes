@@ -8,6 +8,36 @@ import { Icons } from '../Icons/Icons';
 import gsap from 'gsap';
 import './FeatureMenu.css';
 
+// Sans-serif fonts for testing (includes custom and Google Fonts)
+const SANS_SERIF_FONTS = [
+  'Soehne',
+  'Inter',
+  'Noto Sans',
+  'Roboto',
+  'Host Grotesk',
+  'Open Sans',
+  'Lato',
+  'Montserrat',
+  'Poppins',
+  'Source Sans 3',
+  'Raleway',
+  'Work Sans',
+  'Nunito'
+];
+
+const SERIF_FONTS = [
+  'Playfair Display',
+  'Merriweather',
+  'Lora',
+  'PT Serif',
+  'Crimson Text',
+  'Source Serif 4',
+  'Libre Baskerville',
+  'EB Garamond',
+  'Cormorant',
+  'Spectral'
+];
+
 const toKebabCase = (str: string) => str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
 const toSentenceCase = (str: string) => {
   const result = str.replace(/([A-Z])/g, ' $1');
@@ -24,6 +54,14 @@ const FeatureMenu: React.FC = () => {
   const { themeMode, toggleTheme, designSystem, isNewDesign } = useDesignSystem();
   const { activeScenario, scenarioView, setScenarioView } = useScenarios();
   const location = useLocation();
+
+  // Typography testing state
+  const [sansSerifFont, setSansSerifFont] = useState<string>(() => {
+    return localStorage.getItem('testFont-sansSerif') || 'Soehne';
+  });
+  const [serifFont, setSerifFont] = useState<string>(() => {
+    return localStorage.getItem('testFont-serif') || 'Playfair Display';
+  });
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -187,6 +225,30 @@ const FeatureMenu: React.FC = () => {
     }
   }, [flags]);
 
+  // Load Google Fonts dynamically and apply to CSS variables
+  useEffect(() => {
+    // Remove existing test font link if it exists
+    const existingLink = document.getElementById('test-fonts-link');
+    if (existingLink) {
+      existingLink.remove();
+    }
+
+    // Create new link element for Google Fonts
+    const link = document.createElement('link');
+    link.id = 'test-fonts-link';
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(sansSerifFont)}:wght@400;500;600;700&family=${encodeURIComponent(serifFont)}:wght@400;500;600;700&display=swap`;
+    document.head.appendChild(link);
+
+    // Apply fonts to CSS custom properties
+    document.documentElement.style.setProperty('--font-family-default', `'${sansSerifFont}', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`);
+    document.documentElement.style.setProperty('--font-family-serif', `'${serifFont}', Georgia, 'Times New Roman', serif`);
+
+    // Persist to localStorage
+    localStorage.setItem('testFont-sansSerif', sansSerifFont);
+    localStorage.setItem('testFont-serif', serifFont);
+  }, [sansSerifFont, serifFont]);
+
   if (!isOpen) {
     return null;
   }
@@ -256,6 +318,40 @@ const FeatureMenu: React.FC = () => {
             checked={themeMode === 'dark'}
             onChange={() => toggleTheme()}
           />
+        </div>
+
+        <hr />
+
+        <div className="feature-menu-section">
+          <h3>Typography Testing</h3>
+          <div className="typography-controls">
+            <div className="font-selector">
+              <label htmlFor="sans-serif-font">Sans-serif</label>
+              <select
+                id="sans-serif-font"
+                value={sansSerifFont}
+                onChange={(e) => setSansSerifFont(e.target.value)}
+                className="font-dropdown"
+              >
+                {SANS_SERIF_FONTS.map(font => (
+                  <option key={font} value={font}>{font}</option>
+                ))}
+              </select>
+            </div>
+            <div className="font-selector">
+              <label htmlFor="serif-font">Serif</label>
+              <select
+                id="serif-font"
+                value={serifFont}
+                onChange={(e) => setSerifFont(e.target.value)}
+                className="font-dropdown"
+              >
+                {SERIF_FONTS.map(font => (
+                  <option key={font} value={font}>{font}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
         <hr />

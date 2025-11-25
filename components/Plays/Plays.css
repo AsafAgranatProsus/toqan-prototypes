@@ -1,11 +1,11 @@
 .plays {
   overflow: hidden;
 
-  .modal-grain, .card-grain {
+  /* .modal-grain, .card-grain {
     opacity: 0.2;
 
 
-  }
+  } */
 
   .section-title {
     max-width: var(--max-width-main);
@@ -56,7 +56,7 @@
   .card-container>* {
     flex: 0 0 auto;
     /* min-width: 280px; */
-    width: 280px;
+    width: 250px;
     scroll-snap-align: start;
 
     &.leading-spacer-card,
@@ -74,6 +74,10 @@
     --sidebar-width: 260px;
     width: 100%;
     height: 100%;
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-8);
+  height: 100px;
+
 
     /* background-image: linear-gradient(93deg, #ffffff00 40%, #c9c6f1 60%, #ffffff00 80%);
   background-attachment: fixed;
