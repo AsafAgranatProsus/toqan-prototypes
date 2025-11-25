@@ -136,7 +136,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
 
                 {/* Recent Conversations Section */}
                 {flags.conversationCollapsible ? (
-                    <Collapsible closeOnOutsideClick={false} defaultOpen={true}>
+                    <Collapsible closeOnOutsideClick={false} defaultOpen={false}>
                         <Collapsible.Trigger className="sidebar__section-trigger">
                             <h3 className="sidebar__section-title">Recent Conversations</h3>
                             <Icons name="ChevronDown" className="sidebar__section-chevron" />

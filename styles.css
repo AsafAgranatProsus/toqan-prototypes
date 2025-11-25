@@ -116,6 +116,13 @@
   .new__button {
     border-radius: .5rem;
     white-space: nowrap;
+    width: 100%; /* Ensure button takes full width */
+    min-width: 0; /* Allow button to shrink if needed */
+  }
+  
+  .new__button span {
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: visible; /* Ensure text is visible */
   }
 
   a {
