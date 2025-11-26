@@ -33,13 +33,14 @@
 }
 
 .dropdown-container--tertiary .dropdown__button {
-  background-color: var(--theme-btn-tertiary-bg);
-  color: var(--theme-btn-tertiary-text);
+  background-color: transparent;
+  color: var(--theme-text-tertiary);
   border-color: transparent;
+  padding: 0.375rem;
 }
 
 .dropdown-container--tertiary .dropdown__button:hover {
-  background-color: var(--theme-btn-tertiary-bg-hover);
+  background-color: var(--theme-btn-secondary-bg-hover);
 }
 
 .dropdown__button {

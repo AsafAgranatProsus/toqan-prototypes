@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { NavItem, Conversation } from '../../types';
 import { Icons } from '../Icons/Icons';
 import { Logo } from '../Logo/Logo';
@@ -7,6 +7,7 @@ import Tag from '../Tag/Tag';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import Collapsible from '../Collapsible/Collapsible';
+import Dropdown from '../Dropdown/Dropdown';
 import './Sidebar.css';
 
 const navItems: NavItem[] = [
@@ -31,10 +32,70 @@ const recentConversations: Conversation[] = [
 ];
 
 const ConversationItem: React.FC<{ conversation: Conversation, isActive?: boolean, shouldWrap?: boolean }> = ({ conversation, isActive, shouldWrap }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    
     const itemClasses = ['convo-item', isActive ? 'convo-item--active' : ''].filter(Boolean).join(' ');
     const titleClasses = ['convo-item__title', shouldWrap ? 'convo-item__title--wrap' : ''].filter(Boolean).join(' ');
+    
+    const handlePinToggle = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Toggle pin for:', conversation.id);
+        // TODO: Implement pin/unpin logic
+    };
+    
+    const handleRename = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Rename conversation:', conversation.id);
+        // TODO: Implement rename logic
+    };
+    
+    const handleDelete = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Delete conversation:', conversation.id);
+        // TODO: Implement delete logic
+    };
+    
     return (
-        <a className={itemClasses + " " + titleClasses} title={conversation.title} href="">{conversation.title}</a>
+        <div 
+            className="convo-item-wrapper"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <a className={itemClasses + " " + titleClasses} title={conversation.title} href="">
+                {conversation.title}
+            </a>
+            {(isHovered || isMenuOpen) && (
+                <Dropdown priority="tertiary">
+                    <Dropdown.Trigger className="convo-item__menu-button">
+                        <Icons name="MoreVertical" className="convo-item__menu-icon" />
+                    </Dropdown.Trigger>
+                    <Dropdown.Menu className="convo-item__menu">
+                        <Dropdown.Item onClick={handlePinToggle}>
+                            <div className="convo-item__menu-item-content">
+                                <Icons name="Pin" className="convo-item__menu-item-icon" />
+                                <span>{conversation.pinned ? 'Unpin' : 'Pin'} conversation</span>
+                            </div>
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleRename}>
+                            <div className="convo-item__menu-item-content">
+                                <Icons name="Edit2" className="convo-item__menu-item-icon" />
+                                <span>Rename</span>
+                            </div>
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handleDelete}>
+                            <div className="convo-item__menu-item-content">
+                                <Icons name="Trash" className="convo-item__menu-item-icon" />
+                                <span>Delete</span>
+                            </div>
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            )}
+        </div>
     );
 };
 

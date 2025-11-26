@@ -46,7 +46,10 @@ export type IconName =
   | 'Minimize2'
   | 'ExternalLink'
   | 'Layout'
-  | 'Robot';
+  | 'Robot'
+  | 'MoreVertical'
+  | 'Pin'
+  | 'Edit2';
 
 export interface Model {
   id: string;

@@ -240,14 +240,30 @@
   gap: var(--space-1);
 }
 
+.convo-item-wrapper {
+  position: relative;
+  border-radius: var(--border-radius-md);
+
+ 
+  .dropdown-container {
+    position: unset;
+
+  }
+}
+
+.convo-item-wrapper:hover {
+  background-color: var(--theme-btn-secondary-bg);
+}
+
 .convo-item {
+  display: block;
   border-radius: var(--border-radius-md);
   cursor: pointer;
   transition: background-color var(--transition-fast);
 }
 
 .convo-item:hover {
-  background-color: var(--theme-btn-secondary-bg);
+  background-color: transparent;
 }
 
 .convo-item__title {
@@ -256,7 +272,7 @@
   color: var(--theme-text-secondary);
   text-decoration: none;
   transition: color var(--transition-fast);
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 2.25rem 0.5rem 0.75rem;
   border-radius: 0.5rem;
   line-height: 1;
   width: 100%;
@@ -276,12 +292,74 @@
 }
 
 .convo-item--active {
+  background-color: transparent;
+}
+
+.convo-item-wrapper:has(.convo-item--active) {
   background-color: var(--theme-btn-secondary-bg, rgb(233, 239, 247));
 }
 
 .convo-item--active .convo-item__title {
   color: var(--theme-text-main);
   font-weight: 500;
+}
+
+/* Menu Button Styles - Absolute Positioning */
+
+.convo-item__menu-button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0.5rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem;
+  border: none;
+  background: transparent;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.convo-item__menu-button:hover,
+.convo-item__menu-button:focus {
+  background-color: var(--theme-btn-secondary-bg-hover);
+}
+
+.convo-item__menu-button:focus {
+  outline: 2px solid var(--theme-focus-ring, rgba(59, 130, 246, 0.5));
+  outline-offset: 1px;
+}
+
+.convo-item__menu-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--theme-text-tertiary);
+}
+
+/* Menu Dropdown Styles */
+.convo-item__menu {
+  min-width: 200px;
+  padding: var(--space-1);
+}
+
+.convo-item__menu-item-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.convo-item__menu-item-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--theme-text-secondary);
+  flex-shrink: 0;
 }
 
 /* ============================================= */

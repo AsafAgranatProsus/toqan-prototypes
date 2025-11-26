@@ -32,7 +32,10 @@ import {
   Settings,
   Minimize2,
   ExternalLink,
-  Layout
+  Layout,
+  MoreVertical,
+  Pin,
+  Edit2
 } from 'lucide-react';
 import type { IconName } from '../../types';
 
@@ -86,7 +89,10 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   Minimize2,
   ExternalLink,
   Layout,
-  Robot
+  Robot,
+  MoreVertical,
+  Pin,
+  Edit2
 };
 
 export const Icons: React.FC<IconProps> = ({ name, ...props }) => {
