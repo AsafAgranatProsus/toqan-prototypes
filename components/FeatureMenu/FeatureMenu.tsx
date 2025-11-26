@@ -67,7 +67,8 @@ const FeatureMenu: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       console.log(event.key)
-      if (event.altKey && event.key === '/') {
+      // Support both Command+/ (Mac) and Alt+/ (Windows/Linux)
+      if ((event.metaKey || event.altKey) && event.key === '/') {
         if (!isOpen) {
           setIsOpen(true);
         } else if (isMinimized) {
