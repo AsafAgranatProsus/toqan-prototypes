@@ -8,6 +8,14 @@
 @import url("styles/tables.css");
 @import url("styles/utilities.css");
 
+/* Component Styles - Import core components to ensure they're always bundled */
+@import url("components/Button/Button.css");
+@import url("components/Dropdown/Dropdown.css");
+@import url("components/Tag/Tag.css");
+@import url("components/Toggle/Toggle.css");
+@import url("components/Modal/Modal.css");
+@import url("components/Card/Card.css");
+
 
 /* ============================================= */
 /*            _legacy-variables.css              */
