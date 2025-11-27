@@ -46,16 +46,22 @@ const loadFlagsFromStorage = (): FeatureFlags => {
 export const FeatureFlagProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [flags, setFlags] = useState<FeatureFlags>(loadFlagsFromStorage);
 
-  // Clean URL after loading feature flags from query parameters
+  // Clean URL after loading feature flags from query parameters (optional)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const hasFeatureFlags = Object.keys(initialFlags).some(key => 
-      urlParams.has(key)
-    );
     
-    if (hasFeatureFlags) {
-      // Remove query params from URL without page reload
-      window.history.replaceState({}, '', window.location.pathname);
+    // Check if cleanUrl parameter is explicitly set to 'true'
+    const shouldCleanUrl = urlParams.get('cleanUrl') === 'true';
+    
+    if (shouldCleanUrl) {
+      const hasFeatureFlags = Object.keys(initialFlags).some(key => 
+        urlParams.has(key)
+      );
+      
+      if (hasFeatureFlags || urlParams.has('theme')) {
+        // Remove all query params from URL without page reload
+        window.history.replaceState({}, '', window.location.pathname);
+      }
     }
   }, []); // Run once on mount
 

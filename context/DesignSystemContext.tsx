@@ -48,11 +48,19 @@ const applyDesignAndTheme = (designSystem: DesignSystem, themeMode: ThemeMode) =
 };
 
 /**
- * Get stored theme mode from localStorage
+ * Get stored theme mode from localStorage and URL query parameters
  */
 const getStoredThemeMode = (): ThemeMode => {
   if (typeof window === 'undefined') return 'light';
   
+  // 1. Check URL query parameter first (highest priority)
+  const urlParams = new URLSearchParams(window.location.search);
+  const themeParam = urlParams.get('theme');
+  if (themeParam === 'dark' || themeParam === 'light') {
+    return themeParam;
+  }
+  
+  // 2. Check localStorage
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
     if (stored === 'dark' || stored === 'light') {
@@ -62,7 +70,7 @@ const getStoredThemeMode = (): ThemeMode => {
     console.warn('Failed to read theme mode from localStorage:', error);
   }
   
-  // Check system preference as fallback
+  // 3. Check system preference as fallback
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     return 'dark';
   }
@@ -94,6 +102,9 @@ export const DesignSystemProvider: React.FC<{ children: React.ReactNode }> = ({ 
   
   // Design system is controlled by feature flag
   const designSystem: DesignSystem = flags.newBranding ? 'new' : 'old';
+  
+  // Clean URL after loading theme from query parameter (optional, handled by FeatureFlagContext)
+  // Note: URL cleaning is centrally managed in FeatureFlagContext to avoid conflicts
   
   // Apply design system and theme whenever they change
   useEffect(() => {
