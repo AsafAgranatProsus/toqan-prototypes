@@ -1,0 +1,67 @@
+/* Palette Preview Styles */
+
+.palette-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tonal-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tonal-row-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tonal-row-colors {
+  display: flex;
+  /* gap: 2px; */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tonal-color {
+  flex: 1;
+  height: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  position: relative;
+}
+
+.tonal-color:hover {
+  transform: scaleY(1.2);
+  z-index: 1;
+}
+
+.tonal-tone {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.tonal-color:hover .tonal-tone {
+  opacity: 1;
+}
+
+/* Adjust text color for dark tones */
+.tonal-color:nth-child(1) .tonal-tone,
+.tonal-color:nth-child(2) .tonal-tone,
+.tonal-color:nth-child(3) .tonal-tone,
+.tonal-color:nth-child(4) .tonal-tone,
+.tonal-color:nth-child(5) .tonal-tone {
+  color: rgba(255, 255, 255, 0.7);
+}
+

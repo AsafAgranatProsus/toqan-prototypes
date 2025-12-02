@@ -5,6 +5,7 @@ import './styles.css';
 import { DesignSystemProvider } from './context/DesignSystemContext';
 import { FeatureFlagProvider } from './context/FeatureFlagContext';
 import { ScenarioProvider } from './context/ScenarioContext';
+import { ThemeCustomizationProvider } from './context/ThemeCustomizationContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -17,7 +18,9 @@ root.render(
     <FeatureFlagProvider>
       <ScenarioProvider>
         <DesignSystemProvider>
-          <App />
+          <ThemeCustomizationProvider>
+            <App />
+          </ThemeCustomizationProvider>
         </DesignSystemProvider>
       </ScenarioProvider>
     </FeatureFlagProvider>

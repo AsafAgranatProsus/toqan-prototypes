@@ -13,7 +13,7 @@
         word-break: break-word;
         border-radius: 1.25rem 1.25rem 0px;
         padding: 0.25rem 1rem;
-        background-color: var(--color-ui-active);
+        background-color: var(--theme-surface-active);
         white-space: pre-wrap;
         display: block;
     }

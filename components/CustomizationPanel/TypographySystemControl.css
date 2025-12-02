@@ -1,0 +1,318 @@
+/* Typography System Control - META styles (agnostic, no design tokens) */
+
+.typography-system-control {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: #ffffff;
+  border: 2px solid #4f46e5;
+  border-radius: 8px;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-system-control {
+    background: #1a1a1a;
+    border-color: #5b8fff;
+  }
+} */
+
+.typography-system-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4f46e5;
+  margin: 0;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-system-title {
+    color: #5b8fff;
+  }
+} */
+
+.typography-system-description {
+  font-size: 13px;
+  color: currentColor;
+  opacity: 0.7;
+  margin: 0;
+  font-style: italic;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-system-description {
+    color: currentColor;
+    opacity: 0.7;
+  }
+} */
+
+.typography-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.typography-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: currentColor;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-label {
+    color: currentColor;
+  }
+} */
+
+.typography-label-text {
+  color: currentColor;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-label-text {
+    color: currentColor;
+  }
+} */
+
+.typography-label-value {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  color: #4f46e5;
+  font-weight: 700;
+  font-size: 13px;
+  background: rgba(79, 70, 229, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-label-value {
+    color: #5b8fff;
+    background: rgba(91, 143, 255, 0.15);
+  }
+} */
+
+.typography-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: #e0e0e0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-slider {
+    background: #333;
+  }
+} */
+
+.typography-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4f46e5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.typography-slider::-webkit-slider-thumb:hover {
+  background: #4338ca;
+  transform: scale(1.1);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-slider::-webkit-slider-thumb {
+    background: #5b8fff;
+    border-color: #1a1a1a;
+  }
+  
+  .typography-slider::-webkit-slider-thumb:hover {
+    background: #7ba5ff;
+  }
+} */
+
+.typography-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4f46e5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.typography-slider::-moz-range-thumb:hover {
+  background: #4338ca;
+  transform: scale(1.1);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-slider::-moz-range-thumb {
+    background: #5b8fff;
+    border-color: #1a1a1a;
+  }
+  
+  .typography-slider::-moz-range-thumb:hover {
+    background: #7ba5ff;
+  }
+} */
+
+.typography-hint {
+  font-size: 11px;
+  color: currentColor;
+  opacity: 0.6;
+  margin: 0;
+  font-style: italic;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-hint {
+    color: currentColor;
+    opacity: 0.6;
+  }
+} */
+
+.typography-scale-presets {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.typography-scale-presets button {
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: #f9fafb;
+  color: currentColor;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: inherit;
+}
+
+.typography-scale-presets button:hover {
+  background: rgba(79, 70, 229, 0.05);
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-scale-presets button {
+    background: #1f1f1f;
+    border-color: #333;
+    color: currentColor;
+  }
+  
+  .typography-scale-presets button:hover {
+    background: rgba(91, 143, 255, 0.1);
+    border-color: #5b8fff;
+    color: #5b8fff;
+  }
+} */
+
+.typography-scale-presets button small {
+  display: block;
+  font-size: 10px;
+  color: currentColor;
+  opacity: 0.6;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-scale-presets button small {
+    color: currentColor;
+    opacity: 0.6;
+  }
+} */
+
+.typography-preview {
+  margin-top: 8px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-preview {
+    background: #1f1f1f;
+    border-color: #333;
+  }
+} */
+
+.typography-preview-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: currentColor;
+  opacity: 0.7;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-preview-title {
+    color: currentColor;
+    opacity: 0.7;
+  }
+} */
+
+.typography-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.typography-preview-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .typography-preview-item {
+    background: #252525;
+  }
+} */
+
+.preview-label {
+  font-size: 11px;
+  color: currentColor;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .preview-label {
+    color: currentColor;
+    opacity: 0.7;
+  }
+} */
+
+.preview-value {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 11px;
+  color: currentColor;
+  font-weight: 700;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  .preview-value {
+    color: currentColor;
+  }
+} */

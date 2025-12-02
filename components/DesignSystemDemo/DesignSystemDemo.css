@@ -1,12 +1,13 @@
 /* ============================================
    DESIGN SYSTEM DEMO - STRUCTURED LAYOUT
+   Migrated to SEMANTIC tokens for full systemization
    ============================================ */
 
 /* 1. ESTABLISH VERTICAL RHYTHM */
 .design-system-demo {
   min-height: 100vh;
-  background: var(--color-ui-background);
-  color: var(--color-text-default);
+  background: var(--theme-bg-app);
+  color: var(--theme-text-main);
   padding: 0 var(--space-6);
   max-height: 100%;
   overflow-y: auto;
@@ -30,7 +31,7 @@
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: var(--space-6);
-  border-bottom: 1px solid var(--color-ui-border);
+  border-bottom: 1px solid var(--theme-border);
 }
 
 .demo-header h1 {
@@ -47,12 +48,12 @@
 }
 
 .demo-badge {
-  background: var(--color-ui-active);
+  background: var(--theme-surface-active);
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
   font-size: var(--font-size-body-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
+  color: var(--theme-text-secondary);
   text-transform: capitalize;
 }
 
@@ -83,12 +84,12 @@
   font-size: var(--font-size-heading-md);
   font-weight: var(--font-weight-semibold);
   margin: 0;
-  color: var(--color-text-default);
+  color: var(--theme-text-main);
   letter-spacing: -0.01em;
   position: sticky;
   top: 0;
   z-index: 1;
-  background: var(--color-ui-background);
+  background: var(--theme-bg-app);
   padding-bottom: var(--space-3);
   padding-top: var(--space-6);
   font-weight: var(--font-weight-bold);
@@ -117,41 +118,22 @@
   flex-direction: column;
   gap: var(--space-4);
   position: relative;
-
-  /* &:after {
-    content: '';
-    display: block;
-    width: 1px;
-    height: 100%;
-    background: var(--color-ui-border);
-    position: absolute;
-    top: 0;
-  } */
 }
 
 .split-tokens {
  padding-right: var(--space-8);
- /* border-right: 1px solid var(--color-ui-border); */
 }
 .split-examples {
   padding-left: var(--space-8);
-  border-left: 1px solid var(--color-ui-border);
+  border-left: 1px solid var(--theme-border);
   
 }
-
-/* .split-tokens:after {
-    right: calc(-1 * var(--space-8));
-}
-
-.split-examples:after {
-  left: calc(-1 * var(--space-8) - 1px);
-} */
 
 .split-subtitle {
   font-size: var(--font-size-body-md);
   font-weight: var(--font-weight-semibold);
   margin: 0;
-  color: var(--color-text-secondary);
+  color: var(--theme-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: var(--font-size-body-sm);
@@ -186,7 +168,7 @@
 
 .color-swatch:hover,
 .color-swatch:focus-within {
-  background-color: var(--color-ui-active);
+  background-color: var(--theme-surface-active);
 }
 
 .color-swatch-box {
@@ -194,7 +176,7 @@
   height: 64px;
   border-radius: var(--radius-sm);
   flex-shrink: 0;
-  border: 1px solid var(--color-ui-border);
+  border: 1px solid var(--theme-border);
 }
 
 .color-swatch-info {
@@ -208,18 +190,18 @@
 .color-swatch-name {
   font-size: var(--font-size-body-md);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-default);
+  color: var(--theme-text-main);
 }
 
 .color-swatch-hex {
   font-family: var(--font-family-monospace);
   font-size: var(--font-size-body-sm);
-  color: var(--color-text-secondary);
+  color: var(--theme-text-secondary);
 }
 
 .color-swatch-description {
   font-size: var(--font-size-body-sm);
-  color: var(--color-text-tertiary);
+  color: var(--theme-text-tertiary);
   line-height: 1.4;
 }
 
@@ -246,14 +228,12 @@
 .spacing-label {
   font-family: var(--font-family-monospace);
   font-size: var(--font-size-body-sm);
-  color: var(--color-text-secondary);
+  color: var(--theme-text-secondary);
   min-width: 120px;
 }
 
 /* 14. RADIUS DEMO - Grid display */
 .radius-demo {
-  /* display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); */
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -271,15 +251,8 @@
 .radius-box {
   width: 100px;
   height: 100px;
-  border: 1px solid var(--color-ui-border);
+  border: 1px solid var(--theme-border);
 }
-
-/* .radius-item code {
-  font-family: var(--font-family-monospace);
-  font-size: var(--font-size-body-xs);
-  color: var(--color-text-secondary);
-  text-align: center;
-} */
 
 /* 15. TYPOGRAPHY DEMO - Clean list */
 .typography-demo {
@@ -309,16 +282,8 @@
   line-height: 1.2;
 }
 
-/* .typography-item code {
-  font-family: var(--font-family-monospace);
-  font-size: var(--font-size-body-xs);
-  color: var(--color-text-tertiary);
-} */
-
 /* 16. SHADOW DEMO - Grid display */
 .shadow-demo {
-  /* display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -333,14 +298,6 @@
   padding: var(--space-3);
   width: 200px;
 }
-
-/* .shadow-box code {
-  font-family: var(--font-family-monospace);
-  font-size: var(--font-size-body-xs);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
-  text-align: center;
-} */
 
 /* 17. EXAMPLE COMPONENTS - Styled UI elements */
 .example-badge {
@@ -365,28 +322,18 @@
 
 .example-box {
   padding: var(--space-3);
-  background: var(--color-ui-background-elevated);
-  border: 1px solid var(--color-ui-border);
+  background: var(--theme-surface-elevated);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-sm);
   font-size: var(--font-size-body-sm);
   text-align: center;
 }
 
-/* .component-tokens code {
-  display: block;
-  line-height: 1.6;
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-body-md);
-} */
-
 /* 18. TOKEN NAME STYLING - Consistent token representation */
 .token-name {
   font-family: var(--font-family-monospace);
   font-size: var(--font-size-body-sm);
-  color: var(--color-primary-default);
-  /* background: var(--color-primary-light); */
-  /* padding: var(--space-1) var(--space-2); */
-  /* border-radius: var(--radius-sm); */
+  color: var(--theme-accent-primary);
   font-weight: var(--font-weight-medium);
   white-space: nowrap;
 }
@@ -410,8 +357,8 @@
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
-  background: var(--color-ui-background-elevated);
-  border: 1px solid var(--color-ui-border);
+  background: var(--theme-surface-elevated);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-sm);
   padding: var(--space-2);
   cursor: pointer;
@@ -420,7 +367,7 @@
   justify-content: center;
   opacity: 0;
   transition: all 0.2s ease;
-  color: var(--color-text-secondary);
+  color: var(--theme-text-secondary);
 }
 
 .color-swatch:hover .color-swatch-copy,
@@ -430,9 +377,9 @@
 }
 
 .color-swatch-copy:hover {
-  background: var(--color-primary-default);
-  border-color: var(--color-primary-default);
-  color: var(--color-text-light);
+  background: var(--theme-btn-primary-bg);
+  border-color: var(--theme-btn-primary-bg);
+  color: var(--theme-btn-primary-text);
   transform: scale(1.05);
 }
 

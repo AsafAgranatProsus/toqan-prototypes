@@ -1,23 +1,89 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
+import { DesignSystemAltPage } from './pages/DesignSystemAltPage';
 import FeatureMenu from './components/FeatureMenu/FeatureMenu';
 import ThemeDebugger from './components/ThemeDebugger/ThemeDebugger';
+import { CustomizationPanel } from './components/CustomizationPanel/CustomizationPanel';
 import { useFeatureFlags } from './context/FeatureFlagContext';
 
-const App: React.FC = () => {
+// Inner component that has access to useLocation
+const AppContent: React.FC = () => {
   const { flags } = useFeatureFlags();
+  const location = useLocation();
+  
+  // Check if we're on the standalone M3 theme builder page
+  const isStandalonePage = location.pathname === '/design-system-alt';
+  
+  // Load panel state from localStorage
+  const [isCustomizationOpen, setIsCustomizationOpen] = useState(() => {
+    try {
+      const stored = localStorage.getItem('toqan-customization-panel-open');
+      return stored === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  // Persist panel state to localStorage
+  const handleToggleCustomization = () => {
+    setIsCustomizationOpen(prev => {
+      const newState = !prev;
+      try {
+        localStorage.setItem('toqan-customization-panel-open', String(newState));
+      } catch (error) {
+        console.error('Failed to save panel state:', error);
+      }
+      return newState;
+    });
+  };
+
+  // For standalone pages, render without the customization panel and feature menu
+  if (isStandalonePage) {
+    return (
+      <Routes>
+        <Route path="/design-system-alt" element={<DesignSystemAltPage />} />
+      </Routes>
+    );
+  }
 
   return (
+    <>
+      <CustomizationPanel 
+        isOpen={isCustomizationOpen} 
+        onToggle={handleToggleCustomization} 
+      />
+      <div 
+        className="app-content" 
+        style={{ 
+          marginLeft: isCustomizationOpen ? '350px' : '0',
+          transition: 'margin-left 0.3s cubic-bezier(0.05, 0.84, 0.31, 1)',
+        }}
+      >
+        <FeatureMenu onOpenCustomization={() => {
+          setIsCustomizationOpen(true);
+          try {
+            localStorage.setItem('toqan-customization-panel-open', 'true');
+          } catch (error) {
+            console.error('Failed to save panel state:', error);
+          }
+        }} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/design-system/*" element={<DesignSystemPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        {flags.showThemeDebugger && <ThemeDebugger />}
+      </div>
+    </>
+  );
+};
+
+const App: React.FC = () => {
+  return (
     <BrowserRouter>
-      <FeatureMenu />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/design-system/*" element={<DesignSystemPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      {flags.showThemeDebugger && <ThemeDebugger />}
+      <AppContent />
     </BrowserRouter>
   );
 };

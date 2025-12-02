@@ -117,12 +117,12 @@ const DesignSystemDemo: React.FC = () => {
                 <Button variant="primary" icon="Plus">With Icon</Button>
                 <div className="example-card">
                   <div className="example-badge" style={{ 
-                    backgroundColor: 'var(--color-primary-default)',
-                    color: 'var(--color-text-light)'
+                    backgroundColor: 'var(--theme-btn-primary-bg)',
+                    color: 'var(--theme-btn-primary-text)'
                   }}>
                     Featured
                   </div>
-                  <a href="#" style={{ color: 'var(--color-primary-default)' }}>Primary link text</a>
+                  <a href="#" style={{ color: 'var(--theme-link-default)' }}>Primary link text</a>
                 </div>
               </div>
             </div>
@@ -154,20 +154,20 @@ const DesignSystemDemo: React.FC = () => {
               <h3 className="split-subtitle">Examples</h3>
               <div className="examples-container">
                 <div className="example-alert" style={{
-                  backgroundColor: 'var(--color-info-background)',
-                  color: 'var(--color-info-default)',
+                  backgroundColor: 'var(--theme-status-info-bg)',
+                  color: 'var(--theme-status-info-text)',
                   padding: 'var(--space-4)',
                   borderRadius: 'var(--radius-default)',
-                  border: '1px solid var(--color-info-default)'
+                  border: '1px solid var(--theme-status-info-border)'
                 }}>
                   ℹ️ Information alert message
                 </div>
                 <div className="example-alert" style={{
-                  backgroundColor: 'var(--color-success-background)',
-                  color: 'var(--color-success-default)',
+                  backgroundColor: 'var(--theme-status-success-bg)',
+                  color: 'var(--theme-status-success-text)',
                   padding: 'var(--space-4)',
                   borderRadius: 'var(--radius-default)',
-                  border: '1px solid var(--color-success-default)'
+                  border: '1px solid var(--theme-status-success-border)'
                 }}>
                   ✓ Success! Action completed
                 </div>
@@ -213,21 +213,21 @@ const DesignSystemDemo: React.FC = () => {
               <h3 className="split-subtitle">Examples</h3>
               <div className="examples-container">
                 <div className="example-card" style={{
-                  backgroundColor: 'var(--color-ui-background-elevated)',
-                  border: '1px solid var(--color-ui-border)',
+                  backgroundColor: 'var(--theme-surface-elevated)',
+                  border: '1px solid var(--theme-border)',
                   borderRadius: 'var(--radius-default)',
                   padding: 'var(--space-6)'
                 }}>
-                  <h4 style={{ margin: '0 0 var(--space-2) 0', color: 'var(--color-text-default)' }}>Card Component</h4>
-                  <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-body-sm)' }}>
+                  <h4 style={{ margin: '0 0 var(--space-2) 0', color: 'var(--theme-text-main)' }}>Card Component</h4>
+                  <p style={{ margin: 0, color: 'var(--theme-text-secondary)', fontSize: 'var(--font-size-body-sm)' }}>
                     Uses elevated background with border
                   </p>
                 </div>
                 <div className="example-list-item" style={{
-                  backgroundColor: 'var(--color-ui-active)',
+                  backgroundColor: 'var(--theme-surface-active)',
                   padding: 'var(--space-3)',
                   borderRadius: 'var(--radius-sm)',
-                  color: 'var(--color-text-default)'
+                  color: 'var(--theme-text-main)'
                 }}>
                   Active state background
                 </div>
@@ -267,13 +267,13 @@ const DesignSystemDemo: React.FC = () => {
               <h3 className="split-subtitle">Examples</h3>
               <div className="examples-container">
                 <div className="example-text-hierarchy">
-                  <h3 style={{ margin: '0 0 var(--space-2) 0', color: 'var(--color-text-default)' }}>
+                  <h3 style={{ margin: '0 0 var(--space-2) 0', color: 'var(--theme-text-main)' }}>
                     Heading uses default
                   </h3>
-                  <p style={{ margin: '0 0 var(--space-2) 0', color: 'var(--color-text-secondary)' }}>
+                  <p style={{ margin: '0 0 var(--space-2) 0', color: 'var(--theme-text-secondary)' }}>
                     Body text uses secondary color for better hierarchy
                   </p>
-                  <p style={{ margin: 0, fontSize: 'var(--font-size-body-sm)', color: 'var(--color-text-tertiary)' }}>
+                  <p style={{ margin: 0, fontSize: 'var(--font-size-body-sm)', color: 'var(--theme-text-tertiary)' }}>
                     Captions and metadata use tertiary
                   </p>
                 </div>
@@ -313,31 +313,31 @@ const DesignSystemDemo: React.FC = () => {
               <h3 className="split-subtitle">Examples</h3>
               <div className="examples-container">
                 <div className="example-notification" style={{
-                  backgroundColor: 'var(--color-warning-background)',
-                  color: 'var(--color-warning-default)',
+                  backgroundColor: 'var(--theme-status-warning-bg)',
+                  color: 'var(--theme-status-warning-text)',
                   padding: 'var(--space-4)',
                   borderRadius: 'var(--radius-default)',
-                  border: '1px solid var(--color-warning-default)',
+                  border: '1px solid var(--theme-status-warning-border)',
                   fontWeight: 500
                 }}>
                   ⚠️ Warning: Please review this action
                 </div>
                 <div className="example-notification" style={{
-                  backgroundColor: 'var(--color-error-background)',
-                  color: 'var(--color-error-default)',
+                  backgroundColor: 'var(--theme-status-error-bg)',
+                  color: 'var(--theme-status-error-text)',
                   padding: 'var(--space-4)',
                   borderRadius: 'var(--radius-default)',
-                  border: '1px solid var(--color-error-default)',
+                  border: '1px solid var(--theme-status-error-border)',
                   fontWeight: 500
                 }}>
                   ✕ Error: Something went wrong
                 </div>
                 <div className="example-notification" style={{
-                  backgroundColor: 'var(--color-success-background)',
-                  color: 'var(--color-success-default)',
+                  backgroundColor: 'var(--theme-status-success-bg)',
+                  color: 'var(--theme-status-success-text)',
                   padding: 'var(--space-4)',
                   borderRadius: 'var(--radius-default)',
-                  border: '1px solid var(--color-success-default)',
+                  border: '1px solid var(--theme-status-success-border)',
                   fontWeight: 500
                 }}>
                   ✓ Success: Changes saved
@@ -361,7 +361,7 @@ const DesignSystemDemo: React.FC = () => {
                       style={{ 
                         width: `var(--space-${num})`,
                         height: `var(--space-${num})`,
-                        backgroundColor: 'var(--color-primary-default)'
+                        backgroundColor: 'var(--theme-accent-primary)'
                       }}
                     />
                     <code className="token-name spacing-label">--space-{num}</code>
@@ -373,8 +373,8 @@ const DesignSystemDemo: React.FC = () => {
               <h3 className="split-subtitle">Examples</h3>
               <div className="examples-container">
                 <div className="example-spacing-card" style={{
-                  backgroundColor: 'var(--color-ui-background-elevated)',
-                  border: '1px solid var(--color-ui-border)',
+                  backgroundColor: 'var(--theme-surface-elevated)',
+                  border: '1px solid var(--theme-border)',
                   borderRadius: 'var(--radius-default)',
                   padding: 'var(--space-6)'
                 }}>
@@ -404,7 +404,7 @@ const DesignSystemDemo: React.FC = () => {
                       className="radius-box" 
                       style={{ 
                         borderRadius: `var(--radius-${size})`,
-                        backgroundColor: 'var(--color-primary-default)'
+                        backgroundColor: 'var(--theme-accent-primary)'
                       }}
                     />
                     <code className="token-name">--radius-{size}</code>
@@ -422,16 +422,16 @@ const DesignSystemDemo: React.FC = () => {
                   <code className="token-name">--radius-default</code> Button
                 </Button>
                 <div style={{
-                  backgroundColor: 'var(--color-ui-background-elevated)',
-                  border: '1px solid var(--color-ui-border)',
+                  backgroundColor: 'var(--theme-surface-elevated)',
+                  border: '1px solid var(--theme-border)',
                   borderRadius: 'var(--radius-lg)',
                   padding: 'var(--space-4)'
                 }}>
                   Card with <code className="token-name">--radius-lg</code>
                 </div>
                 <div className="example-badge" style={{
-                  backgroundColor: 'var(--color-primary-light)',
-                  color: 'var(--color-primary-default)',
+                  backgroundColor: 'var(--theme-accent-primary-light)',
+                  color: 'var(--theme-accent-primary)',
                   borderRadius: 'var(--radius-full)',
                   padding: 'var(--space-2) var(--space-4)',
                   display: 'inline-block'
@@ -495,13 +495,13 @@ const DesignSystemDemo: React.FC = () => {
                     fontSize: 'var(--font-size-body-md)', 
                     lineHeight: 'var(--line-height-relaxed)',
                     margin: '0 0 var(--space-3) 0',
-                    color: 'var(--color-text-secondary)'
+                    color: 'var(--theme-text-secondary)'
                   }}>
                     This is body text using the default font size with relaxed line height for comfortable reading. The modular scale creates clear hierarchy between different text levels.
                   </p>
                   <p style={{ 
                     fontSize: 'var(--font-size-body-sm)', 
-                    color: 'var(--color-text-tertiary)',
+                    color: 'var(--theme-text-tertiary)',
                     margin: 0
                   }}>
                     Small metadata text • Published 2 hours ago
@@ -525,7 +525,7 @@ const DesignSystemDemo: React.FC = () => {
                     className="shadow-box"
                     style={{ 
                       boxShadow: `var(--shadow-${size})`,
-                      backgroundColor: 'var(--color-ui-background-elevated)'
+                      backgroundColor: 'var(--theme-surface-elevated)'
                     }}
                   >
                     <code className="token-name">--shadow-{size}</code>
@@ -537,13 +537,13 @@ const DesignSystemDemo: React.FC = () => {
               <h3 className="split-subtitle">Examples</h3>
               <div className="examples-container">
                 <div className="example-card-shadow" style={{
-                  backgroundColor: 'var(--color-ui-background-elevated)',
+                  backgroundColor: 'var(--theme-surface-elevated)',
                   borderRadius: 'var(--radius-default)',
                   padding: 'var(--space-6)',
                   boxShadow: 'var(--shadow-default)'
                 }}>
                   <h4 style={{ margin: '0 0 var(--space-2) 0' }}>Card with <code className="token-name">--shadow-default</code></h4>
-                  <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-body-sm)' }}>
+                  <p style={{ margin: 0, color: 'var(--theme-text-secondary)', fontSize: 'var(--font-size-body-sm)' }}>
                     Standard elevation for cards
                   </p>
                 </div>
@@ -551,7 +551,7 @@ const DesignSystemDemo: React.FC = () => {
                   Button with <code className="token-name">--shadow-md</code>
                 </Button>
                 <div className="example-dropdown" style={{
-                  backgroundColor: 'var(--color-ui-background-elevated)',
+                  backgroundColor: 'var(--theme-surface-elevated)',
                   borderRadius: 'var(--radius-default)',
                   padding: 'var(--space-4)',
                   boxShadow: 'var(--shadow-lg)'
@@ -570,7 +570,7 @@ const DesignSystemDemo: React.FC = () => {
             <div className="split-tokens">
               <h3 className="split-subtitle">Variants</h3>
               <div className="component-tokens">
-                <p style={{ margin: '0 0 var(--space-3) 0', fontSize: 'var(--font-size-body-md)', color: 'var(--color-text-secondary)' }}>
+                <p style={{ margin: '0 0 var(--space-3) 0', fontSize: 'var(--font-size-body-md)', color: 'var(--theme-text-secondary)' }}>
                   Buttons use color, spacing, radius, and shadow tokens
                 </p>
                 <code className="token-name">
@@ -587,6 +587,7 @@ const DesignSystemDemo: React.FC = () => {
                   <Button variant="primary">Primary Button</Button>
                   <Button variant="secondary">Secondary Button</Button>
                   <Button variant="tertiary">Tertiary Button</Button>
+                  <Button variant="outline">Outline Button</Button>
                 </div>
                 <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', alignItems: 'center' }}>
                   <Button variant="primary" icon="Plus">With Icon</Button>

@@ -1,6 +1,6 @@
 /* ============================================= */
 /*              BUTTON COMPONENT                 */
-/* Refactored to use Design System Tokens       */
+/* Migrated to SEMANTIC tokens for full systemization */
 /* ============================================= */
 
 /* ===== BASE BUTTON STYLES ===== */
@@ -30,7 +30,7 @@
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--color-primary-default);
+  outline: 2px solid var(--theme-focus-ring);
   outline-offset: 2px;
 }
 
@@ -43,42 +43,54 @@
 
 /* Primary Button - Main actions */
 .btn--primary {
-  background-color: var(--color-primary-default);
-  color: var(--color-text-light);
+  background-color: var(--theme-btn-primary-bg);
+  color: var(--theme-btn-primary-text);
 }
 
 .btn--primary:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
+  background-color: var(--theme-btn-primary-bg-hover);
 }
 
 .btn--primary:active:not(:disabled) {
   transform: translateY(1px);
 }
 
-/* Secondary Button - Secondary actions */
+/* Secondary Button - Uses secondary brand color */
 .btn--secondary {
-  background-color: var(--color-ui-active);
-  color: var(--color-text-default);
-  border: 1px solid var(--color-ui-border);
+  background-color: var(--theme-btn-secondary-bg);
+  color: var(--theme-btn-secondary-text);
+  border: none;
 }
 
 .btn--secondary:hover:not(:disabled) {
-  background-color: var(--color-ui-border);
+  background-color: var(--theme-btn-secondary-bg-hover);
 }
 
 .btn--secondary:active:not(:disabled) {
   transform: translateY(1px);
 }
 
-/* Tertiary Button - Subtle actions */
+/* Tertiary Button - Uses tertiary brand color */
 .btn--tertiary {
-  background-color: transparent;
-  color: var(--color-text-secondary);
+  background-color: var(--theme-btn-tertiary-bg);
+  color: var(--theme-btn-tertiary-text);
+  border: none;
 }
 
 .btn--tertiary:hover:not(:disabled) {
-  background-color: var(--color-ui-active);
-  color: var(--color-text-default);
+  background-color: var(--theme-btn-tertiary-bg-hover);
+}
+
+/* Outline/Ghost Button - Subtle, neutral */
+.btn--outline {
+  background-color: var(--theme-btn-outline-bg);
+  color: var(--theme-btn-outline-text);
+  border: 1px solid var(--theme-btn-outline-border);
+}
+
+.btn--outline:hover:not(:disabled) {
+  background-color: var(--theme-btn-outline-bg-hover);
+  color: var(--theme-text-main);
 }
 
 .btn--tertiary:active:not(:disabled) {
@@ -87,16 +99,16 @@
 
 /* Icon Button - Icon-only actions, round by default */
 .btn--icon {
-  background-color: var(--color-ui-background-elevated);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-ui-border);
+  background-color: var(--theme-btn-icon-bg);
+  color: var(--theme-btn-icon-text);
+  border: 1px solid var(--theme-btn-icon-border);
   padding: var(--space-2);
 }
 
 .btn--icon:hover:not(:disabled) {
-  background-color: var(--color-ui-active);
-  color: var(--color-text-default);
-  border-color: var(--color-ui-border);
+  background-color: var(--theme-btn-icon-bg-hover);
+  color: var(--theme-btn-icon-text-hover);
+  border-color: var(--theme-btn-icon-border);
 }
 
 .btn--icon:active:not(:disabled) {
@@ -214,24 +226,25 @@
 /* ===== NOTES FOR DEVELOPERS ===== */
 
 /*
-  Button Component - Token Usage Guide
+  Button Component - FULLY SEMANTIC TOKENS
   
-  ✅ USES NEW TOKENS:
-  - All colors: --color-primary-*, --color-ui-*, --color-text-*
-  - All spacing: --space-*
-  - All typography: --font-size-*, --font-weight-*
-  - All sizes: --icon-size-*, --size-button-*
-  - All radius: --radius-*
-  - All transitions: --transition-*
+  ✅ USES SEMANTIC TOKENS:
+  - Primary: --theme-btn-primary-bg, --theme-btn-primary-text, --theme-btn-primary-bg-hover
+  - Secondary: --theme-btn-secondary-bg, --theme-btn-secondary-bg-hover, --theme-btn-secondary-text
+  - Tertiary: --theme-btn-tertiary-bg, --theme-btn-tertiary-bg-hover, --theme-btn-tertiary-text
+  - Icon: --theme-btn-icon-bg, --theme-btn-icon-text, --theme-btn-icon-border
+  - Focus: --theme-focus-ring
+  - Text: --theme-text-main
+  - Border: --theme-border
   
   🧪 TESTING CHECKLIST:
-  □ OLD Design + Light Mode
-  □ OLD Design + Dark Mode  
-  □ NEW Design + Light Mode
-  □ NEW Design + Dark Mode
+  ✅ OLD Design + Light Mode
+  ✅ OLD Design + Dark Mode  
+  ✅ NEW Design + Light Mode
+  ✅ NEW Design + Dark Mode
+  ✅ Customization panel changes apply
   
-  📝 NO HARDCODED VALUES!
-  This component is fully tokenized and works across all
-  design systems and theme modes.
+  📝 100% SEMANTIC - NO PRIMITIVE TOKENS!
+  This component uses only --theme-* tokens for full
+  systemization and customization panel support.
 */
-

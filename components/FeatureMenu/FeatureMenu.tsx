@@ -45,7 +45,7 @@ const toSentenceCase = (str: string) => {
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
 
-const FeatureMenu: React.FC = () => {
+const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCustomization }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -230,15 +230,31 @@ const FeatureMenu: React.FC = () => {
             <p className="info-text">
               <strong>Theme Mode:</strong> {themeMode}
             </p>
-            <Link
-              to="/design-system"
-              className="feature-menu-link"
-              onClick={() => setIsOpen(false)}
-            >
-              <Icons name="Layout" />
-              <span>Design System Demo</span>
-              <Icons name="ExternalLink" className="external-icon" />
-            </Link>
+            <div className="design-system-links">
+              <div className="design-system-link-with-icon">
+                <Icons name="Layout" />
+                <span className="design-system-label">Design System</span>
+              </div>
+              <div className="design-system-actions">
+                <button
+                  className="design-system-action-btn"
+                  onClick={() => {
+                    onOpenCustomization?.();
+                    setIsOpen(false);
+                  }}
+                  title="Edit design tokens (Alt+\)"
+                >
+                  Edit
+                </button>
+                <Link
+                  to="/design-system"
+                  className="design-system-action-btn"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Demo
+                </Link>
+              </div>
+            </div>
           </div>
           <Toggle
             variant="button"

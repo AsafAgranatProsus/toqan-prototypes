@@ -1,0 +1,270 @@
+/* HCT Color Picker Styles - Material Design 3 Inspired */
+
+.hct-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hct-picker-dialog {
+  background: #FFFBF5;
+  border-radius: 28px;
+  padding: 24px;
+  width: 340px;
+  max-width: 90vw;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 8px 24px rgba(0, 0, 0, 0.14);
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hct-picker-header {
+  display: flex;
+  display: none;;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.hct-picker-icon {
+  color: #5C6B5C;
+}
+
+.hct-picker-title {
+  font-size: 24px;
+  font-weight: 400;
+  color: #1C1B1F;
+  text-align: center;
+  margin: 0 0 24px 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.hct-picker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.hct-picker-label {
+  font-size: 14px;
+  color: #49454F;
+  font-weight: 400;
+}
+
+.hct-picker-input {
+  width: 100px;
+  padding: 8px 12px;
+  border: 1px solid #CAC4D0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Roboto Mono', monospace;
+  color: #1C1B1F;
+  background: #FFF;
+  text-align: right;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.hct-picker-input:focus {
+  outline: none;
+  border-color: #6750A4;
+  box-shadow: 0 0 0 2px rgba(103, 80, 164, 0.2);
+}
+
+.hct-picker-input::-webkit-inner-spin-button,
+.hct-picker-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.hct-picker-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.hct-picker-slider-container {
+  position: relative;
+  height: 32px;
+  margin-bottom: 20px;
+}
+
+.hct-picker-slider-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 16px;
+  transform: translateY(-50%);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.hct-picker-slider {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.hct-picker-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #FFF;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.hct-picker-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hct-picker-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+.hct-picker-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #FFF;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+}
+
+.hct-picker-preview {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 24px;
+}
+
+.hct-picker-swatch {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.1s;
+}
+
+.hct-picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.hct-picker-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.hct-picker-btn.cancel {
+  background: transparent;
+  color: #6750A4;
+}
+
+.hct-picker-btn.cancel:hover {
+  background: rgba(103, 80, 164, 0.08);
+}
+
+.hct-picker-btn.apply {
+  background: #6750A4;
+  color: #FFF;
+}
+
+.hct-picker-btn.apply:hover {
+  background: #7965AF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .hct-picker-dialog {
+    background: #2B2930;
+  }
+  
+  .hct-picker-title {
+    color: #E6E1E5;
+  }
+  
+  .hct-picker-label {
+    color: #CAC4D0;
+  }
+  
+  .hct-picker-input {
+    background: #1C1B1F;
+    border-color: #49454F;
+    color: #E6E1E5;
+  }
+  
+  .hct-picker-input:focus {
+    border-color: #D0BCFF;
+    box-shadow: 0 0 0 2px rgba(208, 188, 255, 0.2);
+  }
+  
+  .hct-picker-btn.cancel {
+    color: #D0BCFF;
+  }
+  
+  .hct-picker-btn.cancel:hover {
+    background: rgba(208, 188, 255, 0.08);
+  }
+  
+  .hct-picker-btn.apply {
+    background: #D0BCFF;
+    color: #381E72;
+  }
+  
+  .hct-picker-btn.apply:hover {
+    background: #E8DEFF;
+  }
+}
+

@@ -1,0 +1,56 @@
+/* Core Colors List Styles */
+
+.core-colors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.core-color-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.core-color-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.core-color-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.core-color-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.core-color-label {
+  font-size: 14px;
+  color: #fff;
+}
+
+.core-color-sublabel {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.core-color-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+

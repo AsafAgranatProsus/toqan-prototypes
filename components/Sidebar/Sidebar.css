@@ -70,15 +70,15 @@
   top: 0px;
   left: 0px;
   width: 100%;
-  background: var(--color-ui-border);
+  background: var(--theme-border);
 }
 
 .theme-light .sidebar__convo-list-container::before {
-  background-image: linear-gradient(to right, var(--color-ui-border), var(--color-ui-background));
+  background-image: linear-gradient(to right, var(--theme-border), var(--theme-bg-app));
 }
 
 .theme-dark .sidebar__convo-list-container::before {
-  background-image: linear-gradient(to right, var(--color-ui-border), var(--color-ui-background));
+  background-image: linear-gradient(to right, var(--theme-border), var(--theme-bg-app));
 }
 
 .sidebar__section-title {

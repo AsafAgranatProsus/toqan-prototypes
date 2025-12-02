@@ -66,6 +66,23 @@
   --color-primary-background: rgba(68, 38, 217, 0.2);
   --color-primary-light: #E0E7FF;
   
+  /* Secondary Colors (supporting brand color) */
+  --color-secondary-default: #6366F1;
+  --color-secondary-hover: #4F46E5;
+  --color-secondary-background: rgba(99, 102, 241, 0.15);
+  --color-secondary-light: #E0E7FF;
+  
+  /* Tertiary Colors (accent/contrast color) */
+  --color-tertiary-default: #EC4899;
+  --color-tertiary-hover: #DB2777;
+  --color-tertiary-background: rgba(236, 72, 153, 0.15);
+  --color-tertiary-light: #FCE7F3;
+  
+  /* Button Text Colors (for independent control) */
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-secondary-text: #FFFFFF;
+  --color-btn-tertiary-text: #FFFFFF;
+  
   /* UI Colors */
   --color-ui-background: #F9FAFB;
   --color-ui-background-elevated: #FFFFFF;
@@ -172,6 +189,23 @@
   --color-primary-hover: #7BA5FF;
   --color-primary-background: rgba(91, 143, 255, 0.15);
   
+  /* Secondary Colors */
+  --color-secondary-default: #818CF8;
+  --color-secondary-hover: #A5B4FC;
+  --color-secondary-background: rgba(129, 140, 248, 0.15);
+  --color-secondary-light: #312E81;
+  
+  /* Tertiary Colors */
+  --color-tertiary-default: #F472B6;
+  --color-tertiary-hover: #F9A8D4;
+  --color-tertiary-background: rgba(244, 114, 182, 0.15);
+  --color-tertiary-light: #831843;
+  
+  /* Button Text Colors */
+  --color-btn-primary-text: #FFFFFF;
+  --color-btn-secondary-text: #FFFFFF;
+  --color-btn-tertiary-text: #FFFFFF;
+  
   /* UI Colors */
   --color-ui-background: #0A0A0B;
   --color-ui-background-elevated: #141416;
@@ -223,6 +257,23 @@
   --color-primary-hover: hsl(250 70% 40%);
   --color-primary-background: hsl(250 70% 50% / 0.2);
   --color-primary-light: hsl(250 70% 90%);
+  
+  /* Secondary Colors (supporting brand - analogous to primary) */
+  --color-secondary-default: hsl(220 70% 50%);
+  --color-secondary-hover: hsl(220 70% 40%);
+  --color-secondary-background: hsl(220 70% 50% / 0.15);
+  --color-secondary-light: hsl(220 70% 90%);
+  
+  /* Tertiary Colors (accent/contrast - complementary) */
+  --color-tertiary-default: hsl(330 70% 50%);
+  --color-tertiary-hover: hsl(330 70% 40%);
+  --color-tertiary-background: hsl(330 70% 50% / 0.15);
+  --color-tertiary-light: hsl(330 70% 90%);
+  
+  /* Button Text Colors */
+  --color-btn-primary-text: hsl(0 0% 100%);
+  --color-btn-secondary-text: hsl(0 0% 100%);
+  --color-btn-tertiary-text: hsl(0 0% 100%);
   
   /* UI Colors */
   --color-ui-background: hsl(212 45% 98%);
@@ -293,6 +344,23 @@
   --color-primary-default: hsl(250 70% 60%);
   --color-primary-hover: hsl(250 70% 70%);
   --color-primary-background: hsl(250 70% 60% / 0.2);
+  
+  /* Secondary Colors */
+  --color-secondary-default: hsl(220 70% 60%);
+  --color-secondary-hover: hsl(220 70% 70%);
+  --color-secondary-background: hsl(220 70% 60% / 0.15);
+  --color-secondary-light: hsl(220 70% 25%);
+  
+  /* Tertiary Colors */
+  --color-tertiary-default: hsl(330 70% 60%);
+  --color-tertiary-hover: hsl(330 70% 70%);
+  --color-tertiary-background: hsl(330 70% 60% / 0.15);
+  --color-tertiary-light: hsl(330 70% 25%);
+  
+  /* Button Text Colors */
+  --color-btn-primary-text: hsl(0 0% 100%);
+  --color-btn-secondary-text: hsl(0 0% 100%);
+  --color-btn-tertiary-text: hsl(0 0% 100%);
   
   /* UI Colors */
   --color-ui-background: hsl(212 45% 8%);
@@ -365,13 +433,22 @@
   
   --theme-btn-primary-bg: var(--color-primary-default);
   --theme-btn-primary-bg-hover: var(--color-primary-hover);
-  --theme-btn-primary-text: var(--color-text-light);
-  --theme-btn-secondary-bg: var(--color-ui-active);
-  --theme-btn-secondary-bg-hover: var(--color-ui-border);
-  --theme-btn-secondary-text: var(--color-text-secondary);
-  --theme-btn-tertiary-bg: transparent;
-  --theme-btn-tertiary-bg-hover: var(--color-ui-active);
-  --theme-btn-tertiary-text: var(--color-text-secondary);
+  --theme-btn-primary-text: var(--color-btn-primary-text);
+  /* Secondary Button - uses secondary brand color */
+  --theme-btn-secondary-bg: var(--color-secondary-default);
+  --theme-btn-secondary-bg-hover: var(--color-secondary-hover);
+  --theme-btn-secondary-text: var(--color-btn-secondary-text);
+  
+  /* Tertiary Button - uses tertiary brand color */
+  --theme-btn-tertiary-bg: var(--color-tertiary-default);
+  --theme-btn-tertiary-bg-hover: var(--color-tertiary-hover);
+  --theme-btn-tertiary-text: var(--color-btn-tertiary-text);
+  
+  /* Outline/Ghost Button - subtle, uses UI colors */
+  --theme-btn-outline-bg: transparent;
+  --theme-btn-outline-bg-hover: var(--color-ui-active);
+  --theme-btn-outline-text: var(--color-text-secondary);
+  --theme-btn-outline-border: var(--color-ui-border);
   
   --theme-tag-date-bg: var(--color-tag-date-bg);
   --theme-tag-date-text: var(--color-tag-date-text);
@@ -383,6 +460,66 @@
   /* Text selection colors */
   --theme-selection-bg: var(--color-primary-default);
   --theme-text-selection: var(--color-text-light);
+  
+  /* ===== NEW SEMANTIC TOKENS ===== */
+  /* Added for full component systemization */
+  
+  /* Focus & Links */
+  --theme-focus-ring: var(--color-primary-default);
+  --theme-link-default: var(--color-primary-default);
+  --theme-link-hover: var(--color-primary-hover);
+  
+  /* Status Colors - Info */
+  --theme-status-info-bg: var(--color-info-background);
+  --theme-status-info-text: var(--color-info-default);
+  --theme-status-info-border: var(--color-info-default);
+  
+  /* Status Colors - Success */
+  --theme-status-success-bg: var(--color-success-background);
+  --theme-status-success-text: var(--color-success-default);
+  --theme-status-success-border: var(--color-success-default);
+  
+  /* Status Colors - Warning */
+  --theme-status-warning-bg: var(--color-warning-background);
+  --theme-status-warning-text: var(--color-warning-default);
+  --theme-status-warning-border: var(--color-warning-default);
+  
+  /* Status Colors - Error */
+  --theme-status-error-bg: var(--color-error-background);
+  --theme-status-error-text: var(--color-error-default);
+  --theme-status-error-border: var(--color-error-default);
+  
+  /* Surfaces (alternative names for clarity) */
+  --theme-surface-default: var(--color-ui-background);
+  --theme-surface-elevated: var(--color-ui-background-elevated);
+  --theme-surface-active: var(--color-ui-active);
+  
+  /* Scrollbars */
+  --theme-scrollbar-thumb: var(--color-ui-border);
+  --theme-scrollbar-thumb-hover: var(--color-ui-active);
+  --theme-scrollbar-track: transparent;
+  
+  /* Accent Colors - Primary */
+  --theme-accent-primary: var(--color-primary-default);
+  --theme-accent-primary-light: var(--color-primary-light);
+  --theme-accent-primary-bg: var(--color-primary-background);
+  
+  /* Accent Colors - Secondary */
+  --theme-accent-secondary: var(--color-secondary-default);
+  --theme-accent-secondary-light: var(--color-secondary-light);
+  --theme-accent-secondary-bg: var(--color-secondary-background);
+  
+  /* Accent Colors - Tertiary */
+  --theme-accent-tertiary: var(--color-tertiary-default);
+  --theme-accent-tertiary-light: var(--color-tertiary-light);
+  --theme-accent-tertiary-bg: var(--color-tertiary-background);
+  
+  /* Icon Buttons */
+  --theme-btn-icon-bg: var(--color-ui-background-elevated);
+  --theme-btn-icon-text: var(--color-text-secondary);
+  --theme-btn-icon-border: var(--color-ui-border);
+  --theme-btn-icon-bg-hover: var(--color-ui-active);
+  --theme-btn-icon-text-hover: var(--color-text-default);
   
   /* Map old border-radius-* to new radius-* */
   --border-radius-sm: var(--radius-sm);

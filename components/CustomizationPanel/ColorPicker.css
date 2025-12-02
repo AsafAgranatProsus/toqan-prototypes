@@ -1,0 +1,224 @@
+/* Color Picker - META styles (agnostic, no design tokens) */
+
+.color-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.color-picker-label {
+  font-size: 13px;
+  color: currentColor;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+.color-picker-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Swatch Button */
+.color-picker-swatch {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  background: 
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.color-picker-swatch:hover {
+  border-color: rgba(128, 128, 128, 0.6);
+  transform: scale(1.05);
+}
+
+.color-picker-swatch:focus {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+.color-picker-swatch-color {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+}
+
+.color-picker-swatch-alpha {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1px 3px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+/* Text Input */
+.color-picker-input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 6px;
+  background: rgba(128, 128, 128, 0.1);
+  color: currentColor;
+  font-size: 12px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  transition: all 0.2s ease;
+  min-width: 0;
+}
+
+.color-picker-input:hover {
+  border-color: rgba(128, 128, 128, 0.5);
+}
+
+.color-picker-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* Format Button */
+.color-picker-format {
+  font-size: 10px;
+  color: currentColor;
+  opacity: 0.8;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  text-transform: uppercase;
+  font-weight: 600;
+  min-width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+  background: rgba(128, 128, 128, 0.15);
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.color-picker-format:hover {
+  background: rgba(128, 128, 128, 0.25);
+  border-color: rgba(128, 128, 128, 0.4);
+}
+
+/* Popover */
+.color-picker-popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  margin-top: 8px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  animation: colorPickerFadeIn 0.15s ease-out;
+}
+
+@keyframes colorPickerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* react-colorful overrides */
+.color-picker-popover .react-colorful {
+  width: 200px;
+  height: auto;
+}
+
+.color-picker-popover .react-colorful__saturation {
+  height: 150px;
+  border-radius: 6px 6px 0 0;
+}
+
+.color-picker-popover .react-colorful__hue,
+.color-picker-popover .react-colorful__alpha {
+  height: 14px;
+  border-radius: 7px;
+  margin-top: 10px;
+}
+
+.color-picker-popover .react-colorful__hue {
+  margin-top: 12px;
+}
+
+.color-picker-popover .react-colorful__saturation-pointer,
+.color-picker-popover .react-colorful__hue-pointer,
+.color-picker-popover .react-colorful__alpha-pointer {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-picker-popover .react-colorful__alpha {
+  background: 
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  background-color: #fff;
+}
+
+.color-picker-alpha-label {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Dark mode adjustments for popover */
+@media (prefers-color-scheme: dark) {
+  .color-picker-popover {
+    background: #1a1a1c;
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  
+  .color-picker-alpha-label {
+    color: #999;
+  }
+}
+
+/* When panel is in dark mode (via .theme-dark on body) */
+.theme-dark .color-picker-popover {
+  background: #1a1a1c;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.theme-dark .color-picker-alpha-label {
+  color: #999;
+}

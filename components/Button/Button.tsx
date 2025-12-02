@@ -4,7 +4,7 @@ import type { IconName } from '../../types';
 import './Button.css';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'icon';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'outline' | 'icon';
   shape?: 'rounded' | 'circle';
   icon?: IconName;
   iconPosition?: 'left' | 'right';

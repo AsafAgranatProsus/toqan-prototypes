@@ -1,0 +1,150 @@
+/* Source Color Picker Styles */
+
+.source-color-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Image presets */
+.source-images {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.source-image-btn {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.source-image-btn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.source-image-btn.selected {
+  border-color: #bb86fc;
+}
+
+.source-image-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.source-image-btn.upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.source-image-btn.upload:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.source-image-check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background: #bb86fc;
+  color: #1e1e1e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Color row */
+.source-color-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.source-color-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  position: relative;
+}
+
+.source-color-swatch:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.source-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.source-color-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.source-color-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.source-color-label {
+  font-size: 14px;
+  color: #fff;
+}
+
+.source-color-value {
+  font-size: 12px;
+  font-family: 'Roboto Mono', monospace;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.source-shuffle-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.source-shuffle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
