@@ -1,23 +1,24 @@
 import React from 'react';
 import './TypographyPicker.css';
 
-// Sans-serif fonts (good for display and body)
+// Sans-serif fonts for testing (matches FeatureMenu exactly)
 const SANS_SERIF_FONTS = [
-  'Roboto',
+  'Soehne',
   'Inter',
+  'Noto Sans',
+  'Roboto',
+  'Host Grotesk',
   'Open Sans',
   'Lato',
   'Montserrat',
   'Poppins',
   'Source Sans 3',
-  'Nunito',
-  'Work Sans',
   'Raleway',
-  'DM Sans',
-  'Plus Jakarta Sans',
+  'Work Sans',
+  'Nunito',
 ];
 
-// Serif fonts (good for display headings)
+// Serif fonts (matches FeatureMenu exactly)
 const SERIF_FONTS = [
   'Playfair Display',
   'Merriweather',
@@ -30,12 +31,6 @@ const SERIF_FONTS = [
   'Cormorant',
   'Spectral',
 ];
-
-// Combined options for display (can use serif for headings)
-const DISPLAY_FONT_OPTIONS = [...SANS_SERIF_FONTS, ...SERIF_FONTS];
-
-// Body fonts should generally be sans-serif for readability
-const BODY_FONT_OPTIONS = SANS_SERIF_FONTS;
 
 export interface TypographyPickerProps {
   displayFont: string;
@@ -85,14 +80,22 @@ export const TypographyPicker: React.FC<TypographyPickerProps> = ({
           onChange={(e) => onBodyFontChange(e.target.value)}
           style={{ fontFamily: bodyFont }}
         >
-          {BODY_FONT_OPTIONS.map((font) => (
-            <option key={font} value={font}>
-              {font}
-            </option>
-          ))}
+          <optgroup label="Sans Serif">
+            {SANS_SERIF_FONTS.map((font) => (
+              <option key={font} value={font}>
+                {font}
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label="Serif">
+            {SERIF_FONTS.map((font) => (
+              <option key={font} value={font}>
+                {font}
+              </option>
+            ))}
+          </optgroup>
         </select>
       </div>
     </div>
   );
 };
-

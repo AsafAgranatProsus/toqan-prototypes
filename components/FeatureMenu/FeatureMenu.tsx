@@ -6,6 +6,8 @@ import { useScenarios } from '../../context/ScenarioContext';
 import Toggle from '../Toggle/Toggle';
 import Collapsible from '../Collapsible/Collapsible';
 import { Icons } from '../Icons/Icons';
+import { loadThemeManifest, loadTheme, ThemeMetadata } from '../../themes/colors';
+import { getCurrentThemeFilename } from '../../themes/colors/loadTheme';
 import gsap from 'gsap';
 import './FeatureMenu.css';
 
@@ -63,6 +65,63 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
   const [serifFont, setSerifFont] = useState<string>(() => {
     return localStorage.getItem('testFont-serif') || 'Playfair Display';
   });
+  
+  // Theme selection state
+  const [availableThemes, setAvailableThemes] = useState<ThemeMetadata[]>([]);
+  const [themesLoading, setThemesLoading] = useState(true);
+  const [selectedTheme, setSelectedTheme] = useState<string>(() => {
+    const savedTheme = getCurrentThemeFilename();
+    // Will be matched against themes once loaded
+    return savedTheme ? '' : 'default';
+  });
+  
+  // Load themes from manifest on mount
+  useEffect(() => {
+    const loadThemes = async () => {
+      setThemesLoading(true);
+      try {
+        const themes = await loadThemeManifest();
+        setAvailableThemes(themes);
+        
+        // Find current theme by filename
+        const currentFilename = getCurrentThemeFilename();
+        if (currentFilename) {
+          const currentTheme = themes.find(t => t.filename === currentFilename);
+          setSelectedTheme(currentTheme?.id || 'default');
+        } else {
+          setSelectedTheme('default');
+        }
+      } catch (error) {
+        console.error('Failed to load theme manifest:', error);
+        setAvailableThemes([{ id: 'default', name: 'Default', filename: '', isDefault: true }]);
+        setSelectedTheme('default');
+      } finally {
+        setThemesLoading(false);
+      }
+    };
+    loadThemes();
+  }, []);
+  
+  // Handle theme change
+  const handleThemeChange = async (themeId: string) => {
+    const theme = availableThemes.find(t => t.id === themeId);
+    if (!theme) return;
+    
+    setSelectedTheme(themeId);
+    try {
+      await loadTheme(theme);
+      
+      // Sync font dropdowns if theme has fonts
+      if (theme.displayFont) {
+        setSansSerifFont(theme.displayFont);
+      }
+      if (theme.bodyFont) {
+        setSerifFont(theme.bodyFont);
+      }
+    } catch (error) {
+      console.error('Failed to load theme:', error);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -256,6 +315,40 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
               </div>
             </div>
           </div>
+          
+          {/* Theme Selector */}
+          <div className="theme-selector">
+            <label htmlFor="theme-select" className="theme-selector-label">
+              <Icons name="Palette" />
+              <span>Theme</span>
+            </label>
+            <select
+              id="theme-select"
+              value={selectedTheme}
+              onChange={(e) => handleThemeChange(e.target.value)}
+              className="theme-dropdown"
+              disabled={themesLoading}
+            >
+              {themesLoading ? (
+                <option>Loading...</option>
+              ) : (
+                availableThemes.map(theme => (
+                  <option key={theme.id} value={theme.id}>
+                    {theme.name}
+                  </option>
+                ))
+              )}
+            </select>
+            <Link
+              to="/design-system-alt"
+              className="theme-builder-link"
+              onClick={() => setIsOpen(false)}
+              title="Open Theme Builder"
+            >
+              <Icons name="Plus" />
+            </Link>
+          </div>
+          
           <Toggle
             variant="button"
             leftOption="Light"

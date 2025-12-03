@@ -1,0 +1,19 @@
+{
+  "themes": [
+    {
+      "id": "default",
+      "name": "Default",
+      "description": "The default Toqan theme",
+      "filename": ""
+    },
+    {
+      "id": "blah",
+      "name": "blah",
+      "description": "Theme generated from source color #283f3a",
+      "sourceColor": "#283f3a",
+      "filename": "blah.css",
+      "displayFont": "Soehne",
+      "bodyFont": "PT Serif"
+    }
+  ]
+}

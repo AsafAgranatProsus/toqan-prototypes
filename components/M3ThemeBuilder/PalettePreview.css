@@ -65,3 +65,32 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
+/* Extended colors divider */
+.palette-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 8px;
+}
+
+.palette-divider::before,
+.palette-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.palette-divider span {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Extended color row styling */
+.tonal-row-extended .tonal-row-name {
+  color: rgba(255, 255, 255, 0.6);
+}
+

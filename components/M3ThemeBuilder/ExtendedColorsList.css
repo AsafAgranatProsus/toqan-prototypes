@@ -1,0 +1,74 @@
+/* Extended Colors List Styles */
+
+.extended-colors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.extended-colors-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.extended-colors-header .m3-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.extended-colors-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: help;
+  transition: color 0.2s;
+}
+
+.extended-colors-info:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.extended-colors-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.extended-colors-add {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.extended-colors-add:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.extended-colors-add-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.2s;
+}
+
+.extended-colors-add:hover .extended-colors-add-icon {
+  background: rgba(255, 255, 255, 0.12);
+}
+

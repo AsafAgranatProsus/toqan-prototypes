@@ -3,7 +3,58 @@
 .export-buttons {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+/* Theme Name Input */
+.export-theme-name {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.export-theme-name label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.export-theme-name input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.export-theme-name input:focus {
+  outline: none;
+  border-color: #bb86fc;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.export-theme-name input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Export Section */
+.export-section {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
+}
+
+.export-section-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .export-row {
@@ -25,24 +76,123 @@
   cursor: pointer;
   transition: all 0.2s;
   border: none;
-  background: #bb86fc;
-  color: #1e1e1e;
-}
-
-.export-btn:hover {
-  background: #d0a9ff;
-}
-
-.export-btn.secondary {
   background: rgba(255, 255, 255, 0.08);
   color: #e0e0e0;
 }
 
-.export-btn.secondary:hover {
+.export-btn:hover {
   background: rgba(255, 255, 255, 0.15);
+}
+
+/* Primary export button - stands out */
+.export-btn.primary {
+  background: #bb86fc;
+  color: #1e1e1e;
+}
+
+.export-btn.primary:hover {
+  background: #d0a9ff;
+}
+
+.export-btn.secondary {
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.export-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .export-btn svg {
   flex-shrink: 0;
+}
+
+/* Advanced Section */
+.export-advanced {
+  margin-top: 8px;
+}
+
+.export-advanced summary {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 8px 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.export-advanced summary::-webkit-details-marker {
+  display: none;
+}
+
+.export-advanced summary::before {
+  content: '▶';
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+
+.export-advanced[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.export-advanced summary:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.export-advanced .export-section {
+  padding-top: 12px;
+}
+
+/* Success state */
+.export-btn.success {
+  background: #03dac6;
+  color: #1e1e1e;
+}
+
+.export-btn.success:hover {
+  background: #4fecd6;
+}
+
+/* Export hint text */
+.export-hint {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+
+/* Manifest Entry Section */
+.manifest-section {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.manifest-entry {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #e0e0e0;
+  padding: 10px;
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 8px 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Inline code in hints */
+.export-hint code {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: #bb86fc;
 }
 

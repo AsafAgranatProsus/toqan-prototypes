@@ -173,39 +173,51 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange, label
   const [textValue, setTextValue] = useState(value);
   const [outputFormat, setOutputFormat] = useState<'hex' | 'rgba' | 'hsla'>(() => detectColorFormat(value));
   const pickerRef = useRef<HTMLDivElement>(null);
-  const isExternalUpdate = useRef(false);
+  const lastExternalValue = useRef(value);
+  const isUserInteracting = useRef(false);
   
   // Debounce the color for expensive onChange operations
   const debouncedColor = useDebounce(rgbaColor, 50);
   
-  // Update internal state when external value changes
+  // Update internal state when external value changes (but NOT during user interaction)
   useEffect(() => {
-    isExternalUpdate.current = true;
-    setRgbaColor(parseColorToRgba(value));
-    setTextValue(value);
-    setOutputFormat(detectColorFormat(value));
+    // Only update if the external value actually changed and user isn't actively picking
+    if (value !== lastExternalValue.current && !isUserInteracting.current) {
+      lastExternalValue.current = value;
+      setRgbaColor(parseColorToRgba(value));
+      setTextValue(value);
+      setOutputFormat(detectColorFormat(value));
+    }
   }, [value]);
   
-  // Call onChange only when debounced color changes (not on every drag)
+  // Call onChange only when user is interacting (debounced)
   useEffect(() => {
-    // Skip if this was triggered by an external value update
-    if (isExternalUpdate.current) {
-      isExternalUpdate.current = false;
+    // Only propagate changes that came from user interaction
+    if (!isUserInteracting.current) {
       return;
     }
     
     const colorString = rgbaToString(debouncedColor, outputFormat);
-    // Only call onChange if the value actually changed
-    if (colorString !== value) {
-      onChange(colorString);
-    }
-  }, [debouncedColor, outputFormat, onChange, value]);
+    // Update the last known external value to prevent echo
+    lastExternalValue.current = colorString;
+    onChange(colorString);
+    
+    // Reset interaction flag after onChange completes
+    // This allows external updates to be applied again
+    const timer = setTimeout(() => {
+      isUserInteracting.current = false;
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [debouncedColor, outputFormat, onChange]);
   
   // Close picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
+        // Reset interaction flag when picker closes
+        isUserInteracting.current = false;
       }
     };
     
@@ -217,6 +229,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange, label
   
   // Update local state immediately for smooth UI, debounced onChange handles the rest
   const handleColorChange = useCallback((newColor: RgbaColor) => {
+    isUserInteracting.current = true;
     setRgbaColor(newColor);
     const colorString = rgbaToString(newColor, outputFormat);
     setTextValue(colorString);
@@ -230,8 +243,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange, label
   const handleTextBlur = () => {
     try {
       const parsed = parseColorToRgba(textValue);
+      isUserInteracting.current = true;
       setRgbaColor(parsed);
       setOutputFormat(detectColorFormat(textValue));
+      lastExternalValue.current = textValue;
       onChange(textValue);
     } catch {
       // Revert to previous value if invalid
@@ -249,9 +264,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange, label
     const formats: Array<'hex' | 'rgba' | 'hsla'> = ['hex', 'rgba', 'hsla'];
     const currentIndex = formats.indexOf(outputFormat);
     const nextFormat = formats[(currentIndex + 1) % formats.length];
+    isUserInteracting.current = true;
     setOutputFormat(nextFormat);
     const newColorString = rgbaToString(rgbaColor, nextFormat);
     setTextValue(newColorString);
+    lastExternalValue.current = newColorString;
     onChange(newColorString);
   };
   

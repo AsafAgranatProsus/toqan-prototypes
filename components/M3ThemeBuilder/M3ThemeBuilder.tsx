@@ -5,9 +5,13 @@ import {
   generateRandomColor,
   M3Theme,
   argbToHex,
+  CONTRAST_STANDARD,
+  CONTRAST_MEDIUM,
+  CONTRAST_HIGH,
 } from '../../themes/m3';
 import { SourceColorPicker } from './SourceColorPicker';
 import { CoreColorsList } from './CoreColorsList';
+import { ExtendedColorsList } from './ExtendedColorsList';
 import { PalettePreview } from './PalettePreview';
 import { SchemePreview } from './SchemePreview';
 import { ComponentPreview } from './ComponentPreview';
@@ -35,6 +39,15 @@ export interface CustomImage {
   alt: string;
 }
 
+// Extended color type
+export interface ExtendedColor {
+  id: string;
+  name: string;
+  description?: string;
+  color: string;
+  blend: boolean;
+}
+
 export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => {
   // Source color state
   const [sourceColor, setSourceColor] = useState(() => {
@@ -57,6 +70,16 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
   
   // Color match toggle (stay true to input colors)
   const [colorMatch, setColorMatch] = useState(false);
+  
+  // Contrast level (0 = standard, 0.5 = medium, 1 = high)
+  const [contrastLevel, setContrastLevel] = useState(() => {
+    try {
+      const stored = localStorage.getItem('m3-contrast-level');
+      return stored ? parseFloat(stored) : CONTRAST_STANDARD;
+    } catch {
+      return CONTRAST_STANDARD;
+    }
+  });
   
   // Core color overrides - initialize with default values from initial theme
   const [coreColors, setCoreColors] = useState<CoreColors>(() => {
@@ -86,6 +109,64 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
   
   // Track if core colors have been manually modified
   const [coreColorsModified, setCoreColorsModified] = useState(false);
+  
+  // Extended colors state
+  const [extendedColors, setExtendedColors] = useState<ExtendedColor[]>(() => {
+    try {
+      const stored = localStorage.getItem('m3-extended-colors');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+  
+  // Theme name for export
+  const [themeName, setThemeName] = useState(() => {
+    try {
+      return localStorage.getItem('m3-theme-name') || 'Custom Theme';
+    } catch {
+      return 'Custom Theme';
+    }
+  });
+  
+  // Persist theme name
+  useEffect(() => {
+    try {
+      localStorage.setItem('m3-theme-name', themeName);
+    } catch (error) {
+      console.error('Failed to save theme name:', error);
+    }
+  }, [themeName]);
+  
+  // Persist extended colors to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('m3-extended-colors', JSON.stringify(extendedColors));
+    } catch (error) {
+      console.error('Failed to save extended colors:', error);
+    }
+  }, [extendedColors]);
+  
+  // Extended colors handlers
+  const handleAddExtendedColor = useCallback(() => {
+    const newColor: ExtendedColor = {
+      id: `extended-${Date.now()}`,
+      name: `Custom ${extendedColors.length + 1}`,
+      color: '#6750A4',
+      blend: true,
+    };
+    setExtendedColors(prev => [...prev, newColor]);
+  }, [extendedColors.length]);
+  
+  const handleUpdateExtendedColor = useCallback((id: string, updates: Partial<ExtendedColor>) => {
+    setExtendedColors(prev => 
+      prev.map(color => color.id === id ? { ...color, ...updates } : color)
+    );
+  }, []);
+  
+  const handleDeleteExtendedColor = useCallback((id: string) => {
+    setExtendedColors(prev => prev.filter(color => color.id !== id));
+  }, []);
   
   // Typography settings
   const [typography, setTypography] = useState(() => {
@@ -139,10 +220,10 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
     }
   }, [typography.displayFont, typography.bodyFont]);
   
-  // Generate theme when source color changes (initial generation)
+  // Generate theme when source color or contrast level changes (initial generation)
   useEffect(() => {
     try {
-      const newTheme = generateThemeFromColor(sourceColor);
+      const newTheme = generateThemeFromColor(sourceColor, contrastLevel);
       
       // Only set theme directly if we're not in colorMatch mode with modifications
       // (the other useEffect handles that case)
@@ -176,10 +257,11 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
       
       // Save to localStorage
       localStorage.setItem('m3-source-color', sourceColor);
+      localStorage.setItem('m3-contrast-level', contrastLevel.toString());
     } catch (error) {
       console.error('Failed to generate theme:', error);
     }
-  }, [sourceColor, coreColorsModified, colorMatch]);
+  }, [sourceColor, coreColorsModified, colorMatch, contrastLevel]);
   
   // Regenerate theme when core colors are modified or colorMatch changes
   useEffect(() => {
@@ -187,7 +269,7 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
     if (!coreColorsModified) return;
     
     try {
-      // Apply user's color overrides with colorMatch flag
+      // Apply user's color overrides with colorMatch flag and contrast level
       // colorMatch=true: use exact colors
       // colorMatch=false: harmonize colors with source
       const newTheme = generateThemeWithOverrides(
@@ -200,14 +282,15 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
           neutral: coreColors.neutral,
           neutralVariant: coreColors.neutralVariant,
         },
-        colorMatch
+        colorMatch,
+        contrastLevel
       );
       
       setTheme(newTheme);
     } catch (error) {
       console.error('Failed to regenerate theme with overrides:', error);
     }
-  }, [coreColors, coreColorsModified, sourceColor, colorMatch]);
+  }, [coreColors, coreColorsModified, sourceColor, colorMatch, contrastLevel]);
   
   // Also regenerate when colorMatch changes even without modifications
   // Note: This only has a visible effect when colors have been manually overridden
@@ -228,14 +311,15 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
           neutral: coreColors.neutral,
           neutralVariant: coreColors.neutralVariant,
         },
-        colorMatch
+        colorMatch,
+        contrastLevel
       );
       
       setTheme(newTheme);
     } catch (error) {
       console.error('Failed to regenerate theme with colorMatch:', error);
     }
-  }, [colorMatch]); // Only trigger on colorMatch change
+  }, [colorMatch, contrastLevel]); // Trigger on colorMatch or contrast change
   
   // Handle source color change
   const handleSourceColorChange = useCallback((color: string) => {
@@ -288,10 +372,52 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
       {/* Header */}
       <header className="m3-builder-header">
         <div className="m3-builder-title">
-          <h1>Theme Builder</h1>
-          <span className="m3-builder-subtitle">M3 Color System</span>
+          <h1>Toqan Theme Builder</h1>
+          {/* <span className="m3-builder-subtitle">Harmonic Color System</span> */}
         </div>
         <div className="m3-builder-header-actions">
+          {/* Contrast Level Selector */}
+          <div className="m3-contrast-selector" role="group" aria-label="Contrast level">
+            <button
+              className={`m3-contrast-btn ${contrastLevel === CONTRAST_STANDARD ? 'active' : ''}`}
+              onClick={() => setContrastLevel(CONTRAST_STANDARD)}
+              title="Standard contrast"
+              aria-pressed={contrastLevel === CONTRAST_STANDARD}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2"/>
+                <path d="M12 4v16" stroke="currentColor" strokeWidth="2"/>
+                <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
+              </svg>
+            </button>
+            <button
+              className={`m3-contrast-btn ${contrastLevel === CONTRAST_MEDIUM ? 'active' : ''}`}
+              onClick={() => setContrastLevel(CONTRAST_MEDIUM)}
+              title="Medium contrast"
+              aria-pressed={contrastLevel === CONTRAST_MEDIUM}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2"/>
+                <path d="M12 4v16" stroke="currentColor" strokeWidth="2"/>
+                <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+              </svg>
+            </button>
+            <button
+              className={`m3-contrast-btn ${contrastLevel === CONTRAST_HIGH ? 'active' : ''}`}
+              onClick={() => setContrastLevel(CONTRAST_HIGH)}
+              title="High contrast"
+              aria-pressed={contrastLevel === CONTRAST_HIGH}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                <path d="M12 4v16" stroke="currentColor" strokeWidth="2.5"/>
+                <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+          
+          {/* Mode Toggle */}
           <button 
             className={`m3-mode-toggle ${mode}`}
             onClick={toggleMode}
@@ -355,6 +481,17 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
               />
             </section>
             
+            {/* Extended Colors Section */}
+            <section className="m3-section">
+              <ExtendedColorsList
+                colors={extendedColors}
+                sourceColor={sourceColor}
+                onAdd={handleAddExtendedColor}
+                onUpdate={handleUpdateExtendedColor}
+                onDelete={handleDeleteExtendedColor}
+              />
+            </section>
+            
             {/* Typography Section */}
             <section className="m3-section">
               <h2 className="m3-section-title">Typography</h2>
@@ -369,7 +506,18 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
             {/* Export Section */}
             <section className="m3-section">
               <h2 className="m3-section-title">Export</h2>
-              {theme && <ExportButtons theme={theme} />}
+              {theme && (
+                <ExportButtons 
+                  theme={theme} 
+                  extendedColors={extendedColors} 
+                  sourceColor={sourceColor}
+                  themeName={themeName}
+                  onThemeNameChange={setThemeName}
+                  displayFont={typography.displayFont}
+                  bodyFont={typography.bodyFont}
+                  contrastLevel={contrastLevel}
+                />
+              )}
             </section>
           </div>
         </aside>
@@ -391,7 +539,7 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
               {/* Tonal Palettes */}
               <section className="m3-preview-section">
                 <h3 className="m3-preview-title">Tonal Palettes</h3>
-                <PalettePreview theme={theme} />
+                <PalettePreview theme={theme} extendedColors={extendedColors} sourceColor={sourceColor} />
               </section>
             </>
           )}

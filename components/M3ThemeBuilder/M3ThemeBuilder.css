@@ -69,6 +69,45 @@
   color: #1e1e1e;
 }
 
+/* Contrast Selector */
+.m3-contrast-selector {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.m3-contrast-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.m3-contrast-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #e0e0e0;
+}
+
+.m3-contrast-btn.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.m3-contrast-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
 /* Main Content - fills remaining height */
 .m3-builder-content {
   display: flex;

@@ -14,7 +14,48 @@
   width: 260px;
   padding: 1.5rem;
   background: transparent;
+  
+  
+  .new__button {
+    padding: 0.5rem 0.75rem;
+    border-radius: .5rem;
+    white-space: nowrap;
+  
+  }
+  
+  .new__button span {
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: visible; /* Ensure text is visible */
+  }
+
+  a {
+    font-weight: 400;
+  }
+
+  nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    flex: 0 0 auto;
+
+    li a {
+      text-decoration: none;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
 }
+
+
 
 .sidebar__header-container {
   display: flex;

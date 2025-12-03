@@ -101,6 +101,31 @@ function saveCustomThemes(themes: CustomTheme[]) {
 }
 
 /**
+ * Remove ALL inline style properties from documentElement
+ * This ensures CSS stylesheets (like imported themes) take precedence
+ */
+function clearAllInlineStyles() {
+  const root = document.documentElement;
+  // Get all inline style properties and remove them
+  const style = root.style;
+  const propsToRemove: string[] = [];
+  
+  for (let i = 0; i < style.length; i++) {
+    const prop = style[i];
+    // Only remove CSS custom properties (--*)
+    if (prop.startsWith('--')) {
+      propsToRemove.push(prop);
+    }
+  }
+  
+  propsToRemove.forEach(prop => {
+    root.style.removeProperty(prop);
+  });
+  
+  console.log(`[ThemeCustomization] Cleared ${propsToRemove.length} inline CSS properties`);
+}
+
+/**
  * Apply CSS variables to the DOM
  * 
  * This function applies both --color-* (primitive) and --theme-* (semantic) tokens
@@ -113,58 +138,9 @@ function saveCustomThemes(themes: CustomTheme[]) {
  */
 function applyCSSVariables(variables: Record<string, string>, hasCustomizations: boolean) {
   if (!hasCustomizations) {
-    // No customizations - remove all custom properties to let theme classes work
-    Object.keys(variables).forEach(name => {
-      document.documentElement.style.removeProperty(name);
-    });
-    
-    // Also remove all --theme-* tokens that might have been set previously
-    const allThemeTokens = [
-      // Backgrounds
-      '--theme-bg-app', '--theme-bg-app-lighter', '--theme-bg-sidebar',
-      '--theme-bg-sidebar-mobile', '--theme-bg-main', '--theme-bg-input',
-      '--theme-bg-menu', '--theme-bg-item-selected',
-      // Text
-      '--theme-text-main', '--theme-text-secondary', '--theme-text-tertiary', '--theme-text-light',
-      // Border
-      '--theme-border',
-      // Buttons - Primary
-      '--theme-btn-primary-bg', '--theme-btn-primary-bg-hover', '--theme-btn-primary-text',
-      // Buttons - Secondary
-      '--theme-btn-secondary-bg', '--theme-btn-secondary-bg-hover', '--theme-btn-secondary-text',
-      // Buttons - Tertiary
-      '--theme-btn-tertiary-bg', '--theme-btn-tertiary-bg-hover', '--theme-btn-tertiary-text',
-      // Buttons - Outline
-      '--theme-btn-outline-bg', '--theme-btn-outline-bg-hover', '--theme-btn-outline-text', '--theme-btn-outline-border',
-      // Buttons - Icon
-      '--theme-btn-icon-bg', '--theme-btn-icon-text', '--theme-btn-icon-border',
-      '--theme-btn-icon-bg-hover', '--theme-btn-icon-text-hover',
-      // Tags
-      '--theme-tag-date-bg', '--theme-tag-date-text',
-      '--theme-tag-beta-bg', '--theme-tag-beta-text',
-      '--theme-tag-recommended-bg', '--theme-tag-recommended-text',
-      // Selection
-      '--theme-selection-bg', '--theme-text-selection',
-      // Focus & Links
-      '--theme-focus-ring', '--theme-link-default', '--theme-link-hover',
-      // Status Colors
-      '--theme-status-info-bg', '--theme-status-info-text', '--theme-status-info-border',
-      '--theme-status-success-bg', '--theme-status-success-text', '--theme-status-success-border',
-      '--theme-status-warning-bg', '--theme-status-warning-text', '--theme-status-warning-border',
-      '--theme-status-error-bg', '--theme-status-error-text', '--theme-status-error-border',
-      // Surfaces
-      '--theme-surface-default', '--theme-surface-elevated', '--theme-surface-active',
-      // Scrollbars
-      '--theme-scrollbar-thumb', '--theme-scrollbar-thumb-hover', '--theme-scrollbar-track',
-      // Accent Colors
-      '--theme-accent-primary', '--theme-accent-primary-light', '--theme-accent-primary-bg',
-      '--theme-accent-secondary', '--theme-accent-secondary-light', '--theme-accent-secondary-bg',
-      '--theme-accent-tertiary', '--theme-accent-tertiary-light', '--theme-accent-tertiary-bg',
-    ];
-    allThemeTokens.forEach(token => {
-      document.documentElement.style.removeProperty(token);
-    });
-    
+    // No customizations - clear ALL inline CSS custom properties
+    // This ensures imported CSS themes take precedence
+    clearAllInlineStyles();
     return;
   }
   
@@ -224,6 +200,14 @@ export const ThemeCustomizationProvider: React.FC<{ children: React.ReactNode }>
     
     return { ...effectiveBase, ...overrides };
   }, [baseTheme, activeTheme, themeMode]);
+  
+  // On mount, clear any stale inline styles if no customizations
+  // This ensures imported CSS themes work properly
+  useEffect(() => {
+    if (!isCustomized) {
+      clearAllInlineStyles();
+    }
+  }, []); // Only run on mount
   
   // Apply CSS variables whenever resolved tokens change
   // But only if there are actual customizations
