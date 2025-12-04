@@ -1,0 +1,78 @@
+/* ============================================
+   Top Navbar - PROTOTYPE MODE
+   
+   Requires BOTH .new-branding AND .new-top-navbar on HTML element
+   
+   Pattern: .new-branding.new-top-navbar { }
+   
+   How it works:
+   - HTML has both classes → navbar shows, styles apply ✅
+   - HTML missing .new-branding → navbar hidden (master switch off)
+   - HTML missing .new-top-navbar → navbar hidden (feature off)
+   
+   Production graduation:
+   Change from: .new-branding.new-top-navbar { }
+   To: .new-top-navbar { }
+   ============================================ */
+
+.new-branding.new-top-navbar {
+  /* Navbar container */
+  .top-navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--color-ui-background-elevated);
+    border-bottom: 1px solid var(--color-ui-border);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-6);
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s ease;
+  }
+
+  .top-navbar__left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .top-navbar__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  /* Push main content down when navbar is active */
+  .main-content {
+    margin-top: 64px;
+  }
+
+  /* Hide old header when new navbar is active */
+  .main-content__header {
+    display: none;
+  }
+  
+  /* Adjust sidebar positioning if it exists */
+  .sidebar {
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+
+  /* Adjust feature menu positioning */
+  .feature-menu {
+    top: calc(64px + var(--space-4));
+  }
+}
+
+/* ===== DARK MODE ADJUSTMENTS ===== */
+.new-branding.new-top-navbar.theme-dark {
+  .top-navbar-container {
+    background: var(--color-ui-background-elevated);
+    border-bottom-color: var(--color-ui-border);
+  }
+}
+

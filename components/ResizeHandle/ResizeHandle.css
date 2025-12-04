@@ -1,0 +1,119 @@
+/* ============================================
+   Resize Handle - Fully Customizable
+   
+   CSS Variables for customization:
+   --resize-handle-width: Width of the handle (default: 4px)
+   --resize-handle-color: Color of the handle (default: primary)
+   --resize-handle-hover-color: Color on hover (default: primary hover)
+   --resize-edge-highlight-width: Width of edge highlight (default: 2px)
+   --resize-edge-highlight-color: Color of edge highlight (default: primary)
+   --buffer-size: Size of hover detection area (set via prop)
+   ============================================ */
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  pointer-events: auto;
+  user-select: none; /* Prevent text selection on double-click */
+}
+
+/* Position variants */
+.resize-handle--right {
+  right: 0;
+  transform: translateX(50%);
+}
+
+.resize-handle--left {
+  left: 0;
+  transform: translateX(-50%);
+}
+
+/* Hit area - invisible but captures mouse events */
+.resize-handle__hit-area {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--buffer-size, 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ew-resize;
+  user-select: none; /* Prevent text selection */
+}
+
+/* Visual handle - the visible part */
+.resize-handle__visual {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--resize-handle-width, 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--resize-handle-color, var(--color-primary-default));
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  pointer-events: none; /* Allow cursor to pass through */
+}
+
+/* Edge highlight - animated glow effect */
+.resize-handle__edge-highlight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--resize-edge-highlight-width, 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--resize-edge-highlight-color, var(--color-primary-default));
+  opacity: 0;
+  box-shadow: 0 0 8px var(--color-primary-default);
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* Allow cursor to pass through */
+  cursor: ew-resize;
+
+}
+
+/* Near edge state - show edge highlight AND handle */
+.resize-handle--near-edge .resize-handle__edge-highlight {
+  opacity: 0.8;
+  animation: edge-pulse 1.5s ease-in-out infinite;
+}
+
+.resize-handle--near-edge .resize-handle__visual {
+  opacity: 1;
+}
+
+/* Dragging state */
+.resize-handle--dragging .resize-handle__visual {
+  opacity: 1;
+  background: var(--resize-handle-hover-color, var(--color-primary-hover));
+}
+
+.resize-handle--dragging .resize-handle__edge-highlight {
+  opacity: 1;
+}
+
+/* Pulse animation for edge highlight */
+@keyframes edge-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    box-shadow: 0 0 8px var(--color-primary-default);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 12px var(--color-primary-default), 0 0 20px var(--color-primary-background);
+  }
+}
+
+/* Hover over handle itself */
+.resize-handle:hover .resize-handle__visual {
+  opacity: 1;
+  background: var(--resize-handle-hover-color, var(--color-primary-hover));
+}
+
+/* Dark mode adjustments */
+.theme-dark .resize-handle__edge-highlight {
+  box-shadow: 0 0 12px var(--color-primary-default);
+}
+

@@ -6,6 +6,9 @@ const THEME_STORAGE_KEY = 'toqan-theme-mode';
 type DesignSystem = 'old' | 'new';
 type ThemeMode = 'light' | 'dark';
 
+// Helper to convert camelCase to kebab-case
+const toKebabCase = (str: string) => str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
+
 interface DesignSystemContextType {
   // Design System Selection
   designSystem: DesignSystem;
@@ -23,26 +26,29 @@ interface DesignSystemContextType {
 const DesignSystemContext = createContext<DesignSystemContextType | undefined>(undefined);
 
 /**
- * Apply both design system and theme mode to DOM
+ * Apply design system, theme mode, and all feature flags to DOM
+ * All classes are applied to HTML element for consistent CSS coupling
  */
-const applyDesignAndTheme = (designSystem: DesignSystem, themeMode: ThemeMode) => {
-  // Apply classes to documentElement (html) instead of body
-  // This is crucial because CSS custom properties are defined on :root (html element)
+const applyDesignAndTheme = (designSystem: DesignSystem, themeMode: ThemeMode, flags: any) => {
+  // Apply classes to documentElement (html) for CSS custom properties and feature coupling
   const root = document.documentElement;
   
-  // Apply design system class
-  root.classList.toggle('design-new', designSystem === 'new');
-  root.classList.toggle('design-old', designSystem === 'old');
+  // Apply prototype mode class (master safety switch)
+  // Pattern: .new-branding.new-feature { } requires BOTH classes on HTML
+  root.classList.toggle('new-branding', designSystem === 'new');
+  
+  // Apply ALL feature flags as classes to HTML element
+  // This enables the coupling pattern: .new-branding.new-feature { }
+  for (const flag in flags) {
+    const className = toKebabCase(flag);
+    root.classList.toggle(className, flags[flag as keyof typeof flags]);
+  }
   
   // Apply theme mode class
   root.classList.toggle('theme-dark', themeMode === 'dark');
   root.classList.toggle('theme-light', themeMode === 'light');
   
-  // Legacy support - keep these for backwards compatibility
-  root.classList.toggle('new-branding', designSystem === 'new');
-  root.classList.toggle('old-toqan', designSystem === 'old');
-  
-  // ALSO apply to body for any body-specific selectors
+  // ALSO apply theme to body for any body-specific selectors
   document.body.classList.toggle('theme-dark', themeMode === 'dark');
   document.body.classList.toggle('theme-light', themeMode === 'light');
 };
@@ -106,10 +112,10 @@ export const DesignSystemProvider: React.FC<{ children: React.ReactNode }> = ({ 
   // Clean URL after loading theme from query parameter (optional, handled by FeatureFlagContext)
   // Note: URL cleaning is centrally managed in FeatureFlagContext to avoid conflicts
   
-  // Apply design system and theme whenever they change
+  // Apply design system, theme, and all feature flags whenever they change
   useEffect(() => {
-    applyDesignAndTheme(designSystem, themeMode);
-  }, [designSystem, themeMode]);
+    applyDesignAndTheme(designSystem, themeMode, flags);
+  }, [designSystem, themeMode, flags]);
   
   // Save theme mode to localStorage when it changes
   useEffect(() => {

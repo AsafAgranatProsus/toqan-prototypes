@@ -7,6 +7,7 @@
 @import url("styles/typography.css");
 @import url("styles/tables.css");
 @import url("styles/utilities.css");
+@import url("styles/panels.css");
 
 /* Component Styles - Import core components to ensure they're always bundled */
 @import url("components/Button/Button.css");
@@ -112,48 +113,14 @@
 
 /* ============================================= */
 /*           _old-toqan.css                      */
+/*   Legacy styles - to be migrated/removed     */
 /* ============================================= */
 
 .app-layout {
   background-color: var(--theme-bg-app);
 }
 
-
-.main-content {
-  overflow: hidden;
-  padding: 1rem 1rem 0px;
-}
-
-.main-content-wrapper {
-  padding: 1px 1px 0px;
-  border-radius: 1rem;
-  height: 100%;
-  position: relative;
-  background-image: linear-gradient( var(--theme-border), var(--theme-bg-app));
-}
-
-.main-content-inner-wrapper {
-  border-radius: calc(-1px + 1rem);
-  height: 100%;
-  background-position: 0px 0px;
-  background-repeat: no-repeat;
-  transition: border-radius 0.4s cubic-bezier(0.05, 0.84, 0.31, 1), background-color var(--transition-fast);
-  display: flex;
-  background-image: linear-gradient(var(--theme-bg-app-lighter), var(--theme-bg-app));
-}
-
-.main-content__header {
-  border-bottom: none;
-  display: inline-flex;
-  align-items: center;
-}
-
-.main-content__header .dropdown-container {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 2;
-}
+/* All MainContent styles moved to components/MainContent/MainContent.css */
 
 .toqan-model-selector {
   position: fixed;
@@ -173,72 +140,4 @@
   scrollbar-color: var(--color-ui-border) transparent;
   scroll-behavior: smooth;
   scrollbar-width: thin;
-}
-
-.main-content .gradient-background {
-  position: absolute;
-  border-radius: 1rem;
-}
-
-.main-content .gradient-blobs {
-  filter: blur(120px);
-  opacity: 0.9;
-}
-
-.main-content .gradient-grain {
-  display: none;
-}
-
-.main-content>header,
-.main-content__body {
-  position: relative;
-  z-index: 1;
-}
-
-
-
-.main-content__title {
-  font-size: 2rem;
-}
-
-.chat-input-container {
-  background-color: var(--theme-bg-input);
-  box-shadow: 0px 0.125rem 0.25rem 0px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--theme-border);
-  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
-  max-width: 48rem;
-  width: 100%;
-  border-radius: 1rem;
-  gap: .5rem;
-}
-
-.chat-input-prefix {
-  display: flex;
-  gap: .25rem;
-  margin-left: -0.25rem;
-}
-
-.chat-input-prefix button,
-.chat-input-suffix button {
-  height: 36px;
-  width: 36px;
-}
-
-.main-content__old-gradient-wrapper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  place-content: center;
-  z-index: 1;
-}
-
-.theme-dark .main-content__old-gradient-wrapper {
-  filter: invert(1);
-}
-
-.assistant-message {
-  display: flex;
-  flex-direction: column;
-  gap: .5rem;
 }

@@ -1,0 +1,107 @@
+/* ============================================
+   Right Panel - New Design
+   
+   Coupled with: .new-branding.new-right-panel
+   Only active when both classes are present
+   ============================================ */
+
+.new-branding.new-right-panel .right-panel {
+  position: relative; /* For absolute positioning of resize handle */
+  display: flex;
+  flex-direction: column;
+  /* width removed - set via inline style for dynamic resizing */
+  height: 100%;
+  background: var(--color-ui-background-elevated);
+  border-left: 1px solid var(--color-ui-border);
+  transition: transform 0.3s ease;
+}
+
+/* Mobile styles */
+.new-branding.new-right-panel .right-panel--mobile {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+  transform: translateX(100%);
+}
+
+.new-branding.new-right-panel .right-panel--mobile.right-panel--open {
+  transform: translateX(0);
+}
+
+/* Header */
+.new-branding.new-right-panel .right-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-ui-border);
+  flex-shrink: 0;
+}
+
+.new-branding.new-right-panel .right-panel__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+  color: var(--color-primary-default);
+}
+
+/* Content */
+.new-branding.new-right-panel .right-panel__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+.new-branding.new-right-panel .right-panel__section {
+  margin-bottom: var(--space-6);
+}
+
+.new-branding.new-right-panel .right-panel__section:last-child {
+  margin-bottom: 0;
+}
+
+.new-branding.new-right-panel .right-panel__section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.new-branding.new-right-panel .right-panel__section-header h3 {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.new-branding.new-right-panel .right-panel__section-header svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-secondary);
+}
+
+.new-branding.new-right-panel .right-panel__placeholder {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-body-sm);
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--color-background-tertiary);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+/* Main content now auto-adjusts via flexbox - no manual margin needed */
+
+/* Mobile: panel overlays, so no adjustment needed */
+.new-branding.new-right-panel .right-panel--mobile ~ .main-content {
+  margin-right: 0;
+}
+
+/* Top navbar adjustment for mobile overlay */
+.new-branding.new-top-navbar.new-right-panel .right-panel--mobile {
+  top: 60px;
+}
+

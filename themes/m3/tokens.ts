@@ -484,8 +484,8 @@ export function exportThemeAsAppCSS(
 
 /* ===== DARK MODE ===== */
 /* Using specific selectors to match tokens.css specificity */
-.theme-dark:not(.design-new),
-.design-new.theme-dark,
+.theme-dark,
+.new-branding.theme-dark,
 [data-theme="dark"] {
   /* Primary */
   --color-primary-default: ${argbToHex(darkScheme.primary)};

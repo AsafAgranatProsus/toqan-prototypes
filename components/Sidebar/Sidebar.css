@@ -3,7 +3,7 @@
 /* ============================================= */
 
 .sidebar {
-  width: 280px;
+  width: 220px;
   background: var(--theme-bg-sidebar);
   display: flex;
   flex-direction: column;

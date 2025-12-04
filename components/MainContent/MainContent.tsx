@@ -101,10 +101,6 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
     const [showGradient, setShowGradient] = useState(true);
     const gradientRef = useRef<HTMLDivElement>(null);
 
-    const title = flags.newBranding
-        ? "Welcome to the new Toqan"
-        : "How can Toqan help you today?";
-
     // Fade out and remove gradient when entering conversation view
     useEffect(() => {
         if (activeScenario && gradientRef.current) {
@@ -153,14 +149,12 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                         <div className="main-content__body">
                             <div className="main-content__inner">
                                 <h1 className="main-content__title">
-                                    {title}
+                                    How can Toqan help you today?
                                 </h1>
                                 <div className="main-content__chat-section">
-                                    {!flags.newBranding && (
-                                        <div className="main-content__agent-selector">
-                                            <AgentSelector />
-                                        </div>
-                                    )}
+                                    <div className="main-content__agent-selector">
+                                        <AgentSelector />
+                                    </div>
 
                                     <ChatInput />
 

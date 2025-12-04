@@ -220,6 +220,8 @@ export async function loadTheme(theme: ThemeMetadata): Promise<void> {
   
   // If no filename, we're using the default (tokens.css)
   if (!theme.filename) {
+    // Save default theme selection
+    localStorage.setItem('toqan-selected-theme', '');
     return Promise.resolve();
   }
   
@@ -230,7 +232,11 @@ export async function loadTheme(theme: ThemeMetadata): Promise<void> {
   link.href = `/themes/${theme.filename}`;
   
   return new Promise((resolve, reject) => {
-    link.onload = () => resolve();
+    link.onload = () => {
+      // Persist theme selection to localStorage
+      localStorage.setItem('toqan-selected-theme', theme.filename);
+      resolve();
+    };
     link.onerror = () => reject(new Error(`Failed to load theme: ${theme.filename}`));
     document.head.appendChild(link);
   });

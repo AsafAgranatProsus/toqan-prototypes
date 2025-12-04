@@ -115,6 +115,69 @@
   transform: scale(0.95);
 }
 
+/* ===== MATERIAL DESIGN 3 VARIANTS ===== */
+
+/* Filled Button - Highest emphasis (alias for primary) */
+.btn--filled {
+  background-color: var(--color-primary-default);
+  color: var(--color-primary-on-container);
+}
+
+.btn--filled:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--filled:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Tonal Button - Medium emphasis with secondary container */
+.btn--tonal {
+  background-color: var(--color-secondary-container);
+  color: var(--color-secondary-on-container);
+}
+
+.btn--tonal:hover:not(:disabled) {
+  background-color: var(--color-secondary-container-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--tonal:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Outlined Button - Medium emphasis with border */
+.btn--outlined {
+  background-color: transparent;
+  color: var(--color-primary-default);
+  border: 1px solid var(--color-ui-border);
+}
+
+.btn--outlined:hover:not(:disabled) {
+  background-color: var(--color-primary-background);
+  border-color: var(--color-primary-default);
+}
+
+.btn--outlined:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Text Button - Lowest emphasis, no background */
+.btn--text {
+  background-color: transparent;
+  color: var(--color-primary-default);
+  border: none;
+}
+
+.btn--text:hover:not(:disabled) {
+  background-color: var(--color-primary-background);
+}
+
+.btn--text:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
 /* ===== BUTTON SHAPES ===== */
 
 .btn--rounded {

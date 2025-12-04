@@ -202,16 +202,8 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
     }
   };
 
-  useEffect(() => {
-    for (const flag in flags) {
-      const className = toKebabCase(flag).replace('enable-', '');
-      if (flags[flag as keyof typeof flags]) {
-        document.body.classList.add(className);
-      } else {
-        document.body.classList.remove(className);
-      }
-    }
-  }, [flags]);
+  // Feature flag classes are now applied to HTML element by DesignSystemContext
+  // This ensures the coupling pattern .new-branding.new-feature works correctly
 
   // Load Google Fonts dynamically and apply to CSS variables
   useEffect(() => {
@@ -290,12 +282,11 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
               <strong>Theme Mode:</strong> {themeMode}
             </p>
             <div className="design-system-links">
-              <div className="design-system-link-with-icon">
-                <Icons name="Layout" />
+              {/* <div className="design-system-link-with-icon">
                 <span className="design-system-label">Design System</span>
-              </div>
+              </div> */}
               <div className="design-system-actions">
-                <button
+                {/* <button
                   className="design-system-action-btn"
                   onClick={() => {
                     onOpenCustomization?.();
@@ -304,13 +295,20 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   title="Edit design tokens (Alt+\)"
                 >
                   Edit
-                </button>
+                </button> */}
+                <Link
+                  to="/theme-builder"
+                  className="design-system-action-btn"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Theme Builder
+                </Link>
                 <Link
                   to="/design-system"
                   className="design-system-action-btn"
                   onClick={() => setIsOpen(false)}
                 >
-                  Demo
+                  System tokens
                 </Link>
               </div>
             </div>
@@ -363,7 +361,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
         <div className="feature-menu-section">
           <h3>Feature Flags</h3>
           
-          <Collapsible closeOnOutsideClick={false}>
+          <Collapsible closeOnOutsideClick={false} storageKey="new-branding">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>New branding</span>
               <Icons name="ChevronDown" className="chevron-icon" />
@@ -371,30 +369,56 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             <Collapsible.Content>
               <div className="feature-menu-collapsible-content">
                 <Toggle
-                  label="New Branding"
+                  label="Enable new features"
                   checked={flags.newBranding}
                   onChange={(checked) => setFlag('newBranding', checked)}
                 />
+                <hr style={{ margin: 'var(--space-3) 0', border: 'none', borderTop: '1px solid var(--color-ui-border)' }} />
                 <Toggle
-                  label="New Typography"
+                  label="Typography"
                   checked={flags.newTypography}
                   onChange={(checked) => setFlag('newTypography', checked)}
                 />
                 <Toggle
-                  label="New Bubble"
+                  label="Chat Bubbles"
                   checked={flags.newBubble}
                   onChange={(checked) => setFlag('newBubble', checked)}
                 />
                 <Toggle
-                  label="New Tables"
+                  label="Tables"
                   checked={flags.newTables}
                   onChange={(checked) => setFlag('newTables', checked)}
+                />
+                <Toggle
+                  label="Top bar"
+                  checked={flags.newTopNavbar}
+                  onChange={(checked) => setFlag('newTopNavbar', checked)}
+                />
+                <Toggle
+                  label="Left Sidebar"
+                  checked={flags.newLeftSidebar}
+                  onChange={(checked) => setFlag('newLeftSidebar', checked)}
+                />
+                <Toggle
+                  label="Right Panel"
+                  checked={flags.newRightPanel}
+                  onChange={(checked) => setFlag('newRightPanel', checked)}
+                />
+                <Toggle
+                  label="Main Stage"
+                  checked={flags.newMainStage}
+                  onChange={(checked) => setFlag('newMainStage', checked)}
+                />
+                <Toggle
+                  label="Resizable Panels"
+                  checked={flags.newResizeablePanels}
+                  onChange={(checked) => setFlag('newResizeablePanels', checked)}
                 />
               </div>
             </Collapsible.Content>
           </Collapsible>
 
-          <Collapsible closeOnOutsideClick={false}>
+          <Collapsible closeOnOutsideClick={false} storageKey="conversations">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>Conversations</span>
               <Icons name="ChevronDown" className="chevron-icon" />
@@ -425,7 +449,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             </Collapsible.Content>
           </Collapsible>
 
-          <Collapsible closeOnOutsideClick={false}>
+          <Collapsible closeOnOutsideClick={false} storageKey="discovery">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>Discovery</span>
               <Icons name="ChevronDown" className="chevron-icon" />
@@ -446,7 +470,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             </Collapsible.Content>
           </Collapsible>
 
-          <Collapsible closeOnOutsideClick={false}>
+          <Collapsible closeOnOutsideClick={false} storageKey="personalization">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>Personalization</span>
               <Icons name="ChevronDown" className="chevron-icon" />
@@ -467,7 +491,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             </Collapsible.Content>
           </Collapsible>
 
-          <Collapsible closeOnOutsideClick={false}>
+          <Collapsible closeOnOutsideClick={false} storageKey="typography">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>Typography</span>
               <Icons name="ChevronDown" className="chevron-icon" />
@@ -507,7 +531,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           </Collapsible>
 
           {Object.keys(flags).filter(flag => 
-            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'plays', 'builtByOther', 'themes', 'showThemeDebugger'].includes(flag)
+            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'plays', 'builtByOther', 'themes', 'showThemeDebugger'].includes(flag)
           ).map(flag => (
             <Toggle
               key={flag}

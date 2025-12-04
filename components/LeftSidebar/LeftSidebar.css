@@ -1,0 +1,151 @@
+/* ============================================
+   Left Sidebar - PROTOTYPE MODE
+   
+   Requires BOTH .new-branding AND .new-left-sidebar on HTML element
+   
+   Pattern: .new-branding.new-left-sidebar { }
+   
+   How it works:
+   - HTML has both classes → new sidebar shows, old sidebar hidden ✅
+   - HTML missing .new-branding → old sidebar shows (master switch off)
+   - HTML missing .new-left-sidebar → old sidebar shows (feature off)
+   
+   Production graduation:
+   Change from: .new-branding.new-left-sidebar { }
+   To: .new-left-sidebar { }
+   ============================================ */
+
+.new-branding.new-left-sidebar {
+  /* Hide the old sidebar */
+  .sidebar {
+    display: none;
+  }
+
+  /* Show and style the new left sidebar */
+  .left-sidebar {
+    position: relative; /* For absolute positioning of resize handle */
+    display: flex;
+    flex-direction: column;
+    /* width removed - set via inline style for dynamic resizing */
+    height: 100%;
+    background: var(--color-ui-background-elevated);
+    border-right: 1px solid var(--color-ui-border);
+    transition: transform 0.3s ease;
+    overflow: visible; /* Ensure resize handle isn't clipped */
+
+    .logo {
+      svg {
+        height: 30px;
+      }
+    }
+  }
+
+  /* Handle only shows when hovering near the edge, not when hovering panel */
+
+  .left-sidebar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-ui-border);
+  }
+
+  .left-sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--color-ui-border);
+  }
+
+  .left-sidebar__nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border-radius: var(--radius-default);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .left-sidebar__nav-item:hover {
+    background: var(--color-ui-active);
+    color: var(--color-text-default);
+  }
+
+  .left-sidebar__nav-item--active {
+    background: var(--color-primary-background);
+    color: var(--color-primary-default);
+  }
+
+  .left-sidebar__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+  }
+
+  .left-sidebar__section-header {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    margin-bottom: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .left-sidebar__section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-2);
+
+    /* svg {
+      width: 16px;
+      height: 16px;
+    } */
+  }
+
+  .left-sidebar__section-header .btn--text {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-size-body-xs);
+    font-weight: var(--font-weight-medium);
+    min-height: auto;
+  }
+
+  .left-sidebar__placeholder {
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-body-sm);
+    text-align: center;
+    margin-top: var(--space-8);
+  }
+
+  .left-sidebar__footer {
+    padding: var(--space-3);
+    border-top: 1px solid var(--color-ui-border);
+  }
+
+  /* Mobile styles */
+  .left-sidebar--mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    transform: translateX(-100%);
+  }
+
+  .left-sidebar--mobile.left-sidebar--open {
+    transform: translateX(0);
+  }
+}
+
+/* Without the feature flag, don't render the new sidebar at all */
+.left-sidebar {
+  display: none;
+}
+

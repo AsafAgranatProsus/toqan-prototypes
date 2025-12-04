@@ -25,8 +25,8 @@ const applyTheme = (theme: Theme, newBranding: boolean) => {
     }
   });
 
-  document.body.classList.toggle('new-branding', newBranding);
-  document.body.classList.toggle('old-toqan', !newBranding);
+  // Note: DesignSystemContext handles the .new-branding class on HTML
+  // This legacy code remains for backward compatibility but may not be needed
   document.body.classList.toggle('theme-dark', theme.name === 'dark');
   document.body.classList.toggle('theme-light', theme.name === 'light');
 };

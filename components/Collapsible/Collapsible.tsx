@@ -19,10 +19,30 @@ export const useCollapsible = () => {
   return context;
 };
 
-const CollapsibleRoot: React.FC<{ children: React.ReactNode, closeOnOutsideClick?: boolean, defaultOpen?: boolean }> = ({ children, closeOnOutsideClick = true, defaultOpen = false }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+const CollapsibleRoot: React.FC<{ 
+  children: React.ReactNode, 
+  closeOnOutsideClick?: boolean, 
+  defaultOpen?: boolean,
+  storageKey?: string // Optional key for localStorage persistence
+}> = ({ children, closeOnOutsideClick = true, defaultOpen = false, storageKey }) => {
+  // Load initial state from localStorage if storageKey is provided
+  const [isOpen, setIsOpen] = useState(() => {
+    if (storageKey) {
+      const stored = localStorage.getItem(`collapsible-${storageKey}`);
+      return stored !== null ? stored === 'true' : defaultOpen;
+    }
+    return defaultOpen;
+  });
+  
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
+
+  // Save to localStorage when state changes
+  useEffect(() => {
+    if (storageKey) {
+      localStorage.setItem(`collapsible-${storageKey}`, String(isOpen));
+    }
+  }, [isOpen, storageKey]);
 
   const close = useCallback(() => setIsOpen(false), []);
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);

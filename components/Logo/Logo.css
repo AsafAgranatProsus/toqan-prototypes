@@ -10,10 +10,6 @@
   transition: var(--transition-fast);
 }
 
-.logo:hover {
-    color: var(--theme-text-accent);
-}
-
 .logo__mark {
     transition: transform 0.3s ease-in-out;
 }
@@ -22,11 +18,26 @@
     transform: rotate(15deg);
 }
 
+/* The iconic dot - colored with primary color */
+.logo__dot {
+  fill: var(--color-primary-default);
+}
+
 .logo__text {
   font-weight: 700;
   font-size: 1.75rem;
   letter-spacing: -1px;
   color: var(--theme-text-main);
+}
+
+/* Minimal variant - just the 't' with dot */
+.logo--minimal {
+  gap: 0;
+}
+
+.logo--minimal svg {
+  width: 24px;
+  height: 40px;
 }
 
 /* New branding styles for logo */
@@ -38,5 +49,5 @@
     font-weight: 600;
     font-size: 1.5rem;
     letter-spacing: -0.5px;
-    visibility: visible; /* Override visibility-hidden */
+    visibility: visible;
 } */

@@ -27,7 +27,7 @@
 /* Dark mode for panel - NONE, panel stays light */
 /* The panel should remain neutral and not change with theme */
 .theme-dark {
-    color: currentColor
+    /* color: currentColor */
 }
 
 .customization-panel.open {

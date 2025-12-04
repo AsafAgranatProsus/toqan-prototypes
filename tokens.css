@@ -182,8 +182,12 @@
   --gradient-panel-border-vertical: linear-gradient(to bottom, var(--color-ui-border), var(--color-ui-background));
 }
 
-/* OLD DESIGN - Dark Mode */
-.theme-dark:not(.design-new) {
+/* ============================================
+   DARK MODE (Baseline)
+   Applied when theme is dark
+   ============================================ */
+
+.theme-dark {
   /* Primary Colors */
   --color-primary-default: #5B8FFF;
   --color-primary-hover: #7BA5FF;
@@ -245,11 +249,30 @@
 }
 
 /* ============================================
-   NEW DESIGN SYSTEM (Live Toqan Tokens)
-   Activated via .design-new class
+   PROTOTYPE MODE (Master Safety Switch)
+   
+   Pattern: Both classes on HTML element
+   .new-branding (master switch) + .new-feature (specific feature)
+   
+   CSS Selector: .new-branding.new-feature { }
+   
+   Examples:
+   - .new-branding.new-typography { }  // Requires both classes on HTML
+   - .new-branding.new-bubble { }      // Requires both classes on HTML
+   - .new-branding.new-tables { }      // Requires both classes on HTML
+   
+   How it works:
+   - Removing .new-branding from HTML → ALL prototypes turn off
+   - Removing .new-typography from HTML → Only typography prototype turns off
+   
+   Production graduation:
+   Change from: .new-branding.new-feature { }
+   To: .new-feature { }
+   
+   This allows the feature to work independently of prototype mode.
    ============================================ */
 
-.design-new {
+.new-branding {
   /* ===== COLORS ===== */
   
   /* Primary Colors */
@@ -338,8 +361,9 @@
   --gradient-panel-border-vertical: linear-gradient(to bottom, var(--color-ui-border), var(--color-ui-background));
 }
 
-/* NEW DESIGN - Dark Mode */
-.design-new.theme-dark {
+/* PROTOTYPE MODE - Dark Mode
+   Activated when .new-branding is on HTML AND theme is dark */
+.new-branding.theme-dark {
   /* Primary Colors */
   --color-primary-default: hsl(250 70% 60%);
   --color-primary-hover: hsl(250 70% 70%);

@@ -6,6 +6,7 @@ type FeatureFlags = typeof initialFlags;
 interface FeatureFlagContextType {
   flags: FeatureFlags;
   setFlag: (flagName: keyof FeatureFlags, value: boolean) => void;
+  isFeatureActive: (flagName: keyof FeatureFlags) => boolean;
 }
 
 const FeatureFlagContext = createContext<FeatureFlagContextType | undefined>(undefined);
@@ -81,8 +82,27 @@ export const FeatureFlagProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }));
   }, []);
 
+  // Helper to check if a feature is active (requires BOTH newBranding AND the specific flag)
+  // This mirrors the CSS pattern: .new-branding.new-feature { }
+  // Only applies to flags with "new" prefix - other flags work independently
+  const isFeatureActive = useCallback((flagName: keyof FeatureFlags): boolean => {
+    // Special case: newBranding flag itself doesn't require coupling
+    if (flagName === 'newBranding') {
+      return flags.newBranding;
+    }
+    
+    // Prototype features (with "new" prefix) require BOTH newBranding AND their specific flag
+    // This matches CSS pattern: .new-branding.new-typography { }
+    if (flagName.startsWith('new')) {
+      return flags.newBranding && flags[flagName];
+    }
+    
+    // Other features work independently (no coupling with newBranding)
+    return flags[flagName];
+  }, [flags]);
+
   return (
-    <FeatureFlagContext.Provider value={{ flags, setFlag }}>
+    <FeatureFlagContext.Provider value={{ flags, setFlag, isFeatureActive }}>
       {children}
     </FeatureFlagContext.Provider>
   );
