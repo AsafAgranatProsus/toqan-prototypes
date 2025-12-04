@@ -247,7 +247,8 @@
 }
 
 .menu-item:hover {
-  background-color: var(--theme-btn-secondary-bg);
+  /* background-color: var(--theme-btn-secondary-bg-hover); */
+  background-color: rgb(233, 239, 247);
   color: var(--theme-text-main);
 }
 
@@ -304,7 +305,7 @@
 }
 
 .convo-item:hover {
-  background-color: transparent;
+  background-color: rgb(233, 239, 247);
 }
 
 .convo-item__title {
@@ -333,11 +334,12 @@
 }
 
 .convo-item--active {
-  background-color: transparent;
+  background-color: rgb(233, 239, 247);
+
 }
 
 .convo-item-wrapper:has(.convo-item--active) {
-  background-color: var(--theme-btn-secondary-bg, rgb(233, 239, 247));
+  background-color:  rgb(233, 239, 247)
 }
 
 .convo-item--active .convo-item__title {

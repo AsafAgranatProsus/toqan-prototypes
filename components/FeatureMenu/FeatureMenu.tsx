@@ -340,7 +340,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
               )}
             </select>
             <Link
-              to="/design-system-alt"
+              to="/theme-builder"
               className="theme-builder-link"
               onClick={() => setIsOpen(false)}
               title="Open Theme Builder"

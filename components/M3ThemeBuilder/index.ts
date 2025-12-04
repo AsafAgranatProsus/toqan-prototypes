@@ -9,4 +9,6 @@ export { ComponentPreview } from './ComponentPreview';
 export { TypographyPicker } from './TypographyPicker';
 export { ExportButtons } from './ExportButtons';
 export { HctColorPicker } from './HctColorPicker';
+export { CustomSelect } from './CustomSelect';
+export type { SelectOption, SelectGroup, CustomSelectProps } from './CustomSelect';
 

@@ -34,6 +34,25 @@ export interface ThemeMetadata {
   bodyFont?: string;
   /** Contrast level (0 = standard, 0.5 = medium, 1 = high) */
   contrastLevel?: number;
+  /** Whether color match (exact colors vs harmonized) is enabled */
+  colorMatch?: boolean;
+  /** Core color overrides (hex values) */
+  coreColors?: {
+    primary?: string;
+    secondary?: string;
+    tertiary?: string;
+    error?: string;
+    neutral?: string;
+    neutralVariant?: string;
+  };
+  /** Extended custom colors */
+  extendedColors?: Array<{
+    id: string;
+    name: string;
+    description?: string;
+    color: string;
+    blend: boolean;
+  }>;
 }
 
 interface ThemeManifest {

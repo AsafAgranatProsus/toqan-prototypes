@@ -9,6 +9,7 @@ import {
   CONTRAST_MEDIUM,
   CONTRAST_HIGH,
 } from '../../themes/m3';
+import { loadThemeManifest, ThemeMetadata } from '../../themes/colors';
 import { SourceColorPicker } from './SourceColorPicker';
 import { CoreColorsList } from './CoreColorsList';
 import { ExtendedColorsList } from './ExtendedColorsList';
@@ -17,6 +18,7 @@ import { SchemePreview } from './SchemePreview';
 import { ComponentPreview } from './ComponentPreview';
 import { ExportButtons } from './ExportButtons';
 import { TypographyPicker } from './TypographyPicker';
+import { CustomSelect } from './CustomSelect';
 import './M3ThemeBuilder.css';
 
 export interface M3ThemeBuilderProps {
@@ -82,18 +84,18 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
   });
   
   // Core color overrides - initialize with default values from initial theme
+  // Primary = source color (exactly), others = keyColor from palette
   const [coreColors, setCoreColors] = useState<CoreColors>(() => {
     try {
-      const initialTheme = generateThemeFromColor(
-        localStorage.getItem('m3-source-color') || '#6750A4'
-      );
+      const initialSourceColor = localStorage.getItem('m3-source-color') || '#6750A4';
+      const initialTheme = generateThemeFromColor(initialSourceColor);
       return {
-        primary: argbToHex(initialTheme.palettes.primary.tone(40)),
-        secondary: argbToHex(initialTheme.palettes.secondary.tone(40)),
-        tertiary: argbToHex(initialTheme.palettes.tertiary.tone(40)),
-        error: argbToHex(initialTheme.palettes.error.tone(40)),
-        neutral: argbToHex(initialTheme.palettes.neutral.tone(40)),
-        neutralVariant: argbToHex(initialTheme.palettes.neutralVariant.tone(40)),
+        primary: initialSourceColor, // Primary always equals source color exactly
+        secondary: argbToHex(initialTheme.palettes.secondary.keyColor.toInt()),
+        tertiary: argbToHex(initialTheme.palettes.tertiary.keyColor.toInt()),
+        error: argbToHex(initialTheme.palettes.error.keyColor.toInt()),
+        neutral: argbToHex(initialTheme.palettes.neutral.keyColor.toInt()),
+        neutralVariant: argbToHex(initialTheme.palettes.neutralVariant.keyColor.toInt()),
       };
     } catch {
       return {
@@ -234,24 +236,25 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
       // Extract core colors from generated theme
       // When Color Match is ON and colors are modified, keep user's choices
       // When OFF or not modified, update to harmonious colors from source
+      // Primary = source color (exactly), others = keyColor from palette
       if (!coreColorsModified && !colorMatch) {
         setCoreColors({
-          primary: argbToHex(newTheme.palettes.primary.tone(40)),
-          secondary: argbToHex(newTheme.palettes.secondary.tone(40)),
-          tertiary: argbToHex(newTheme.palettes.tertiary.tone(40)),
-          error: argbToHex(newTheme.palettes.error.tone(40)),
-          neutral: argbToHex(newTheme.palettes.neutral.tone(40)),
-          neutralVariant: argbToHex(newTheme.palettes.neutralVariant.tone(40)),
+          primary: sourceColor, // Primary always equals source color exactly
+          secondary: argbToHex(newTheme.palettes.secondary.keyColor.toInt()),
+          tertiary: argbToHex(newTheme.palettes.tertiary.keyColor.toInt()),
+          error: argbToHex(newTheme.palettes.error.keyColor.toInt()),
+          neutral: argbToHex(newTheme.palettes.neutral.keyColor.toInt()),
+          neutralVariant: argbToHex(newTheme.palettes.neutralVariant.keyColor.toInt()),
         });
       } else if (!coreColorsModified) {
         // First load - set initial core colors
         setCoreColors({
-          primary: argbToHex(newTheme.palettes.primary.tone(40)),
-          secondary: argbToHex(newTheme.palettes.secondary.tone(40)),
-          tertiary: argbToHex(newTheme.palettes.tertiary.tone(40)),
-          error: argbToHex(newTheme.palettes.error.tone(40)),
-          neutral: argbToHex(newTheme.palettes.neutral.tone(40)),
-          neutralVariant: argbToHex(newTheme.palettes.neutralVariant.tone(40)),
+          primary: sourceColor, // Primary always equals source color exactly
+          secondary: argbToHex(newTheme.palettes.secondary.keyColor.toInt()),
+          tertiary: argbToHex(newTheme.palettes.tertiary.keyColor.toInt()),
+          error: argbToHex(newTheme.palettes.error.keyColor.toInt()),
+          neutral: argbToHex(newTheme.palettes.neutral.keyColor.toInt()),
+          neutralVariant: argbToHex(newTheme.palettes.neutralVariant.keyColor.toInt()),
         });
       }
       
@@ -367,6 +370,83 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
     // The useEffect will handle theme regeneration
   }, []);
   
+  // Available themes from manifest
+  const [availableThemes, setAvailableThemes] = useState<ThemeMetadata[]>([]);
+  const [isLoadingThemes, setIsLoadingThemes] = useState(true);
+  
+  // Load themes from manifest on mount
+  useEffect(() => {
+    loadThemeManifest()
+      .then(themes => {
+        setAvailableThemes(themes);
+        setIsLoadingThemes(false);
+      })
+      .catch(err => {
+        console.error('Failed to load theme manifest:', err);
+        setIsLoadingThemes(false);
+      });
+  }, []);
+  
+  // Handle loading a theme from the manifest
+  const handleLoadTheme = useCallback((themeId: string) => {
+    const selectedTheme = availableThemes.find(t => t.id === themeId);
+    if (!selectedTheme) return;
+    
+    // Set source color (most important for regeneration)
+    if (selectedTheme.sourceColor) {
+      setSourceColor(selectedTheme.sourceColor);
+    }
+    
+    // Set theme name
+    setThemeName(selectedTheme.name);
+    
+    // Set typography
+    setTypography({
+      displayFont: selectedTheme.displayFont || 'Roboto',
+      bodyFont: selectedTheme.bodyFont || 'Roboto',
+    });
+    
+    // Set contrast level
+    if (typeof selectedTheme.contrastLevel === 'number') {
+      setContrastLevel(selectedTheme.contrastLevel);
+    } else {
+      setContrastLevel(CONTRAST_STANDARD);
+    }
+    
+    // Set color match
+    setColorMatch(selectedTheme.colorMatch || false);
+    
+    // Set core colors if saved
+    if (selectedTheme.coreColors) {
+      setCoreColors({
+        primary: selectedTheme.coreColors.primary || selectedTheme.sourceColor || '#6750A4',
+        secondary: selectedTheme.coreColors.secondary || '#625B71',
+        tertiary: selectedTheme.coreColors.tertiary || '#7D5260',
+        error: selectedTheme.coreColors.error || '#B3261E',
+        neutral: selectedTheme.coreColors.neutral || '#605D62',
+        neutralVariant: selectedTheme.coreColors.neutralVariant || '#605D66',
+      });
+      setCoreColorsModified(true);
+    } else {
+      // Reset to let system regenerate from source
+      setCoreColorsModified(false);
+    }
+    
+    // Set extended colors if saved
+    if (selectedTheme.extendedColors && selectedTheme.extendedColors.length > 0) {
+      setExtendedColors(selectedTheme.extendedColors.map(c => ({
+        id: c.id,
+        name: c.name,
+        description: c.description,
+        color: c.color,
+        blend: c.blend,
+      })));
+    } else {
+      setExtendedColors([]);
+    }
+    
+  }, [availableThemes]);
+  
   return (
     <div className={`m3-theme-builder ${className || ''}`}>
       {/* Header */}
@@ -441,6 +521,24 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
         {/* Left Panel - Controls */}
         <aside className="m3-builder-controls">
           <div className="m3-controls-scroll">
+            {/* Load Theme Section */}
+            <section className="m3-section m3-section-load">
+              <h2 className="m3-section-title">Load theme</h2>
+              <CustomSelect
+                value=""
+                onChange={handleLoadTheme}
+                placeholder={isLoadingThemes ? 'Loading themes...' : 'Select a saved theme...'}
+                disabled={isLoadingThemes}
+                options={availableThemes
+                  .filter(t => t.sourceColor)
+                  .map(theme => ({
+                    value: theme.id,
+                    label: theme.name,
+                  }))
+                }
+              />
+            </section>
+            
             {/* Source Color Section */}
             <section className="m3-section">
               <h2 className="m3-section-title">Source color</h2>
@@ -516,14 +614,27 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
                   displayFont={typography.displayFont}
                   bodyFont={typography.bodyFont}
                   contrastLevel={contrastLevel}
+                  colorMatch={colorMatch}
+                  coreColors={coreColors}
+                  coreColorsModified={coreColorsModified}
                 />
               )}
             </section>
           </div>
         </aside>
         
-        {/* Right Panel - Preview */}
-        <main className="m3-builder-preview">
+        {/* Right Panel - Preview - uses theme colors for true WYSIWYG */}
+        <main 
+          className={`m3-builder-preview ${mode}`}
+          style={theme ? {
+            backgroundColor: argbToHex(mode === 'light' 
+              ? theme.palettes.neutral.tone(98) 
+              : theme.palettes.neutral.tone(6)),
+            color: argbToHex(mode === 'light'
+              ? theme.schemes.light.onBackground
+              : theme.schemes.dark.onBackground),
+          } : undefined}
+        >
           {theme && (
             <>
               {/* Component Preview */}

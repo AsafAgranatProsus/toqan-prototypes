@@ -13,7 +13,22 @@ import {
   Scheme,
   Blend,
   SchemeTonalSpot,
+  DynamicScheme,
 } from '@material/material-color-utilities';
+
+// Variant enum values (not exported from main package)
+// See: node_modules/@material/material-color-utilities/dynamiccolor/variant.d.ts
+const Variant = {
+  MONOCHROME: 0,
+  NEUTRAL: 1,
+  TONAL_SPOT: 2,
+  VIBRANT: 3,
+  EXPRESSIVE: 4,
+  FIDELITY: 5,
+  CONTENT: 6,
+  RAINBOW: 7,
+  FRUIT_SALAD: 8,
+} as const;
 
 export type { Scheme };
 
@@ -208,9 +223,9 @@ export function generateThemeWithOverrides(
       theme.palettes.neutralVariant = TonalPalette.fromInt(neutralVariantArgb);
     }
     
-    // Regenerate schemes with new palettes and contrast level
-    theme.schemes.light = generateLightScheme(theme.palettes, contrastLevel);
-    theme.schemes.dark = generateDarkScheme(theme.palettes, contrastLevel);
+    // Regenerate schemes with new palettes and proper M3 contrast handling
+    theme.schemes.light = generateLightScheme(theme.palettes, contrastLevel, sourceArgb);
+    theme.schemes.dark = generateDarkScheme(theme.palettes, contrastLevel, sourceArgb);
   }
   
   return theme;
@@ -228,108 +243,90 @@ export function harmonizeColor(designHex: string, sourceHex: string): string {
 }
 
 /**
- * Adjust tone based on contrast level
+ * Generate scheme from palettes using M3's DynamicScheme for proper contrast handling
  * 
- * @param baseTone - The standard tone value
- * @param contrastLevel - Contrast level (0 = standard, 0.5 = medium, 1 = high)
- * @param direction - 'lighter' pushes toward 100, 'darker' pushes toward 0
- * @param maxShift - Maximum tone shift at full contrast
+ * This uses the M3 library's built-in contrast curve calculations, which:
+ * - Define target contrast RATIOS (not fixed tones) for each contrast level
+ * - Automatically flip foreground colors when backgrounds cross certain thresholds
+ * - Avoid the "awkward zone" (tones 50-59) where contrast is poor
+ * 
+ * @param palettes - The tonal palettes to use
+ * @param sourceArgb - The source color in ARGB format
+ * @param isDark - Whether to generate dark mode scheme
+ * @param contrastLevel - Contrast level (-1 to 1)
  */
-function adjustTone(baseTone: number, contrastLevel: number, direction: 'lighter' | 'darker', maxShift: number = 10): number {
-  const shift = maxShift * contrastLevel;
-  if (direction === 'lighter') {
-    return Math.min(100, baseTone + shift);
-  } else {
-    return Math.max(0, baseTone - shift);
-  }
-}
-
-/**
- * Generate light scheme from palettes with contrast level support
- */
-function generateLightScheme(palettes: M3Theme['palettes'], contrastLevel: number = 0): Scheme {
+function generateSchemeFromPalettes(
+  palettes: M3Theme['palettes'],
+  sourceArgb: number,
+  isDark: boolean,
+  contrastLevel: number = 0
+): Scheme {
+  // Create a DynamicScheme with our custom palettes
+  // This gives us proper M3 contrast handling
+  const sourceHct = Hct.fromInt(sourceArgb);
+  
+  const dynamicScheme = new DynamicScheme({
+    sourceColorArgb: sourceArgb,
+    variant: Variant.TONAL_SPOT,
+    contrastLevel,
+    isDark,
+    primaryPalette: palettes.primary,
+    secondaryPalette: palettes.secondary,
+    tertiaryPalette: palettes.tertiary,
+    neutralPalette: palettes.neutral,
+    neutralVariantPalette: palettes.neutralVariant,
+  });
+  
+  // Convert DynamicScheme to our Scheme format using its contrast-aware getters
   return {
-    // Primary colors - darker primary, lighter onPrimary for more contrast
-    primary: palettes.primary.tone(adjustTone(40, contrastLevel, 'darker')),
-    onPrimary: palettes.primary.tone(100),
-    primaryContainer: palettes.primary.tone(adjustTone(90, contrastLevel, 'lighter', 5)),
-    onPrimaryContainer: palettes.primary.tone(adjustTone(10, contrastLevel, 'darker')),
-    // Secondary
-    secondary: palettes.secondary.tone(adjustTone(40, contrastLevel, 'darker')),
-    onSecondary: palettes.secondary.tone(100),
-    secondaryContainer: palettes.secondary.tone(adjustTone(90, contrastLevel, 'lighter', 5)),
-    onSecondaryContainer: palettes.secondary.tone(adjustTone(10, contrastLevel, 'darker')),
-    // Tertiary
-    tertiary: palettes.tertiary.tone(adjustTone(40, contrastLevel, 'darker')),
-    onTertiary: palettes.tertiary.tone(100),
-    tertiaryContainer: palettes.tertiary.tone(adjustTone(90, contrastLevel, 'lighter', 5)),
-    onTertiaryContainer: palettes.tertiary.tone(adjustTone(10, contrastLevel, 'darker')),
-    // Error
-    error: palettes.error.tone(adjustTone(40, contrastLevel, 'darker')),
-    onError: palettes.error.tone(100),
-    errorContainer: palettes.error.tone(adjustTone(90, contrastLevel, 'lighter', 5)),
-    onErrorContainer: palettes.error.tone(adjustTone(10, contrastLevel, 'darker')),
-    // Surfaces
-    background: palettes.neutral.tone(adjustTone(99, contrastLevel, 'lighter', 1)),
-    onBackground: palettes.neutral.tone(adjustTone(10, contrastLevel, 'darker')),
-    surface: palettes.neutral.tone(adjustTone(99, contrastLevel, 'lighter', 1)),
-    onSurface: palettes.neutral.tone(adjustTone(10, contrastLevel, 'darker')),
-    surfaceVariant: palettes.neutralVariant.tone(adjustTone(90, contrastLevel, 'lighter', 5)),
-    onSurfaceVariant: palettes.neutralVariant.tone(adjustTone(30, contrastLevel, 'darker', 15)),
-    // Outlines
-    outline: palettes.neutralVariant.tone(adjustTone(50, contrastLevel, 'darker', 10)),
-    outlineVariant: palettes.neutralVariant.tone(adjustTone(80, contrastLevel, 'lighter', 5)),
-    // Fixed
-    shadow: palettes.neutral.tone(0),
-    scrim: palettes.neutral.tone(0),
-    inverseSurface: palettes.neutral.tone(adjustTone(20, contrastLevel, 'darker')),
-    inverseOnSurface: palettes.neutral.tone(adjustTone(95, contrastLevel, 'lighter', 5)),
-    inversePrimary: palettes.primary.tone(adjustTone(80, contrastLevel, 'lighter')),
+    primary: dynamicScheme.primary,
+    onPrimary: dynamicScheme.onPrimary,
+    primaryContainer: dynamicScheme.primaryContainer,
+    onPrimaryContainer: dynamicScheme.onPrimaryContainer,
+    secondary: dynamicScheme.secondary,
+    onSecondary: dynamicScheme.onSecondary,
+    secondaryContainer: dynamicScheme.secondaryContainer,
+    onSecondaryContainer: dynamicScheme.onSecondaryContainer,
+    tertiary: dynamicScheme.tertiary,
+    onTertiary: dynamicScheme.onTertiary,
+    tertiaryContainer: dynamicScheme.tertiaryContainer,
+    onTertiaryContainer: dynamicScheme.onTertiaryContainer,
+    error: dynamicScheme.error,
+    onError: dynamicScheme.onError,
+    errorContainer: dynamicScheme.errorContainer,
+    onErrorContainer: dynamicScheme.onErrorContainer,
+    background: dynamicScheme.background,
+    onBackground: dynamicScheme.onBackground,
+    surface: dynamicScheme.surface,
+    onSurface: dynamicScheme.onSurface,
+    surfaceVariant: dynamicScheme.surfaceVariant,
+    onSurfaceVariant: dynamicScheme.onSurfaceVariant,
+    outline: dynamicScheme.outline,
+    outlineVariant: dynamicScheme.outlineVariant,
+    shadow: dynamicScheme.shadow,
+    scrim: dynamicScheme.scrim,
+    inverseSurface: dynamicScheme.inverseSurface,
+    inverseOnSurface: dynamicScheme.inverseOnSurface,
+    inversePrimary: dynamicScheme.inversePrimary,
   } as Scheme;
 }
 
 /**
- * Generate dark scheme from palettes with contrast level support
+ * Generate light scheme from palettes with proper M3 contrast handling
  */
-function generateDarkScheme(palettes: M3Theme['palettes'], contrastLevel: number = 0): Scheme {
-  return {
-    // Primary colors - lighter primary, darker onPrimary for more contrast
-    primary: palettes.primary.tone(adjustTone(80, contrastLevel, 'lighter')),
-    onPrimary: palettes.primary.tone(adjustTone(20, contrastLevel, 'darker')),
-    primaryContainer: palettes.primary.tone(adjustTone(30, contrastLevel, 'darker', 5)),
-    onPrimaryContainer: palettes.primary.tone(adjustTone(90, contrastLevel, 'lighter')),
-    // Secondary
-    secondary: palettes.secondary.tone(adjustTone(80, contrastLevel, 'lighter')),
-    onSecondary: palettes.secondary.tone(adjustTone(20, contrastLevel, 'darker')),
-    secondaryContainer: palettes.secondary.tone(adjustTone(30, contrastLevel, 'darker', 5)),
-    onSecondaryContainer: palettes.secondary.tone(adjustTone(90, contrastLevel, 'lighter')),
-    // Tertiary
-    tertiary: palettes.tertiary.tone(adjustTone(80, contrastLevel, 'lighter')),
-    onTertiary: palettes.tertiary.tone(adjustTone(20, contrastLevel, 'darker')),
-    tertiaryContainer: palettes.tertiary.tone(adjustTone(30, contrastLevel, 'darker', 5)),
-    onTertiaryContainer: palettes.tertiary.tone(adjustTone(90, contrastLevel, 'lighter')),
-    // Error
-    error: palettes.error.tone(adjustTone(80, contrastLevel, 'lighter')),
-    onError: palettes.error.tone(adjustTone(20, contrastLevel, 'darker')),
-    errorContainer: palettes.error.tone(adjustTone(30, contrastLevel, 'darker', 5)),
-    onErrorContainer: palettes.error.tone(adjustTone(90, contrastLevel, 'lighter')),
-    // Surfaces
-    background: palettes.neutral.tone(adjustTone(10, contrastLevel, 'darker', 4)),
-    onBackground: palettes.neutral.tone(adjustTone(90, contrastLevel, 'lighter')),
-    surface: palettes.neutral.tone(adjustTone(10, contrastLevel, 'darker', 4)),
-    onSurface: palettes.neutral.tone(adjustTone(90, contrastLevel, 'lighter')),
-    surfaceVariant: palettes.neutralVariant.tone(adjustTone(30, contrastLevel, 'darker', 5)),
-    onSurfaceVariant: palettes.neutralVariant.tone(adjustTone(80, contrastLevel, 'lighter', 10)),
-    // Outlines
-    outline: palettes.neutralVariant.tone(adjustTone(60, contrastLevel, 'lighter', 10)),
-    outlineVariant: palettes.neutralVariant.tone(adjustTone(30, contrastLevel, 'darker', 5)),
-    // Fixed
-    shadow: palettes.neutral.tone(0),
-    scrim: palettes.neutral.tone(0),
-    inverseSurface: palettes.neutral.tone(adjustTone(90, contrastLevel, 'lighter')),
-    inverseOnSurface: palettes.neutral.tone(adjustTone(20, contrastLevel, 'darker')),
-    inversePrimary: palettes.primary.tone(adjustTone(40, contrastLevel, 'darker')),
-  } as Scheme;
+function generateLightScheme(palettes: M3Theme['palettes'], contrastLevel: number = 0, sourceArgb?: number): Scheme {
+  // Use the primary palette's key color as source if not provided
+  const source = sourceArgb ?? palettes.primary.tone(40);
+  return generateSchemeFromPalettes(palettes, source, false, contrastLevel);
+}
+
+/**
+ * Generate dark scheme from palettes with proper M3 contrast handling
+ */
+function generateDarkScheme(palettes: M3Theme['palettes'], contrastLevel: number = 0, sourceArgb?: number): Scheme {
+  // Use the primary palette's key color as source if not provided
+  const source = sourceArgb ?? palettes.primary.tone(40);
+  return generateSchemeFromPalettes(palettes, source, true, contrastLevel);
 }
 
 /**

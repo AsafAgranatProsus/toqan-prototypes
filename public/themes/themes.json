@@ -9,11 +9,39 @@
     {
       "id": "blah",
       "name": "blah",
-      "description": "Theme generated from source color #283f3a",
-      "sourceColor": "#283f3a",
+      "description": "Theme generated from source color #9e622f",
+      "sourceColor": "#9e622f",
       "filename": "blah.css",
       "displayFont": "Soehne",
-      "bodyFont": "PT Serif"
+      "bodyFont": "Host Grotesk"
+    },
+    {
+      "id": "blah-contrast",
+      "name": "blah - contrast",
+      "description": "Theme generated from source color #9e622f",
+      "sourceColor": "#9e622f",
+      "filename": "blah-contrast.css",
+      "displayFont": "Soehne",
+      "bodyFont": "Host Grotesk",
+      "contrastLevel": 1
+    },
+    {
+      "id": "flamingo",
+      "name": "Flamingo",
+      "description": "Theme generated from source color #feb0be",
+      "sourceColor": "#feb0be",
+      "filename": "flamingo.css",
+      "displayFont": "Soehne",
+      "bodyFont": "Soehne",
+      "colorMatch": true,
+      "coreColors": {
+        "primary": "#feb0be",
+        "secondary": "#f3e9bf",
+        "tertiary": "#8ec9a3",
+        "error": "#de3730",
+        "neutral": "#1f1c24",
+        "neutralVariant": "#312b37"
+      }
     }
   ]
 }

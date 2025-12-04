@@ -432,6 +432,22 @@ export function exportThemeAsAppCSS(
   --color-ui-black: #000000;
   --color-ui-modal: ${argbToHex(lightScheme.scrim)}26;
 
+  /* Surface Container Hierarchy (M3 elevation system) */
+  --color-surface-container-lowest: ${argbToHex(palettes.neutral.tone(100))};
+  --color-surface-container-low: ${argbToHex(palettes.neutral.tone(96))};
+  --color-surface-container: ${argbToHex(palettes.neutral.tone(94))};
+  --color-surface-container-high: ${argbToHex(palettes.neutral.tone(92))};
+  --color-surface-container-highest: ${argbToHex(palettes.neutral.tone(90))};
+  --color-surface-dim: ${argbToHex(palettes.neutral.tone(87))};
+  --color-surface-bright: ${argbToHex(palettes.neutral.tone(98))};
+  --color-surface-variant: ${argbToHex(lightScheme.surfaceVariant)};
+  --color-on-surface-variant: ${argbToHex(lightScheme.onSurfaceVariant)};
+
+  /* Inverse Colors (for snackbars, tooltips, etc.) */
+  --color-inverse-surface: ${argbToHex(lightScheme.inverseSurface)};
+  --color-inverse-on-surface: ${argbToHex(lightScheme.inverseOnSurface)};
+  --color-inverse-primary: ${argbToHex(lightScheme.inversePrimary)};
+
   /* Text */
   --color-text-default: ${argbToHex(lightScheme.onSurface)};
   --color-text-secondary: ${argbToHex(lightScheme.onSurfaceVariant)};
@@ -504,6 +520,22 @@ export function exportThemeAsAppCSS(
   --color-ui-black: #FFFFFF;
   --color-ui-modal: ${argbToHex(darkScheme.scrim)}80;
 
+  /* Surface Container Hierarchy (M3 elevation system) */
+  --color-surface-container-lowest: ${argbToHex(palettes.neutral.tone(4))};
+  --color-surface-container-low: ${argbToHex(palettes.neutral.tone(10))};
+  --color-surface-container: ${argbToHex(palettes.neutral.tone(12))};
+  --color-surface-container-high: ${argbToHex(palettes.neutral.tone(17))};
+  --color-surface-container-highest: ${argbToHex(palettes.neutral.tone(22))};
+  --color-surface-dim: ${argbToHex(palettes.neutral.tone(6))};
+  --color-surface-bright: ${argbToHex(palettes.neutral.tone(24))};
+  --color-surface-variant: ${argbToHex(darkScheme.surfaceVariant)};
+  --color-on-surface-variant: ${argbToHex(darkScheme.onSurfaceVariant)};
+
+  /* Inverse Colors (for snackbars, tooltips, etc.) */
+  --color-inverse-surface: ${argbToHex(darkScheme.inverseSurface)};
+  --color-inverse-on-surface: ${argbToHex(darkScheme.inverseOnSurface)};
+  --color-inverse-primary: ${argbToHex(darkScheme.inversePrimary)};
+
   /* Text */
   --color-text-default: ${argbToHex(darkScheme.onSurface)};
   --color-text-secondary: ${argbToHex(darkScheme.onSurfaceVariant)};
@@ -543,7 +575,9 @@ export function exportThemeAsAppCSS(
 :root {
   /* Primary Palette */
   --palette-primary-0: ${argbToHex(palettes.primary.tone(0))};
+  --palette-primary-5: ${argbToHex(palettes.primary.tone(5))};
   --palette-primary-10: ${argbToHex(palettes.primary.tone(10))};
+  --palette-primary-15: ${argbToHex(palettes.primary.tone(15))};
   --palette-primary-20: ${argbToHex(palettes.primary.tone(20))};
   --palette-primary-25: ${argbToHex(palettes.primary.tone(25))};
   --palette-primary-30: ${argbToHex(palettes.primary.tone(30))};
@@ -555,12 +589,15 @@ export function exportThemeAsAppCSS(
   --palette-primary-80: ${argbToHex(palettes.primary.tone(80))};
   --palette-primary-90: ${argbToHex(palettes.primary.tone(90))};
   --palette-primary-95: ${argbToHex(palettes.primary.tone(95))};
+  --palette-primary-98: ${argbToHex(palettes.primary.tone(98))};
   --palette-primary-99: ${argbToHex(palettes.primary.tone(99))};
   --palette-primary-100: ${argbToHex(palettes.primary.tone(100))};
 
   /* Secondary Palette */
   --palette-secondary-0: ${argbToHex(palettes.secondary.tone(0))};
+  --palette-secondary-5: ${argbToHex(palettes.secondary.tone(5))};
   --palette-secondary-10: ${argbToHex(palettes.secondary.tone(10))};
+  --palette-secondary-15: ${argbToHex(palettes.secondary.tone(15))};
   --palette-secondary-20: ${argbToHex(palettes.secondary.tone(20))};
   --palette-secondary-25: ${argbToHex(palettes.secondary.tone(25))};
   --palette-secondary-30: ${argbToHex(palettes.secondary.tone(30))};
@@ -572,12 +609,15 @@ export function exportThemeAsAppCSS(
   --palette-secondary-80: ${argbToHex(palettes.secondary.tone(80))};
   --palette-secondary-90: ${argbToHex(palettes.secondary.tone(90))};
   --palette-secondary-95: ${argbToHex(palettes.secondary.tone(95))};
+  --palette-secondary-98: ${argbToHex(palettes.secondary.tone(98))};
   --palette-secondary-99: ${argbToHex(palettes.secondary.tone(99))};
   --palette-secondary-100: ${argbToHex(palettes.secondary.tone(100))};
 
   /* Tertiary Palette */
   --palette-tertiary-0: ${argbToHex(palettes.tertiary.tone(0))};
+  --palette-tertiary-5: ${argbToHex(palettes.tertiary.tone(5))};
   --palette-tertiary-10: ${argbToHex(palettes.tertiary.tone(10))};
+  --palette-tertiary-15: ${argbToHex(palettes.tertiary.tone(15))};
   --palette-tertiary-20: ${argbToHex(palettes.tertiary.tone(20))};
   --palette-tertiary-25: ${argbToHex(palettes.tertiary.tone(25))};
   --palette-tertiary-30: ${argbToHex(palettes.tertiary.tone(30))};
@@ -589,12 +629,15 @@ export function exportThemeAsAppCSS(
   --palette-tertiary-80: ${argbToHex(palettes.tertiary.tone(80))};
   --palette-tertiary-90: ${argbToHex(palettes.tertiary.tone(90))};
   --palette-tertiary-95: ${argbToHex(palettes.tertiary.tone(95))};
+  --palette-tertiary-98: ${argbToHex(palettes.tertiary.tone(98))};
   --palette-tertiary-99: ${argbToHex(palettes.tertiary.tone(99))};
   --palette-tertiary-100: ${argbToHex(palettes.tertiary.tone(100))};
 
   /* Error Palette */
   --palette-error-0: ${argbToHex(palettes.error.tone(0))};
+  --palette-error-5: ${argbToHex(palettes.error.tone(5))};
   --palette-error-10: ${argbToHex(palettes.error.tone(10))};
+  --palette-error-15: ${argbToHex(palettes.error.tone(15))};
   --palette-error-20: ${argbToHex(palettes.error.tone(20))};
   --palette-error-25: ${argbToHex(palettes.error.tone(25))};
   --palette-error-30: ${argbToHex(palettes.error.tone(30))};
@@ -606,6 +649,7 @@ export function exportThemeAsAppCSS(
   --palette-error-80: ${argbToHex(palettes.error.tone(80))};
   --palette-error-90: ${argbToHex(palettes.error.tone(90))};
   --palette-error-95: ${argbToHex(palettes.error.tone(95))};
+  --palette-error-98: ${argbToHex(palettes.error.tone(98))};
   --palette-error-99: ${argbToHex(palettes.error.tone(99))};
   --palette-error-100: ${argbToHex(palettes.error.tone(100))};
 
@@ -639,7 +683,9 @@ export function exportThemeAsAppCSS(
 
   /* Neutral Variant Palette */
   --palette-neutral-variant-0: ${argbToHex(palettes.neutralVariant.tone(0))};
+  --palette-neutral-variant-5: ${argbToHex(palettes.neutralVariant.tone(5))};
   --palette-neutral-variant-10: ${argbToHex(palettes.neutralVariant.tone(10))};
+  --palette-neutral-variant-15: ${argbToHex(palettes.neutralVariant.tone(15))};
   --palette-neutral-variant-20: ${argbToHex(palettes.neutralVariant.tone(20))};
   --palette-neutral-variant-25: ${argbToHex(palettes.neutralVariant.tone(25))};
   --palette-neutral-variant-30: ${argbToHex(palettes.neutralVariant.tone(30))};
@@ -651,6 +697,7 @@ export function exportThemeAsAppCSS(
   --palette-neutral-variant-80: ${argbToHex(palettes.neutralVariant.tone(80))};
   --palette-neutral-variant-90: ${argbToHex(palettes.neutralVariant.tone(90))};
   --palette-neutral-variant-95: ${argbToHex(palettes.neutralVariant.tone(95))};
+  --palette-neutral-variant-98: ${argbToHex(palettes.neutralVariant.tone(98))};
   --palette-neutral-variant-99: ${argbToHex(palettes.neutralVariant.tone(99))};
   --palette-neutral-variant-100: ${argbToHex(palettes.neutralVariant.tone(100))};
 }
@@ -666,7 +713,9 @@ export function exportThemeAsAppCSS(
       const safeName = ext.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       output += `  /* ${ext.name} Palette */
   --palette-${safeName}-0: ${argbToHex(ext.palette.tone(0))};
+  --palette-${safeName}-5: ${argbToHex(ext.palette.tone(5))};
   --palette-${safeName}-10: ${argbToHex(ext.palette.tone(10))};
+  --palette-${safeName}-15: ${argbToHex(ext.palette.tone(15))};
   --palette-${safeName}-20: ${argbToHex(ext.palette.tone(20))};
   --palette-${safeName}-25: ${argbToHex(ext.palette.tone(25))};
   --palette-${safeName}-30: ${argbToHex(ext.palette.tone(30))};
@@ -678,6 +727,7 @@ export function exportThemeAsAppCSS(
   --palette-${safeName}-80: ${argbToHex(ext.palette.tone(80))};
   --palette-${safeName}-90: ${argbToHex(ext.palette.tone(90))};
   --palette-${safeName}-95: ${argbToHex(ext.palette.tone(95))};
+  --palette-${safeName}-98: ${argbToHex(ext.palette.tone(98))};
   --palette-${safeName}-99: ${argbToHex(ext.palette.tone(99))};
   --palette-${safeName}-100: ${argbToHex(ext.palette.tone(100))};
 

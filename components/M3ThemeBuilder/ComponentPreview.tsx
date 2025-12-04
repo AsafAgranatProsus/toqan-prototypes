@@ -17,6 +17,12 @@ export const ComponentPreview: React.FC<ComponentPreviewProps> = ({
   typography = { displayFont: 'Roboto', bodyFont: 'Roboto' },
 }) => {
   const scheme = mode === 'light' ? theme.schemes.light : theme.schemes.dark;
+  const palettes = theme.palettes;
+  
+  // Surface container tones vary by mode
+  const surfaceContainerTones = mode === 'light' 
+    ? { lowest: 100, low: 96, default: 94, high: 92, highest: 90, dim: 87, bright: 98 }
+    : { lowest: 4, low: 10, default: 12, high: 17, highest: 22, dim: 6, bright: 24 };
   
   // Generate CSS variables for preview
   const previewStyles = useMemo(() => ({
@@ -42,9 +48,22 @@ export const ComponentPreview: React.FC<ComponentPreviewProps> = ({
     '--preview-on-surface-variant': argbToHex(scheme.onSurfaceVariant),
     '--preview-outline': argbToHex(scheme.outline),
     '--preview-outline-variant': argbToHex(scheme.outlineVariant),
+    // Surface containers
+    '--preview-surface-container-lowest': argbToHex(palettes.neutral.tone(surfaceContainerTones.lowest)),
+    '--preview-surface-container-low': argbToHex(palettes.neutral.tone(surfaceContainerTones.low)),
+    '--preview-surface-container': argbToHex(palettes.neutral.tone(surfaceContainerTones.default)),
+    '--preview-surface-container-high': argbToHex(palettes.neutral.tone(surfaceContainerTones.high)),
+    '--preview-surface-container-highest': argbToHex(palettes.neutral.tone(surfaceContainerTones.highest)),
+    '--preview-surface-dim': argbToHex(palettes.neutral.tone(surfaceContainerTones.dim)),
+    '--preview-surface-bright': argbToHex(palettes.neutral.tone(surfaceContainerTones.bright)),
+    // Inverse
+    '--preview-inverse-surface': argbToHex(scheme.inverseSurface),
+    '--preview-inverse-on-surface': argbToHex(scheme.inverseOnSurface),
+    '--preview-inverse-primary': argbToHex(scheme.inversePrimary),
+    // Typography
     '--preview-display-font': typography.displayFont,
     '--preview-body-font': typography.bodyFont,
-  } as React.CSSProperties), [scheme, typography]);
+  } as React.CSSProperties), [scheme, palettes, surfaceContainerTones, typography]);
   
   return (
     <div className="component-preview" style={previewStyles}>
@@ -117,6 +136,12 @@ export const ComponentPreview: React.FC<ComponentPreviewProps> = ({
             <div className="card-header">Outlined Card</div>
             <div className="card-body">Outline border</div>
           </div>
+        </div>
+        
+        {/* Snackbar - demonstrates inverse colors in context */}
+        <div className="preview-snackbar">
+          <span className="snackbar-message">Message sent successfully</span>
+          <button className="snackbar-action">Undo</button>
         </div>
       </div>
     </div>

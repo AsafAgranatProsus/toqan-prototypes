@@ -91,7 +91,7 @@
 }
 
 .preview-chip:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: color-mix(in srgb, var(--preview-on-surface) 8%, transparent);
 }
 
 .preview-chip.selected {
@@ -145,7 +145,7 @@
 }
 
 .preview-btn.outlined:hover {
-  background: rgba(103, 80, 164, 0.08);
+  background: color-mix(in srgb, var(--preview-primary) 8%, transparent);
 }
 
 .preview-btn.text {
@@ -154,7 +154,7 @@
 }
 
 .preview-btn.text:hover {
-  background: rgba(103, 80, 164, 0.08);
+  background: color-mix(in srgb, var(--preview-primary) 8%, transparent);
 }
 
 .preview-btn .btn-icon {
@@ -247,5 +247,39 @@
 .card-body {
   font-size: 14px;
   color: var(--preview-on-surface-variant);
+}
+
+/* Snackbar (Inverse Colors - demonstrates inverse in component context) */
+.preview-snackbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--preview-inverse-surface);
+  color: var(--preview-inverse-on-surface);
+  padding: 14px 16px;
+  border-radius: 4px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.snackbar-message {
+  font-size: 14px;
+}
+
+.snackbar-action {
+  background: transparent;
+  border: none;
+  color: var(--preview-inverse-primary);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 12px;
+  margin: -8px -8px -8px 0;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.snackbar-action:hover {
+  background: color-mix(in srgb, var(--preview-inverse-on-surface) 10%, transparent);
 }
 

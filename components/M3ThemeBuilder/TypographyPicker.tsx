@@ -1,4 +1,5 @@
 import React from 'react';
+import { CustomSelect, SelectGroup } from './CustomSelect';
 import './TypographyPicker.css';
 
 // Sans-serif fonts for testing (matches FeatureMenu exactly)
@@ -32,6 +33,18 @@ const SERIF_FONTS = [
   'Spectral',
 ];
 
+// Build grouped options for CustomSelect
+const FONT_GROUPS: SelectGroup[] = [
+  {
+    label: 'Sans Serif',
+    options: SANS_SERIF_FONTS.map(font => ({ value: font, label: font })),
+  },
+  {
+    label: 'Serif',
+    options: SERIF_FONTS.map(font => ({ value: font, label: font })),
+  },
+];
+
 export interface TypographyPickerProps {
   displayFont: string;
   bodyFont: string;
@@ -49,52 +62,22 @@ export const TypographyPicker: React.FC<TypographyPickerProps> = ({
     <div className="typography-picker">
       <div className="typography-field">
         <label className="typography-label">Display</label>
-        <select
-          className="typography-select"
+        <CustomSelect
           value={displayFont}
-          onChange={(e) => onDisplayFontChange(e.target.value)}
-          style={{ fontFamily: displayFont }}
-        >
-          <optgroup label="Sans Serif">
-            {SANS_SERIF_FONTS.map((font) => (
-              <option key={font} value={font}>
-                {font}
-              </option>
-            ))}
-          </optgroup>
-          <optgroup label="Serif">
-            {SERIF_FONTS.map((font) => (
-              <option key={font} value={font}>
-                {font}
-              </option>
-            ))}
-          </optgroup>
-        </select>
+          onChange={onDisplayFontChange}
+          groups={FONT_GROUPS}
+          className="typography-custom-select"
+        />
       </div>
       
       <div className="typography-field">
         <label className="typography-label">Body</label>
-        <select
-          className="typography-select"
+        <CustomSelect
           value={bodyFont}
-          onChange={(e) => onBodyFontChange(e.target.value)}
-          style={{ fontFamily: bodyFont }}
-        >
-          <optgroup label="Sans Serif">
-            {SANS_SERIF_FONTS.map((font) => (
-              <option key={font} value={font}>
-                {font}
-              </option>
-            ))}
-          </optgroup>
-          <optgroup label="Serif">
-            {SERIF_FONTS.map((font) => (
-              <option key={font} value={font}>
-                {font}
-              </option>
-            ))}
-          </optgroup>
-        </select>
+          onChange={onBodyFontChange}
+          groups={FONT_GROUPS}
+          className="typography-custom-select"
+        />
       </div>
     </div>
   );

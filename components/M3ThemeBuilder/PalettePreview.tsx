@@ -11,14 +11,18 @@ export interface PalettePreviewProps {
 
 interface TonalRowProps {
   name: string;
+  description?: string;
   colors: { tone: number; hex: string }[];
   isExtended?: boolean;
 }
 
-const TonalRow: React.FC<TonalRowProps> = ({ name, colors, isExtended }) => {
+const TonalRow: React.FC<TonalRowProps> = ({ name, description, colors, isExtended }) => {
   return (
     <div className={`tonal-row ${isExtended ? 'tonal-row-extended' : ''}`}>
-      <span className="tonal-row-name">{name}</span>
+      <div className="tonal-row-header">
+        <span className="tonal-row-name">{name}</span>
+        {description && <span className="tonal-row-desc">{description}</span>}
+      </div>
       <div className="tonal-row-colors">
         {colors.map(({ tone, hex }) => (
           <div
@@ -41,12 +45,12 @@ export const PalettePreview: React.FC<PalettePreviewProps> = ({
   sourceColor = '#6750A4',
 }) => {
   const corePalettes = [
-    { name: 'Primary', palette: theme.palettes.primary },
-    { name: 'Secondary', palette: theme.palettes.secondary },
-    { name: 'Tertiary', palette: theme.palettes.tertiary },
-    { name: 'Neutral', palette: theme.palettes.neutral },
-    { name: 'Neutral Variant', palette: theme.palettes.neutralVariant },
-    { name: 'Error', palette: theme.palettes.error },
+    { name: 'Primary', palette: theme.palettes.primary, description: 'Full tonal range of primary brand color' },
+    { name: 'Secondary', palette: theme.palettes.secondary, description: 'Supporting accent tones' },
+    { name: 'Tertiary', palette: theme.palettes.tertiary, description: 'Complementary accent tones' },
+    { name: 'Neutral', palette: theme.palettes.neutral, description: 'Background and surface tones' },
+    { name: 'Neutral Variant', palette: theme.palettes.neutralVariant, description: 'Muted variants for borders and dividers' },
+    { name: 'Error', palette: theme.palettes.error, description: 'Error and warning state tones' },
   ];
   
   // Generate extended color palettes
@@ -66,10 +70,11 @@ export const PalettePreview: React.FC<PalettePreviewProps> = ({
   
   return (
     <div className="palette-preview">
-      {corePalettes.map(({ name, palette }) => (
+      {corePalettes.map(({ name, palette, description }) => (
         <TonalRow
           key={name}
           name={name}
+          description={description}
           colors={getTonalPaletteColors(palette)}
         />
       ))}

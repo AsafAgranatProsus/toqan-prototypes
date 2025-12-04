@@ -7,15 +7,23 @@ export interface SchemePreviewProps {
   mode: 'light' | 'dark';
 }
 
+// Surface container tones by mode
+const SURFACE_CONTAINER_TONES = {
+  light: { lowest: 100, low: 96, default: 94, high: 92, highest: 90, dim: 87, bright: 98 },
+  dark: { lowest: 4, low: 10, default: 12, high: 17, highest: 22, dim: 6, bright: 24 },
+};
+
 interface ColorRoleProps {
   name: string;
   color: number;
   onColor?: number;
+  description?: string;
 }
 
-const ColorRole: React.FC<ColorRoleProps> = ({ name, color, onColor }) => {
+const ColorRole: React.FC<ColorRoleProps> = ({ name, color, onColor, description }) => {
   const bgHex = argbToHex(color);
   const textHex = onColor ? argbToHex(onColor) : undefined;
+  const tooltip = description ? `${name}: ${bgHex}\n${description}` : `${name}: ${bgHex}`;
   
   return (
     <div 
@@ -24,7 +32,7 @@ const ColorRole: React.FC<ColorRoleProps> = ({ name, color, onColor }) => {
         backgroundColor: bgHex,
         color: textHex || (isLightColor(bgHex) ? '#000' : '#fff'),
       }}
-      title={`${name}: ${bgHex}`}
+      title={tooltip}
     >
       <span className="color-role-name">{name}</span>
       <span className="color-role-value">{bgHex}</span>
@@ -99,10 +107,10 @@ export const SchemePreview: React.FC<SchemePreviewProps> = ({ theme, mode }) => 
       <div className="scheme-grid">
         <div className="scheme-row scheme-row-main">
           {[
-            { name: 'Primary', color: scheme.primary },
-            { name: 'Secondary', color: scheme.secondary },
-            { name: 'Tertiary', color: scheme.tertiary },
-            { name: 'Error', color: scheme.error },
+            { name: 'Primary', color: scheme.primary, description: 'Main brand color for key UI elements' },
+            { name: 'Secondary', color: scheme.secondary, description: 'Supporting color for less prominent components' },
+            { name: 'Tertiary', color: scheme.tertiary, description: 'Accent for contrast and visual interest' },
+            { name: 'Error', color: scheme.error, description: 'Indicates errors and destructive actions' },
           ].map((item) => (
             <ColorRole key={item.name} {...item} />
           ))}
@@ -110,10 +118,10 @@ export const SchemePreview: React.FC<SchemePreviewProps> = ({ theme, mode }) => 
         
         <div className="scheme-row scheme-row-on">
           {[
-            { name: 'On Primary', color: scheme.onPrimary },
-            { name: 'On Secondary', color: scheme.onSecondary },
-            { name: 'On Tertiary', color: scheme.onTertiary },
-            { name: 'On Error', color: scheme.onError },
+            { name: 'On Primary', color: scheme.onPrimary, description: 'Text/icons on primary backgrounds' },
+            { name: 'On Secondary', color: scheme.onSecondary, description: 'Text/icons on secondary backgrounds' },
+            { name: 'On Tertiary', color: scheme.onTertiary, description: 'Text/icons on tertiary backgrounds' },
+            { name: 'On Error', color: scheme.onError, description: 'Text/icons on error backgrounds' },
           ].map((item) => (
             <ColorRole key={item.name} {...item} />
           ))}
@@ -121,10 +129,10 @@ export const SchemePreview: React.FC<SchemePreviewProps> = ({ theme, mode }) => 
         
         <div className="scheme-row scheme-row-container">
           {[
-            { name: 'Primary Container', color: scheme.primaryContainer },
-            { name: 'Secondary Container', color: scheme.secondaryContainer },
-            { name: 'Tertiary Container', color: scheme.tertiaryContainer },
-            { name: 'Error Container', color: scheme.errorContainer },
+            { name: 'Primary Container', color: scheme.primaryContainer, description: 'Lower emphasis fill for cards and chips' },
+            { name: 'Secondary Container', color: scheme.secondaryContainer, description: 'Lower emphasis secondary fills' },
+            { name: 'Tertiary Container', color: scheme.tertiaryContainer, description: 'Lower emphasis tertiary fills' },
+            { name: 'Error Container', color: scheme.errorContainer, description: 'Lower emphasis error fills' },
           ].map((item) => (
             <ColorRole key={item.name} {...item} />
           ))}
@@ -132,10 +140,10 @@ export const SchemePreview: React.FC<SchemePreviewProps> = ({ theme, mode }) => 
         
         <div className="scheme-row scheme-row-on-container">
           {[
-            { name: 'On Primary Container', color: scheme.onPrimaryContainer },
-            { name: 'On Secondary Container', color: scheme.onSecondaryContainer },
-            { name: 'On Tertiary Container', color: scheme.onTertiaryContainer },
-            { name: 'On Error Container', color: scheme.onErrorContainer },
+            { name: 'On Primary Container', color: scheme.onPrimaryContainer, description: 'Text/icons on container backgrounds' },
+            { name: 'On Secondary Container', color: scheme.onSecondaryContainer, description: 'Text/icons on container backgrounds' },
+            { name: 'On Tertiary Container', color: scheme.onTertiaryContainer, description: 'Text/icons on container backgrounds' },
+            { name: 'On Error Container', color: scheme.onErrorContainer, description: 'Text/icons on container backgrounds' },
           ].map((item) => (
             <ColorRole key={item.name} {...item} />
           ))}
@@ -144,14 +152,52 @@ export const SchemePreview: React.FC<SchemePreviewProps> = ({ theme, mode }) => 
       
       <div className="scheme-surfaces">
         <div className="scheme-surface-row">
-          <ColorRole name="Background" color={scheme.background} />
-          <ColorRole name="Surface" color={scheme.surface} />
-          <ColorRole name="Surface Variant" color={scheme.surfaceVariant} />
+          <ColorRole name="Background" color={scheme.background} description="App background color" />
+          <ColorRole name="Surface" color={scheme.surface} description="Card and sheet backgrounds" />
+          <ColorRole name="Surface Variant" color={scheme.surfaceVariant} description="Alternative surface for visual grouping" />
         </div>
         <div className="scheme-surface-row">
-          <ColorRole name="Outline" color={scheme.outline} />
-          <ColorRole name="Outline Variant" color={scheme.outlineVariant} />
+          <ColorRole name="Outline" color={scheme.outline} description="Borders and dividers" />
+          <ColorRole name="Outline Variant" color={scheme.outlineVariant} description="Subtle borders and decorative lines" />
         </div>
+      </div>
+      
+      {/* Surface Container Hierarchy */}
+      <div className="scheme-section-label">Surface Containers <span className="section-hint">Elevation hierarchy from lowest to highest</span></div>
+      <div className="scheme-surface-containers">
+        {(() => {
+          const tones = SURFACE_CONTAINER_TONES[mode];
+          const palette = theme.palettes.neutral;
+          return (
+            <>
+              <ColorRole name="Lowest" color={palette.tone(tones.lowest)} description="Lowest elevation (e.g., page background)" />
+              <ColorRole name="Low" color={palette.tone(tones.low)} description="Low elevation (e.g., cards on background)" />
+              <ColorRole name="Container" color={palette.tone(tones.default)} description="Default elevated surface" />
+              <ColorRole name="High" color={palette.tone(tones.high)} description="High elevation (e.g., dropdowns)" />
+              <ColorRole name="Highest" color={palette.tone(tones.highest)} description="Highest elevation (e.g., modals)" />
+            </>
+          );
+        })()}
+      </div>
+      <div className="scheme-surface-extremes">
+        {(() => {
+          const tones = SURFACE_CONTAINER_TONES[mode];
+          const palette = theme.palettes.neutral;
+          return (
+            <>
+              <ColorRole name="Surface Dim" color={palette.tone(tones.dim)} description="Dimmed surface for reduced emphasis" />
+              <ColorRole name="Surface Bright" color={palette.tone(tones.bright)} description="Bright surface for high emphasis" />
+            </>
+          );
+        })()}
+      </div>
+      
+      {/* Inverse Colors */}
+      <div className="scheme-section-label">Inverse <span className="section-hint">Inverted colors for snackbars and tooltips</span></div>
+      <div className="scheme-inverse">
+        <ColorRole name="Inverse Surface" color={scheme.inverseSurface} onColor={scheme.inverseOnSurface} description="Background for inverted contexts (snackbars)" />
+        <ColorRole name="Inverse On Surface" color={scheme.inverseOnSurface} description="Text on inverse surface" />
+        <ColorRole name="Inverse Primary" color={scheme.inversePrimary} description="Primary accent on inverse surface" />
       </div>
     </div>
   );

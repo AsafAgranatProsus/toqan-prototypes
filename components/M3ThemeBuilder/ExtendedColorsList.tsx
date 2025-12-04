@@ -31,7 +31,7 @@ export const ExtendedColorsList: React.FC<ExtendedColorsListProps> = ({
         </h2>
       </div>
       
-      <p className="m3-section-description">
+      <p className="m3-section-description" style={{ margin: 0 }}>
         Input a custom color that automatically gets assigned a set of complementary tones. 
         Edit the source custom color to rename or delete.
       </p>

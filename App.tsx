@@ -14,7 +14,7 @@ const AppContent: React.FC = () => {
   const location = useLocation();
   
   // Check if we're on the standalone M3 theme builder page
-  const isStandalonePage = location.pathname === '/design-system-alt';
+  const isStandalonePage = location.pathname === '/theme-builder';
   
   // Load panel state from localStorage
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(() => {
@@ -43,7 +43,7 @@ const AppContent: React.FC = () => {
   if (isStandalonePage) {
     return (
       <Routes>
-        <Route path="/design-system-alt" element={<DesignSystemAltPage />} />
+        <Route path="/theme-builder" element={<DesignSystemAltPage />} />
       </Routes>
     );
   }

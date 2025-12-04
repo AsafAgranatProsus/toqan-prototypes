@@ -4,6 +4,15 @@ import { ExtendedColor } from './M3ThemeBuilder';
 import { clearThemeCache } from '../../themes/colors';
 import './ExportButtons.css';
 
+export interface CoreColors {
+  primary: string;
+  secondary: string;
+  tertiary: string;
+  error: string;
+  neutral: string;
+  neutralVariant: string;
+}
+
 export interface ExportButtonsProps {
   theme: M3Theme;
   extendedColors?: ExtendedColor[];
@@ -13,6 +22,9 @@ export interface ExportButtonsProps {
   displayFont?: string;
   bodyFont?: string;
   contrastLevel?: number;
+  colorMatch?: boolean;
+  coreColors?: CoreColors;
+  coreColorsModified?: boolean;
 }
 
 // Check if we're in development mode (API available)
@@ -37,6 +49,9 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
   displayFont,
   bodyFont,
   contrastLevel = 0,
+  colorMatch = false,
+  coreColors,
+  coreColorsModified = false,
 }) => {
   const [copied, setCopied] = useState<'css' | 'json' | 'app' | 'manifest' | null>(null);
   const [savedToLibrary, setSavedToLibrary] = useState(false);
@@ -134,8 +149,33 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({
     if (contrastLevel !== 0) {
       entry.contrastLevel = contrastLevel;
     }
+    // Include colorMatch if enabled
+    if (colorMatch) {
+      entry.colorMatch = colorMatch;
+    }
+    // Include core color overrides if modified
+    if (coreColorsModified && coreColors) {
+      entry.coreColors = {
+        primary: coreColors.primary,
+        secondary: coreColors.secondary,
+        tertiary: coreColors.tertiary,
+        error: coreColors.error,
+        neutral: coreColors.neutral,
+        neutralVariant: coreColors.neutralVariant,
+      };
+    }
+    // Include extended colors if any
+    if (extendedColors.length > 0) {
+      entry.extendedColors = extendedColors.map(c => ({
+        id: c.id,
+        name: c.name,
+        description: c.description,
+        color: c.color,
+        blend: c.blend,
+      }));
+    }
     return entry;
-  }, [themeName, sourceColor, displayFont, bodyFont, contrastLevel]);
+  }, [themeName, sourceColor, displayFont, bodyFont, contrastLevel, colorMatch, coreColors, coreColorsModified, extendedColors]);
   
   // Copy manifest entry to clipboard
   const handleCopyManifestEntry = async () => {

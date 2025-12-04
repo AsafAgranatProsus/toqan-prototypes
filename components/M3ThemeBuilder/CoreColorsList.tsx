@@ -62,16 +62,19 @@ export const CoreColorsList: React.FC<CoreColorsListProps> = ({ colors, onChange
       />
       <ColorItem
         label="Secondary"
+        sublabel="Supporting color for less prominent components"
         color={colors.secondary}
         onChange={(value) => onChange('secondary', value)}
       />
       <ColorItem
         label="Tertiary"
+        sublabel="Accent color for contrast and visual interest"
         color={colors.tertiary}
         onChange={(value) => onChange('tertiary', value)}
       />
       <ColorItem
         label="Error"
+        sublabel="Indicates errors and destructive actions"
         color={colors.error}
         onChange={(value) => onChange('error', value)}
       />
