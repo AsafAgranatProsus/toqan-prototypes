@@ -35,7 +35,10 @@ import {
   Layout,
   MoreVertical,
   Pin,
-  Edit2
+  Edit2,
+  Clock,
+  History,
+  FileText
 } from 'lucide-react';
 import type { IconName } from '../../types';
 
@@ -92,7 +95,10 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   Robot,
   MoreVertical,
   Pin,
-  Edit2
+  Edit2,
+  Clock,
+  History,
+  FileText
 };
 
 export const Icons: React.FC<IconProps> = ({ name, ...props }) => {

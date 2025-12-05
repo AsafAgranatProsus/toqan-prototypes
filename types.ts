@@ -49,7 +49,10 @@ export type IconName =
   | 'Robot'
   | 'MoreVertical'
   | 'Pin'
-  | 'Edit2';
+  | 'Edit2'
+  | 'Clock'
+  | 'History'
+  | 'FileText';
 
 export interface Model {
   id: string;

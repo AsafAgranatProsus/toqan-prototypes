@@ -19,7 +19,7 @@ const STORAGE_KEY = 'toqan-left-sidebar-width';
 
 export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMobile }) => {
   const { isFeatureActive, flags } = useFeatureFlags();
-  
+
   // Load width from localStorage
   const [width, setWidth] = useState(() => {
     try {
@@ -29,6 +29,9 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
       return DEFAULT_WIDTH;
     }
   });
+
+  // Recents section collapsed state
+  const [recentsExpanded, setRecentsExpanded] = useState(true);
 
   // Save width to localStorage
   useEffect(() => {
@@ -61,18 +64,27 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
   };
 
   return (
-    <aside 
+    <aside
       className={sidebarClasses}
       style={sidebarStyle}
     >
       <div className="left-sidebar__header">
-        <Logo variant="minimal" />
-        <Button 
+        <Button
+          variant="text"
+          className="left-sidebar__logo-button"
+          aria-label="Open workspace menu"
+        >
+          <span className="flex items-center">
+            <Logo variant="minimal" />
+            <Icons name="ChevronDown" />
+          </span>
+        </Button>
+        {/* <Button 
           variant="outlined" 
           shape="circle"
           icon="SquarePen"
           aria-label="New conversation"
-        />
+        /> */}
       </div>
 
       <nav className="left-sidebar__nav">
@@ -90,21 +102,63 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
         </div>
       </nav>
 
-      <div className="left-sidebar__content">
-        <div className="left-sidebar__section-header">
-          <div className="left-sidebar__section-title">
+
+
+      <div className="left-sidebar__sessions-container">
+        <div className="left-sidebar__sessions-header">
+          <div className="left-sidebar__nav-item left-sidebar__nav-item--with-chevron">
             <Icons name="MessageSquare" />
             <span>Sessions</span>
+            <Icons name="ChevronRight" />
           </div>
-          <Button variant="text" icon="ChevronRight" iconPosition="right">
-            All
-          </Button>
+          <Button
+            variant="outlined"
+            shape="circle"
+            icon="SquarePen"
+            aria-label="New session"
+          />
         </div>
-        
-        {/* Conversations list will go here */}
-        <p className="left-sidebar__placeholder">
-          New sidebar content coming soon...
-        </p>
+        {/* Pinned Sessions */}
+        <div className="left-sidebar__session-item left-sidebar__session-item--pinned">
+          <Icons name="Pin" />
+          <span className="left-sidebar__session-title">Product roadmap discussion and quarterly planning review</span>
+        </div>
+        <div className="left-sidebar__session-item left-sidebar__session-item--pinned">
+          <Icons name="Pin" />
+          <span className="left-sidebar__session-title">Q4 Marketing strategy</span>
+        </div>
+
+        {/* Recents Section */}
+        <div
+          className="left-sidebar__section-toggle"
+          onClick={() => setRecentsExpanded(!recentsExpanded)}
+        >
+          <div className="left-sidebar__section-toggle-content">
+            <Icons name="History" />
+            <span>Recents</span>
+          </div>
+          <Icons name={recentsExpanded ? "ChevronDown" : "ChevronRight"} />
+        </div>
+
+        {recentsExpanded && (
+          <div className="left-sidebar__session-list">
+            <div className="left-sidebar__session-item">
+              <span className="left-sidebar__session-title">Debug API integration issues with third-party services</span>
+            </div>
+            <div className="left-sidebar__session-item">
+              <span className="left-sidebar__session-title">Review design mockups for the new dashboard interface</span>
+            </div>
+            <div className="left-sidebar__session-item">
+              <span className="left-sidebar__session-title">Team standup notes</span>
+            </div>
+            <div className="left-sidebar__session-item">
+              <span className="left-sidebar__session-title">Refactor authentication system and implement OAuth 2.0</span>
+            </div>
+            <div className="left-sidebar__session-item">
+              <span className="left-sidebar__session-title">Customer feedback analysis</span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="left-sidebar__footer">

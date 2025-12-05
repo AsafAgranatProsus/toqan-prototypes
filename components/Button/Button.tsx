@@ -38,7 +38,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button className={classNames} {...props}>
       {iconPosition === 'left' && iconComponent}
-      {children && <span>{children}</span>}
+      {children && <span className="btn__children">{children}</span>}
       {iconPosition === 'right' && iconComponent}
     </button>
   );
