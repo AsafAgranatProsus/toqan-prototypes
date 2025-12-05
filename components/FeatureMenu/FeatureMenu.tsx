@@ -414,6 +414,11 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   checked={flags.newResizeablePanels}
                   onChange={(checked) => setFlag('newResizeablePanels', checked)}
                 />
+                <Toggle
+                  label="Workspaces"
+                  checked={flags.workspaces}
+                  onChange={(checked) => setFlag('workspaces', checked)}
+                />
               </div>
             </Collapsible.Content>
           </Collapsible>
@@ -531,7 +536,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           </Collapsible>
 
           {Object.keys(flags).filter(flag => 
-            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'plays', 'builtByOther', 'themes', 'showThemeDebugger'].includes(flag)
+            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'plays', 'builtByOther', 'themes', 'showThemeDebugger'].includes(flag)
           ).map(flag => (
             <Toggle
               key={flag}

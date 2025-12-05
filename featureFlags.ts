@@ -16,4 +16,5 @@ export const featureFlags = {
   conversationRename: false,
   conversationWrap: false,
   conversationCollapsible: false,
+  workspaces: false,
 };

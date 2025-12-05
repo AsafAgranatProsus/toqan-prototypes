@@ -17,6 +17,9 @@ interface DropdownContextType {
   triggerRef: React.RefObject<HTMLButtonElement>;
   menuRef: React.RefObject<HTMLDivElement>;
   getItemProps: (userProps?: React.HTMLAttributes<HTMLDivElement>) => Record<string, any>;
+  size: 'tight' | 'normal' | 'relaxed';
+  icon?: React.ReactNode;
+  showChevron: boolean;
 }
 
 const DropdownContext = createContext<DropdownContextType | null>(null);
@@ -32,11 +35,15 @@ const useDropdown = () => {
 interface DropdownRootProps {
   children: React.ReactNode;
   priority?: 'primary' | 'secondary' | 'tertiary';
+  size?: 'tight' | 'normal' | 'relaxed';
+  icon?: React.ReactNode;
+  showChevron?: boolean;
+  className?: string;
 }
 
 // Fix: Renamed Dropdown to DropdownRoot to use with Object.assign for creating a properly typed compound component.
 // This resolves the error in MainContent.tsx where Dropdown.Trigger props were not being recognized.
-const DropdownRoot = ({ children, priority }: DropdownRootProps) => {
+const DropdownRoot = ({ children, priority, size = 'normal', icon, showChevron = true, className }: DropdownRootProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -107,10 +114,12 @@ const DropdownRoot = ({ children, priority }: DropdownRootProps) => {
   const dropdownContainerClasses = [
     'dropdown-container',
     priority ? `dropdown--${priority}` : '',
+    size ? `dropdown--${size}` : '',
+    className,
   ].filter(Boolean).join(' ');
 
   return (
-    <DropdownContext.Provider value={{ isOpen, toggle, close, triggerRef, menuRef, getItemProps }}>
+    <DropdownContext.Provider value={{ isOpen, toggle, close, triggerRef, menuRef, getItemProps, size, icon, showChevron }}>
       <div className={dropdownContainerClasses}>{children}</div>
     </DropdownContext.Provider>
   );
@@ -120,16 +129,32 @@ const Trigger: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className,
 }) => {
-  const { toggle, triggerRef, isOpen } = useDropdown();
+  const { toggle, triggerRef, isOpen, icon, showChevron } = useDropdown();
   return (
     <button
       ref={triggerRef}
       onClick={toggle}
-      className={className}
+      className={'dropdown__button' + ' ' + className}
       aria-haspopup="listbox"
       aria-expanded={isOpen}
     >
-      {children}
+      {icon && <span className="dropdown__icon-left">{icon}</span>}
+      <span className="dropdown__content">{children}</span>
+      {showChevron && (
+        <svg
+          className="dropdown__chevron"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      )}
     </button>
   );
 };

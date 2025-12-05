@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
+import { useWorkspaces } from '../../context/WorkspaceContext';
 import { Logo } from '../Logo/Logo';
 import { Icons } from '../Icons/Icons';
 import Button from '../Button/Button';
 import { ResizeHandle } from '../ResizeHandle/ResizeHandle';
+import Dropdown from '../Dropdown/Dropdown';
 import './LeftSidebar.css';
 
 interface LeftSidebarProps {
@@ -19,6 +21,7 @@ const STORAGE_KEY = 'toqan-left-sidebar-width';
 
 export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMobile }) => {
   const { isFeatureActive, flags } = useFeatureFlags();
+  const { workspaces, activeWorkspace, setActiveWorkspace } = useWorkspaces();
 
   // Load width from localStorage
   const [width, setWidth] = useState(() => {
@@ -32,6 +35,9 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
 
   // Recents section collapsed state
   const [recentsExpanded, setRecentsExpanded] = useState(true);
+
+  // Sort option for recents
+  const [recentsSortBy, setRecentsSortBy] = useState<'activity' | 'modified' | 'created'>('activity');
 
   // Save width to localStorage
   useEffect(() => {
@@ -58,7 +64,7 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
   ].filter(Boolean).join(' ');
 
   const sidebarStyle: React.CSSProperties = {
-    width: isMobile ? '280px' : `${width}px`,
+    width: isMobile ? '100%' : `${width}px`,
     minWidth: isMobile ? undefined : `${width}px`, // Force the width
     maxWidth: isMobile ? undefined : `${width}px`, // Force the width
   };
@@ -69,16 +75,44 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
       style={sidebarStyle}
     >
       <div className="left-sidebar__header">
-        <Button
+        {/* <Button
           variant="text"
           className="left-sidebar__logo-button"
           aria-label="Open workspace menu"
         >
           <span className="flex items-center">
             <Logo variant="minimal" />
-            <Icons name="ChevronDown" />
           </span>
-        </Button>
+        </Button> */}
+        {isFeatureActive('workspaces') && (
+          <Dropdown size="normal" showChevron={true} className="left-sidebar__workspace-selector">
+            <Dropdown.Trigger>
+              {/* <span className=""> */}
+                <Logo variant="minimal" />
+                {/* <Icons name="ChevronDown" /> */}
+              {/* </span> */}
+              <span className="left-sidebar__workspace-name">
+                <span className="left-sidebar__workspace-name-title">
+                  Workspace
+                </span>
+                <span className="left-sidebar__workspace-name-text">
+                  {activeWorkspace?.name || 'Select Workspace'}
+                </span>
+              </span>
+            </Dropdown.Trigger>
+            <Dropdown.Menu>
+              {workspaces.map((workspace) => (
+                <Dropdown.Item
+                  key={workspace.id}
+                  onClick={() => setActiveWorkspace(workspace.id)}
+                  isSelected={activeWorkspace?.id === workspace.id}
+                >
+                  {workspace.name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
         {/* <Button 
           variant="outlined" 
           shape="circle"
@@ -137,27 +171,67 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
             <Icons name="History" />
             <span>Recents</span>
           </div>
-          <Icons name={recentsExpanded ? "ChevronDown" : "ChevronRight"} />
+          <Icons name={recentsExpanded ? "ChevronUp" : "ChevronDown"} />
         </div>
 
         {recentsExpanded && (
-          <div className="left-sidebar__session-list">
-            <div className="left-sidebar__session-item">
-              <span className="left-sidebar__session-title">Debug API integration issues with third-party services</span>
+          <>
+            <div className="left-sidebar__sort-dropdown">
+              <Dropdown
+                size="tight"
+                icon={<Icons name="ArrowUpDown" />}
+              >
+                <Dropdown.Trigger>
+                  {recentsSortBy === 'activity' ? 'Most active' :
+                    recentsSortBy === 'modified' ? 'Last modified' :
+                      'Time Created'}
+                </Dropdown.Trigger>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => setRecentsSortBy('activity')}
+                    isSelected={recentsSortBy === 'activity'}
+                  >
+                    Most active
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => setRecentsSortBy('modified')}
+                    isSelected={recentsSortBy === 'modified'}
+                  >
+                    Last modified
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => setRecentsSortBy('created')}
+                    isSelected={recentsSortBy === 'created'}
+                  >
+                    Time Created
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
-            <div className="left-sidebar__session-item">
-              <span className="left-sidebar__session-title">Review design mockups for the new dashboard interface</span>
+
+            <div className="left-sidebar__session-list">
+              <div className="left-sidebar__session-item left-sidebar__session-item--child">
+                <Icons name="CornerDownRight" />
+                <span className="left-sidebar__session-title">Debug API integration issues with third-party services</span>
+              </div>
+              <div className="left-sidebar__session-item left-sidebar__session-item--child">
+                <Icons name="CornerDownRight" />
+                <span className="left-sidebar__session-title">Review design mockups for the new dashboard interface</span>
+              </div>
+              <div className="left-sidebar__session-item left-sidebar__session-item--child">
+                <Icons name="CornerDownRight" />
+                <span className="left-sidebar__session-title">Team standup notes</span>
+              </div>
+              <div className="left-sidebar__session-item left-sidebar__session-item--child">
+                <Icons name="CornerDownRight" />
+                <span className="left-sidebar__session-title">Refactor authentication system and implement OAuth 2.0</span>
+              </div>
+              <div className="left-sidebar__session-item left-sidebar__session-item--child">
+                <Icons name="CornerDownRight" />
+                <span className="left-sidebar__session-title">Customer feedback analysis</span>
+              </div>
             </div>
-            <div className="left-sidebar__session-item">
-              <span className="left-sidebar__session-title">Team standup notes</span>
-            </div>
-            <div className="left-sidebar__session-item">
-              <span className="left-sidebar__session-title">Refactor authentication system and implement OAuth 2.0</span>
-            </div>
-            <div className="left-sidebar__session-item">
-              <span className="left-sidebar__session-title">Customer feedback analysis</span>
-            </div>
-          </div>
+          </>
         )}
       </div>
 

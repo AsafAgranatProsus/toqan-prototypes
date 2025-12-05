@@ -52,7 +52,9 @@ export type IconName =
   | 'Edit2'
   | 'Clock'
   | 'History'
-  | 'FileText';
+  | 'FileText'
+  | 'CornerDownRight'
+  | 'ArrowUpDown';
 
 export interface Model {
   id: string;

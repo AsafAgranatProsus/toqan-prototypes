@@ -14,6 +14,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Menu,
   Plus,
   LucideProps,
@@ -38,7 +39,9 @@ import {
   Edit2,
   Clock,
   History,
-  FileText
+  FileText,
+  CornerDownRight,
+  ArrowUpDown
 } from 'lucide-react';
 import type { IconName } from '../../types';
 
@@ -77,6 +80,7 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Menu,
   Plus,
   Mail,
@@ -98,7 +102,9 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   Edit2,
   Clock,
   History,
-  FileText
+  FileText,
+  CornerDownRight,
+  ArrowUpDown
 };
 
 export const Icons: React.FC<IconProps> = ({ name, ...props }) => {

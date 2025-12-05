@@ -141,6 +141,7 @@
   
   /* Font Sizes - Body */
   --font-size-base: 1rem;          /* 16px - base font size */
+  --font-size-body-xxs: 0.6rem;    /* 12px */
   --font-size-body-xs: 0.75rem;    /* 12px */
   --font-size-body-sm: 0.875rem;   /* 14px */
   --font-size-body-md: 1rem;       /* 16px */

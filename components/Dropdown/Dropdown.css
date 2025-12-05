@@ -1,79 +1,124 @@
 .dropdown-container {
   position: relative;
+  /* CSS Variables for size control */
+  --dropdown-padding: var(--space-2) var(--space-3);
+  --dropdown-font-size: var(--font-size-body-sm);
+  --dropdown-gap: var(--space-2);
+  --dropdown-icon-size: 16px;
+  --dropdown-menu-item-padding: var(--space-3) var(--space-4);
+  --dropdown-menu-item-font-size: var(--font-size-body-sm);
+}
+
+/* Size variants set CSS variables */
+.dropdown-container.dropdown--tight {
+  --dropdown-padding: var(--space-1) var(--space-2);
+  --dropdown-font-size: var(--font-size-body-xs);
+  --dropdown-gap: var(--space-1);
+  --dropdown-icon-size: 12px;
+  --dropdown-menu-item-padding: var(--space-2) var(--space-3);
+  --dropdown-menu-item-font-size: var(--font-size-body-xs);
+}
+
+.dropdown-container.dropdown--normal {
+  --dropdown-padding: var(--space-2) var(--space-3);
+  --dropdown-font-size: var(--font-size-body-sm);
+  --dropdown-gap: var(--space-2);
+  --dropdown-icon-size: 16px;
+  --dropdown-menu-item-padding: var(--space-3) var(--space-4);
+  --dropdown-menu-item-font-size: var(--font-size-body-sm);
+}
+
+.dropdown-container.dropdown--relaxed {
+  --dropdown-padding: var(--space-3) var(--space-4);
+  --dropdown-font-size: var(--font-size-body-default);
+  --dropdown-gap: var(--space-3);
+  --dropdown-icon-size: 18px;
+  --dropdown-menu-item-padding: var(--space-4) var(--space-5);
+  --dropdown-menu-item-font-size: var(--font-size-body-default);
 }
 
 /* Priority Styles */
-.dropdown-container--primary .dropdown__button {
+.dropdown-container--primary button {
   background-color: var(--theme-btn-primary-bg);
   color: var(--theme-btn-primary-text);
   border-color: transparent;
 }
 
-.dropdown-container--primary .dropdown__button:hover {
+.dropdown-container--primary button:hover {
   background-color: var(--theme-btn-primary-bg-hover);
 }
 
-.dropdown-container--secondary .dropdown__button {
+.dropdown-container--secondary button {
   background-color: var(--theme-btn-secondary-bg);
   color: var(--theme-btn-secondary-text);
   border-color: var(--theme-border);
-  padding: 0.25rem 0px 0.25rem 0.25rem;
-    border-radius: 0.5rem;
-    border: 1px solid rgb(200, 216, 234);
-    line-height: 1;
-    color: rgb(102, 126, 153);
-    display: flex
-;
-    align-items: center;
-    gap: 0.125rem;
 }
 
-.dropdown-container--secondary .dropdown__button:hover {
+.dropdown-container--secondary button:hover {
   background-color: var(--theme-btn-secondary-bg-hover);
 }
 
-.dropdown-container--tertiary .dropdown__button {
+.dropdown-container--tertiary button {
   background-color: transparent;
   color: var(--theme-text-tertiary);
   border-color: transparent;
-  padding: 0.375rem;
 }
 
-.dropdown-container--tertiary .dropdown__button:hover {
+.dropdown-container--tertiary button:hover {
   background-color: var(--theme-btn-secondary-bg-hover);
 }
 
-.dropdown__button {
+/* Base button styles - use CSS variables */
+button {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--dropdown-gap);
+  padding: var(--dropdown-padding);
+  font-size: var(--dropdown-font-size);
   border: 1px solid var(--theme-border);
-  padding: var(--space-2) var(--space-4);
   border-radius: var(--border-radius-md);
   font-weight: 400;
   background-color: var(--theme-bg-app);
   transition: var(--transition-fast);
+  cursor: pointer;
 }
 
-.dropdown__button:hover {
-  border-color: #D1D5DB;
-  /* Consider theming this */
+button:hover {
+  border-color: var(--theme-border-hover, #D1D5DB);
 }
 
-.dropdown__label {
-  /* color: var(--theme-text-tertiary); */
+/* Icon and content layout */
+.dropdown__icon-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.dropdown__selected-value {
-  /* color: var(--theme-text-secondary); */
+.dropdown__icon-left svg {
+  display: block;
+  width: var(--dropdown-icon-size);
+  height: var(--dropdown-icon-size);
 }
 
-.dropdown__icon {
-  width: 16px;
-  height: 16px;
-  color: var(--theme-text-tertiary);
+.dropdown__content {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  align-items: center;
 }
 
+.dropdown__chevron {
+  display: block;
+  flex-shrink: 0;
+  width: var(--dropdown-icon-size);
+  height: var(--dropdown-icon-size);
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+  margin-left: auto;
+}
+
+/* Menu styles */
 .dropdown-menu {
   position: absolute;
   z-index: 100;
@@ -85,27 +130,31 @@
   min-width: 320px;
   max-height: 300px;
   overflow-y: auto;
-  transition: opacity 0.2s cubic-bezier(0.05, 0.84, 0.31, 1), transform 0.3s cubic-bezier(0.05, 0.84, 0.31, 1), visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
+  transition: opacity 0.2s cubic-bezier(0.05, 0.84, 0.31, 1), 
+              transform 0.3s cubic-bezier(0.05, 0.84, 0.31, 1), 
+              visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
 }
 
 .dropdown-menu-hidden {
-    opacity: 0;
-    transform: scale(0.95);
-    visibility: hidden;
+  opacity: 0;
+  transform: scale(0.95);
+  visibility: hidden;
 }
 
 .dropdown-menu-visible {
-    opacity: 1;
-    transform: scale(1);
-    visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
 }
 
 .dropdown-menu__item {
-  padding: var(--space-3);
+  padding: var(--dropdown-menu-item-padding);
+  font-size: var(--dropdown-menu-item-font-size);
   border-radius: var(--border-radius-md);
   cursor: pointer;
   outline: none;
   border: 1px solid transparent;
+  transition: background-color 0.2s ease;
 }
 
 .dropdown-menu__item:hover,

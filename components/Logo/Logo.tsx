@@ -22,7 +22,7 @@ const OldLogoSvg: React.FC = () => (
 
 // Minimal logo - just the 't' with the iconic dot
 const MinimalLogoSvg: React.FC = () => (
-    <svg width="24" height="40" viewBox="0 0 24 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <svg width="24" height="40" viewBox="0 0 22 33" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
       {/* The 't' letter */}
       <path d="M9.19232 25.6552C9.19232 31.1316 12.0827 33.0585 17.8634 33.0585C19.7903 33.0585 21.3115 32.9064 22.7314 32.7036V26.0608C21.8186 26.1623 21.3622 26.213 20.3988 26.213C18.3705 26.213 17.2042 25.8073 17.2042 23.5761V12.7753H22.4271V6.08188H17.2042V0H9.19232V25.6552Z"></path>
       {/* The iconic dot - will be styled with primary color */}
