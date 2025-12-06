@@ -1,28 +1,53 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDesignSystem } from '../../context/DesignSystemContext';
-import { Icons } from '../Icons/Icons';
-import './ThemeToggle.css';
+import { GroupedButtons, GroupedButton } from '../GroupedButtons/GroupedButtons';
 
-export const ThemeToggle: React.FC = () => {
-  const { themeMode, toggleTheme, isDark } = useDesignSystem();
+interface ThemeToggleProps {
+  showAuto?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export const ThemeToggle: React.FC<ThemeToggleProps> = ({ showAuto = true, size = 'md' }) => {
+  const { themeMode, setThemeMode } = useDesignSystem();
+
+  // Build button definitions based on showAuto prop
+  const buttons: GroupedButton[] = useMemo(() => {
+    const baseButtons: GroupedButton[] = [
+      {
+        id: 'light',
+        icon: 'Sun',
+        title: 'Light theme',
+      },
+      {
+        id: 'dark',
+        icon: 'Moon',
+        title: 'Dark theme',
+      },
+    ];
+
+    if (showAuto) {
+      baseButtons.push({
+        id: 'auto',
+        icon: 'Monitor',
+        title: 'Auto theme (follows system)',
+      });
+    }
+
+    return baseButtons;
+  }, [showAuto]);
+
+  const handleChange = (id: string) => {
+    setThemeMode(id as 'light' | 'dark' | 'auto');
+  };
 
   return (
-    <button
-      className="theme-toggle-button"
-      onClick={toggleTheme}
-      aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-      title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-      type="button"
-      aria-pressed={isDark}
-    >
-      <div className={`theme-toggle-highlight ${isDark ? 'right' : 'left'}`} />
-      <div className={`theme-toggle-option ${!isDark ? 'active' : ''}`}>
-        <Icons name="Sun" className="theme-toggle-icon" aria-hidden="true" />
-      </div>
-      <div className={`theme-toggle-option ${isDark ? 'active' : ''}`}>
-        <Icons name="Moon" className="theme-toggle-icon" aria-hidden="true" />
-      </div>
-    </button>
+    <GroupedButtons
+      buttons={buttons}
+      activeId={themeMode}
+      onChange={handleChange}
+      size={size}
+      ariaLabel="Theme mode selector"
+    />
   );
 };
 

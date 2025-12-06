@@ -1,0 +1,149 @@
+/* ============================================
+   Workspace Menu - Bespoke modal-style menu
+   Adheres to theming system and token values
+   ============================================ */
+
+.workspace-menu {
+  min-width: 280px;
+  max-width: 320px;
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-light ) 0%,
+    var(--color-tertiary-light) 100%
+  );
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* Header */
+.workspace-menu__header {
+  padding: var(--space-6) var(--space-6) 0 var(--space-6);
+}
+
+.workspace-menu__title {
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Workspaces List */
+.workspace-menu__workspaces {
+  padding: var(--space-2) var(--space-4);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.workspace-menu__workspace-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  padding-left: var(--space-6);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-default);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: left;
+}
+
+.workspace-menu__workspace-item:hover {
+  background-color: var(--color-ui-hover);
+}
+
+.workspace-menu__workspace-item--active {
+  background-color: var(--color-ui-active);
+}
+
+.workspace-menu__workspace-item--active:hover {
+  background-color: var(--color-ui-active);
+}
+
+.workspace-menu__workspace-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--space-3);
+}
+
+.workspace-menu__workspace-name {
+  font-size: var(--font-size-body-default);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-default);
+  line-height: var(--line-height-default);
+}
+
+.workspace-menu__check-icon {
+  flex-shrink: 0;
+  color: var(--color-primary-default);
+}
+
+.workspace-menu__check-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* New Workspace Button */
+.workspace-menu__new-workspace-container {
+  /* padding: 0 var(--space-4); */
+  padding-left: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.workspace-menu__new-workspace-button {
+  /* width: 100%; */
+  justify-content: flex-start;
+}
+
+/* Divider */
+/* .workspace-menu__divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-ui-border) 20%,
+    var(--color-ui-border) 80%,
+    transparent
+  );
+  margin: var(--space-2) 0;
+} */
+
+/* Footer */
+.workspace-menu__footer {
+  padding: var(--space-2);
+  /* background: var(--color-ui-background); */
+  border-top: 1px solid var(--color-ui-border);
+}
+
+.workspace-menu__footer-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-default);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-align: left;
+}
+
+.workspace-menu__footer-item:hover {
+  background-color: var(--color-ui-hover);
+  color: var(--color-text-default);
+}
+
+.workspace-menu__footer-item svg {
+  width: 16px;
+  height: 16px;
+}
+

@@ -6,7 +6,10 @@ import { Icons } from '../Icons/Icons';
 import Button from '../Button/Button';
 import { ResizeHandle } from '../ResizeHandle/ResizeHandle';
 import Dropdown from '../Dropdown/Dropdown';
+import { WorkspaceMenu } from '../WorkspaceMenu/WorkspaceMenu';
+import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import './LeftSidebar.css';
+import { ThemeSelector } from '../ThemeSelector';
 
 interface LeftSidebarProps {
   isOpen: boolean;
@@ -75,22 +78,10 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
       style={sidebarStyle}
     >
       <div className="left-sidebar__header">
-        {/* <Button
-          variant="text"
-          className="left-sidebar__logo-button"
-          aria-label="Open workspace menu"
-        >
-          <span className="flex items-center">
-            <Logo variant="minimal" />
-          </span>
-        </Button> */}
-        {isFeatureActive('workspaces') && (
+        {isFeatureActive('workspaces') ? (
           <Dropdown size="normal" showChevron={true} className="left-sidebar__workspace-selector">
             <Dropdown.Trigger>
-              {/* <span className=""> */}
-                <Logo variant="minimal" />
-                {/* <Icons name="ChevronDown" /> */}
-              {/* </span> */}
+              <Logo variant="minimal" />
               <span className="left-sidebar__workspace-name">
                 <span className="left-sidebar__workspace-name-title">
                   Workspace
@@ -100,25 +91,22 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
                 </span>
               </span>
             </Dropdown.Trigger>
-            <Dropdown.Menu>
-              {workspaces.map((workspace) => (
-                <Dropdown.Item
-                  key={workspace.id}
-                  onClick={() => setActiveWorkspace(workspace.id)}
-                  isSelected={activeWorkspace?.id === workspace.id}
-                >
-                  {workspace.name}
-                </Dropdown.Item>
-              ))}
+            <Dropdown.Menu custom={true} coverTrigger={true}>
+              <WorkspaceMenu />
             </Dropdown.Menu>
           </Dropdown>
+        ) : (
+          <Button
+            variant="text"
+            className="left-sidebar__logo-button"
+            aria-label="Open workspace menu"
+          >
+            <span className="flex items-center">
+              <Logo variant="minimal" />
+              <Icons name="ChevronDown" />
+            </span>
+          </Button>
         )}
-        {/* <Button 
-          variant="outlined" 
-          shape="circle"
-          icon="SquarePen"
-          aria-label="New conversation"
-        /> */}
       </div>
 
       <nav className="left-sidebar__nav">
@@ -236,10 +224,11 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
       </div>
 
       <div className="left-sidebar__footer">
-        <div className="left-sidebar__nav-item">
-          <Icons name="User" />
-          <span>Account</span>
-        </div>
+        <span class="flex-between">
+
+          <ThemeToggle />
+          <ThemeSelector />
+        </span>
       </div>
 
       {/* Resize handle - only shows when resizable panels feature is active */}

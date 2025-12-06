@@ -6,6 +6,7 @@ import './Button.css';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'outline' | 'icon' | 'filled' | 'tonal' | 'outlined' | 'text';
   shape?: 'rounded' | 'circle';
+  size?: 'sm' | 'md' | 'lg';
   icon?: IconName;
   iconPosition?: 'left' | 'right';
   children?: React.ReactNode;
@@ -14,6 +15,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   shape,
+  size = 'md',
   icon,
   iconPosition = 'left',
   children,
@@ -29,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
     'btn',
     `btn--${variant}`,
     `btn--${buttonShape}`,
+    size !== 'md' ? `btn--${size}` : '',
     isIconOnly ? 'btn--icon-only' : '',
     className
   ].filter(Boolean).join(' ');

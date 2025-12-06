@@ -1,0 +1,134 @@
+/* GroupedButtons - Agnostic grouped button selector */
+
+.grouped-buttons {
+  display: inline-flex;
+  position: relative;
+  /* border: 1px solid var(--theme-border); */
+  border-radius: var(--border-radius-md);
+  padding: 0.25rem;
+  align-items: center;
+  gap: 0;
+  transition: background-color var(--transition-fast);
+}
+
+.grouped-buttons:hover {
+  /* border-color: var(--theme-text-accent); */
+  background-color: var(--theme-surface-container-low);
+}
+
+/* Size variants */
+.grouped-buttons--sm {
+  min-height: 2rem;
+  padding: 0.125rem;
+}
+
+.grouped-buttons--md {
+  min-height: 2.5rem;
+  padding: 0.25rem;
+}
+
+.grouped-buttons--lg {
+  min-height: 3rem;
+  padding: 0.3125rem;
+}
+
+/* Individual button option */
+.grouped-buttons__option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  z-index: 1;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  color: var(--theme-text-tertiary);
+  border-radius: calc(var(--border-radius-md) - 2px);
+  white-space: nowrap;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.grouped-buttons__option:hover:not(.active) {
+  /* color: var(--theme-text-secondary); */
+  background-color: var(--theme-surface-container-high);
+}
+
+.grouped-buttons__option.active {
+  color: var(--theme-btn-primary-bg-hover);
+}
+
+/* Icon styling */
+.grouped-buttons__icon {
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.grouped-buttons--sm .grouped-buttons__icon {
+  width: 14px;
+  height: 14px;
+}
+
+.grouped-buttons--md .grouped-buttons__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.grouped-buttons--lg .grouped-buttons__icon {
+  width: 18px;
+  height: 18px;
+}
+
+.grouped-buttons__option:hover .grouped-buttons__icon {
+  /* transform: scale(1.1); */
+}
+
+/* Label styling */
+.grouped-buttons__label {
+  font-size: inherit;
+}
+
+/* Sliding highlight indicator */
+.grouped-buttons__highlight {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  /* Left position: padding + (button width * active index) */
+  left: calc(0.25rem + ((100% - 0.5rem) / var(--button-count, 2)) * var(--active-index, 0));
+  /* Width: 100% divided by number of buttons, minus some padding */
+  width: calc((100% - 0.5rem) / var(--button-count, 2));
+  background-color: var(--theme-accent-primary-light);
+  border-radius: calc(var(--border-radius-md) - 2px);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.grouped-buttons--sm .grouped-buttons__highlight {
+  top: 0.125rem;
+  bottom: 0.125rem;
+  left: calc(0.125rem + ((100% - 0.25rem) / var(--button-count, 2)) * var(--active-index, 0));
+  width: calc((100% - 0.25rem) / var(--button-count, 2));
+}
+
+.grouped-buttons--lg .grouped-buttons__highlight {
+  top: 0.3125rem;
+  bottom: 0.3125rem;
+  left: calc(0.3125rem + ((100% - 0.625rem) / var(--button-count, 2)) * var(--active-index, 0));
+  width: calc((100% - 0.625rem) / var(--button-count, 2));
+}
+
+/* Adjust padding for icon-only buttons */
+.grouped-buttons__option:has(.grouped-buttons__icon):not(:has(.grouped-buttons__label)) {
+  padding: 0.375rem;
+}
+
+.grouped-buttons--sm .grouped-buttons__option:has(.grouped-buttons__icon):not(:has(.grouped-buttons__label)) {
+  padding: 0.3125rem;
+}
+
+.grouped-buttons--lg .grouped-buttons__option:has(.grouped-buttons__icon):not(:has(.grouped-buttons__label)) {
+  padding: 0.5rem;
+}

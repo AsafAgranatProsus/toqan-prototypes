@@ -19,6 +19,7 @@ import { ComponentPreview } from './ComponentPreview';
 import { ExportButtons } from './ExportButtons';
 import { TypographyPicker } from './TypographyPicker';
 import { CustomSelect } from './CustomSelect';
+import { GroupedButtons, GroupedButton } from '../GroupedButtons';
 import './M3ThemeBuilder.css';
 
 export interface M3ThemeBuilderProps {
@@ -447,6 +448,44 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
     
   }, [availableThemes]);
   
+  // Contrast level buttons configuration
+  const contrastButtons: GroupedButton[] = useMemo(() => [
+    {
+      id: CONTRAST_STANDARD.toString(),
+      title: 'Standard contrast',
+      content: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2"/>
+          <path d="M12 4v16" stroke="currentColor" strokeWidth="2"/>
+          <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
+        </svg>
+      ),
+    },
+    {
+      id: CONTRAST_MEDIUM.toString(),
+      title: 'Medium contrast',
+      content: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2"/>
+          <path d="M12 4v16" stroke="currentColor" strokeWidth="2"/>
+          <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+        </svg>
+      ),
+    },
+    {
+      id: CONTRAST_HIGH.toString(),
+      title: 'High contrast',
+      content: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+          <path d="M12 4v16" stroke="currentColor" strokeWidth="2.5"/>
+          <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
+        </svg>
+      ),
+    },
+  ], []);
+  
   return (
     <div className={`m3-theme-builder ${className || ''}`}>
       {/* Header */}
@@ -457,45 +496,12 @@ export const M3ThemeBuilder: React.FC<M3ThemeBuilderProps> = ({ className }) => 
         </div>
         <div className="m3-builder-header-actions">
           {/* Contrast Level Selector */}
-          <div className="m3-contrast-selector" role="group" aria-label="Contrast level">
-            <button
-              className={`m3-contrast-btn ${contrastLevel === CONTRAST_STANDARD ? 'active' : ''}`}
-              onClick={() => setContrastLevel(CONTRAST_STANDARD)}
-              title="Standard contrast"
-              aria-pressed={contrastLevel === CONTRAST_STANDARD}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2"/>
-                <path d="M12 4v16" stroke="currentColor" strokeWidth="2"/>
-                <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
-              </svg>
-            </button>
-            <button
-              className={`m3-contrast-btn ${contrastLevel === CONTRAST_MEDIUM ? 'active' : ''}`}
-              onClick={() => setContrastLevel(CONTRAST_MEDIUM)}
-              title="Medium contrast"
-              aria-pressed={contrastLevel === CONTRAST_MEDIUM}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2"/>
-                <path d="M12 4v16" stroke="currentColor" strokeWidth="2"/>
-                <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
-                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-              </svg>
-            </button>
-            <button
-              className={`m3-contrast-btn ${contrastLevel === CONTRAST_HIGH ? 'active' : ''}`}
-              onClick={() => setContrastLevel(CONTRAST_HIGH)}
-              title="High contrast"
-              aria-pressed={contrastLevel === CONTRAST_HIGH}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-                <path d="M12 4v16" stroke="currentColor" strokeWidth="2.5"/>
-                <path d="M12 4a8 8 0 0 1 0 16" fill="currentColor"/>
-              </svg>
-            </button>
-          </div>
+          <GroupedButtons
+            buttons={contrastButtons}
+            activeId={contrastLevel.toString()}
+            onChange={(id) => setContrastLevel(parseFloat(id))}
+            ariaLabel="Contrast level"
+          />
           
           {/* Mode Toggle */}
           <button 

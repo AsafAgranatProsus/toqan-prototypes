@@ -519,6 +519,15 @@
   --theme-surface-elevated: var(--color-ui-background-elevated);
   --theme-surface-active: var(--color-ui-active);
   
+  /* M3 Surface Container Hierarchy (5 elevation levels) */
+  --theme-surface-container-lowest: var(--color-surface-container-lowest);
+  --theme-surface-container-low: var(--color-surface-container-low);
+  --theme-surface-container: var(--color-surface-container);
+  --theme-surface-container-high: var(--color-surface-container-high);
+  --theme-surface-container-highest: var(--color-surface-container-highest);
+  --theme-surface-dim: var(--color-surface-dim);
+  --theme-surface-bright: var(--color-surface-bright);
+  
   /* Scrollbars */
   --theme-scrollbar-thumb: var(--color-ui-border);
   --theme-scrollbar-thumb-hover: var(--color-ui-active);

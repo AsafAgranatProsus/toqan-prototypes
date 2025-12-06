@@ -159,24 +159,87 @@ const Trigger: React.FC<{ children: React.ReactNode; className?: string }> = ({
   );
 };
 
-const Menu: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
+const Menu: React.FC<{ children: React.ReactNode; className?: string; custom?: boolean; coverTrigger?: boolean }> = ({ children, className, custom = false, coverTrigger = false }) => {
   const { isOpen, triggerRef, menuRef } = useDropdown();
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
 
   useEffect(() => {
-    if (isOpen && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
+    if (isOpen && triggerRef.current && menuRef.current) {
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const menuRect = menuRef.current.getBoundingClientRect();
+      
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+      const scrollX = window.scrollX;
+      
+      // Default positioning below trigger
+      let top = coverTrigger ? triggerRect.top + scrollY : triggerRect.bottom + scrollY + 8;
+      let left = triggerRect.left + scrollX;
+      
+      // Check if menu would overflow viewport height (bottom)
+      const spaceBelow = viewportHeight - triggerRect.bottom;
+      const spaceAbove = triggerRect.top;
+      const menuHeight = menuRect.height || 300; // fallback if not measured yet
+      
+      // Flip to above if not enough space below and more space above
+      if (!coverTrigger && spaceBelow < menuHeight && spaceAbove > spaceBelow) {
+        top = triggerRect.top + scrollY - menuHeight - 8;
+      }
+      
+      // If covering trigger, check if menu fits at all
+      if (coverTrigger && triggerRect.bottom + menuHeight > viewportHeight) {
+        // Position at top if not enough space
+        if (spaceAbove > spaceBelow) {
+          top = triggerRect.bottom + scrollY - menuHeight;
+        }
+      }
+      
+      // Check if menu would overflow viewport width (right edge)
+      const menuWidth = menuRect.width || 200; // fallback if not measured yet
+      const spaceRight = viewportWidth - triggerRect.left;
+      
+      // Align to right edge of trigger if menu would overflow right
+      if (spaceRight < menuWidth) {
+        left = triggerRect.right + scrollX - menuWidth;
+        
+        // If still overflows on left, align to viewport edge with some padding
+        if (left < scrollX) {
+          left = scrollX + 8;
+        }
+      }
+      
+      // Ensure menu doesn't go off left edge
+      if (left < scrollX) {
+        left = scrollX + 8;
+      }
+      
+      // Ensure menu doesn't go off right edge
+      if (left + menuWidth > scrollX + viewportWidth) {
+        left = scrollX + viewportWidth - menuWidth - 8;
+      }
+      
+      // Ensure menu doesn't go off top
+      if (top < scrollY) {
+        top = scrollY + 8;
+      }
+      
+      // Ensure menu doesn't go off bottom
+      if (top + menuHeight > scrollY + viewportHeight) {
+        top = scrollY + viewportHeight - menuHeight - 8;
+      }
+      
       setPosition({
-        top: rect.bottom + window.scrollY + 8,
-        left: rect.left + window.scrollX,
-        width: rect.width,
+        top,
+        left,
+        width: triggerRect.width,
       });
     }
-  }, [isOpen, triggerRef]);
+  }, [isOpen, triggerRef, coverTrigger]);
 
   const classNames = [
-    'dropdown-menu',
-    'custom-scrollbar',
+    custom ? 'dropdown-menu-custom' : 'dropdown-menu',
+    custom ? '' : 'custom-scrollbar',
     className,
     isOpen ? 'dropdown-menu-visible' : 'dropdown-menu-hidden'
   ].filter(Boolean).join(' ');
@@ -187,7 +250,7 @@ const Menu: React.FC<{ children: React.ReactNode; className?: string }> = ({ chi
         ref={menuRef}
         className={classNames}
         style={{ ...position }}
-        role="listbox"
+        role={custom ? undefined : "listbox"}
       >
         {children}
       </div>

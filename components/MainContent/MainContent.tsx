@@ -31,13 +31,9 @@ const AgentSelector: React.FC = () => {
     const [selectedAgent, setSelectedAgent] = React.useState<{ id: string, name: string } | null>(null);
 
     return (
-        <Dropdown>
+        <Dropdown icon={<Icons name="Bot" />}>
             <Dropdown.Trigger className="agent-selector">
-                <span>
-                    <Icons name="Bot" className="icon-bot" />
-                    <span>{selectedAgent ? selectedAgent.name : 'Select an Agent'}</span>
-                    <Icons name="ChevronDown" className="icon-chevron" />
-                </span>
+                <span>{selectedAgent ? selectedAgent.name : 'Select an Agent'}</span>
             </Dropdown.Trigger>
             <Dropdown.Menu>
                 {agents.map(agent => (

@@ -24,13 +24,13 @@ root.render(
   <React.StrictMode>
     <FeatureFlagProvider>
       <WorkspaceProvider>
-        <ScenarioProvider>
-          <DesignSystemProvider>
-            <ThemeCustomizationProvider>
-              <App />
-            </ThemeCustomizationProvider>
-          </DesignSystemProvider>
-        </ScenarioProvider>
+      <ScenarioProvider>
+        <DesignSystemProvider>
+          <ThemeCustomizationProvider>
+            <App />
+          </ThemeCustomizationProvider>
+        </DesignSystemProvider>
+      </ScenarioProvider>
       </WorkspaceProvider>
     </FeatureFlagProvider>
   </React.StrictMode>

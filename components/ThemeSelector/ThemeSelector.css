@@ -1,0 +1,111 @@
+/* ThemeSelector - Dropdown for selecting color themes */
+
+.theme-selector {
+  /* Inherits dropdown styles */
+}
+
+/* Empty state */
+.theme-selector__empty {
+  padding: var(--space-3) var(--space-4);
+  color: var(--theme-text-tertiary);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* Theme item container */
+.theme-selector__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+/* Item header with color preview and content */
+.theme-selector__item-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Color preview swatch */
+.theme-selector__color-preview {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Item content (name + description) */
+.theme-selector__item-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+}
+
+/* Theme name */
+.theme-selector__item-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-default);
+}
+
+/* Default badge */
+.theme-selector__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-accent-primary);
+  background-color: var(--theme-accent-primary-bg);
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Theme description */
+.theme-selector__item-description {
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-tertiary);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Theme metadata (author, etc.) */
+.theme-selector__item-meta {
+  font-size: var(--font-size-xs);
+  color: var(--theme-text-tertiary);
+  font-style: italic;
+  padding-left: calc(1.25rem + var(--space-3)); /* Align with content */
+}
+
+/* Hover state for dropdown items containing theme selector items */
+.dropdown-item:hover .theme-selector__item-name {
+  color: var(--theme-text-default);
+}
+
+/* Selected state */
+.dropdown-item.selected .theme-selector__item-name {
+  color: var(--theme-accent-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.dropdown-item.selected .theme-selector__color-preview {
+  border-color: var(--theme-accent-primary);
+  box-shadow: 0 0 0 2px var(--theme-accent-primary-bg);
+}
+
+/* Disabled state (while applying theme) */
+.dropdown-item:disabled .theme-selector__item {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
