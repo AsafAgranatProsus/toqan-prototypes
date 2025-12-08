@@ -1,0 +1,22 @@
+{
+  "id": "dynamic-waves-001",
+  "name": "Dynamic Waves",
+  "description": "Flowing wave-like gradient with organic movement patterns",
+  "config": {
+    "seed": 156,
+    "blurIntensity": 1.2,
+    "noiseScale": 2.5,
+    "grainIntensity": 0.12,
+    "iterations": 30,
+    "noiseAlgorithm": "simplex",
+    "colorStops": [
+      { "token": "surface-container", "alpha": 1.0, "threshold": 0.0 },
+      { "token": "primary-light", "alpha": 0.7, "threshold": 0.35 },
+      { "token": "secondary-light", "alpha": 0.6, "threshold": 0.65 },
+      { "token": "tertiary-light", "alpha": 0.5, "threshold": 0.88 }
+    ]
+  },
+  "tags": ["dynamic", "waves", "flowing", "hero"],
+  "createdAt": "2025-12-06",
+  "author": "Gradient Playground"
+}

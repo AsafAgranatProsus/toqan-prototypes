@@ -1,0 +1,21 @@
+{
+  "id": "card-accent-001",
+  "name": "Card Accent",
+  "description": "Soft accent gradient ideal for card backgrounds and panels",
+  "config": {
+    "seed": 91,
+    "blurIntensity": 2.5,
+    "noiseScale": 4.0,
+    "grainIntensity": 0.08,
+    "iterations": 35,
+    "noiseAlgorithm": "fbm",
+    "colorStops": [
+      { "token": "surface-container-low", "alpha": 1.0, "threshold": 0.0 },
+      { "token": "primary-background", "alpha": 0.5, "threshold": 0.5 },
+      { "token": "secondary-background", "alpha": 0.4, "threshold": 0.8 }
+    ]
+  },
+  "tags": ["card", "panel", "accent", "soft"],
+  "createdAt": "2025-12-06",
+  "author": "Gradient Playground"
+}

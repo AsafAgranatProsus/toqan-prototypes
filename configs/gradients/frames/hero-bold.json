@@ -1,0 +1,21 @@
+{
+  "id": "hero-bold-001",
+  "name": "Bold Hero",
+  "description": "High contrast, bold gradient with sharp focus areas for impactful headers",
+  "config": {
+    "seed": 23,
+    "blurIntensity": 0.8,
+    "noiseScale": 1.5,
+    "grainIntensity": 0.2,
+    "iterations": 25,
+    "noiseAlgorithm": "value",
+    "colorStops": [
+      { "token": "ui-background", "alpha": 1.0, "threshold": 0.0 },
+      { "token": "primary-default", "alpha": 1.0, "threshold": 0.25 },
+      { "token": "tertiary-default", "alpha": 0.9, "threshold": 0.65 }
+    ]
+  },
+  "tags": ["hero", "bold", "high-contrast"],
+  "createdAt": "2025-12-06",
+  "author": "Gradient Playground"
+}

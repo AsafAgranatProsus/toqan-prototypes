@@ -1,0 +1,22 @@
+{
+  "id": "hero-abstract-001",
+  "name": "Abstract Hero",
+  "description": "Energetic gradient perfect for hero sections with multi-color organic blobs",
+  "config": {
+    "seed": 42,
+    "blurIntensity": 1.5,
+    "noiseScale": 2.0,
+    "grainIntensity": 0.15,
+    "iterations": 30,
+    "noiseAlgorithm": "simplex",
+    "colorStops": [
+      { "token": "surface-container", "alpha": 1.0, "threshold": 0.0 },
+      { "token": "primary-default", "alpha": 0.9, "threshold": 0.3 },
+      { "token": "secondary-default", "alpha": 0.7, "threshold": 0.6 },
+      { "token": "tertiary-default", "alpha": 0.6, "threshold": 0.85 }
+    ]
+  },
+  "tags": ["hero", "energetic", "multi-color"],
+  "createdAt": "2025-12-06",
+  "author": "Gradient Playground"
+}

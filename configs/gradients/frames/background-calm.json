@@ -1,0 +1,21 @@
+{
+  "id": "background-calm-001",
+  "name": "Calm Background",
+  "description": "Subtle, calm gradient for content backgrounds with low contrast",
+  "config": {
+    "seed": 7,
+    "blurIntensity": 2.0,
+    "noiseScale": 3.5,
+    "grainIntensity": 0.05,
+    "iterations": 40,
+    "noiseAlgorithm": "perlin",
+    "colorStops": [
+      { "token": "surface-container-lowest", "alpha": 1.0, "threshold": 0.0 },
+      { "token": "surface-container-low", "alpha": 0.8, "threshold": 0.4 },
+      { "token": "surface-container", "alpha": 0.6, "threshold": 0.7 }
+    ]
+  },
+  "tags": ["background", "calm", "subtle"],
+  "createdAt": "2025-12-06",
+  "author": "Gradient Playground"
+}
