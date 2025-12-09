@@ -81,6 +81,8 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
         {isFeatureActive('workspaces') ? (
           <Dropdown size="normal" showChevron={true} className="left-sidebar__workspace-selector">
             <Dropdown.Trigger>
+              <div className="flex gap-4">
+
               <Logo variant="minimal" />
               <span className="left-sidebar__workspace-name">
                 <span className="left-sidebar__workspace-name-title">
@@ -90,6 +92,7 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
                   {activeWorkspace?.name || 'Select Workspace'}
                 </span>
               </span>
+              </div>
             </Dropdown.Trigger>
             <Dropdown.Menu custom={true} coverTrigger={true}>
               <WorkspaceMenu />
@@ -226,8 +229,8 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
       <div className="left-sidebar__footer">
         <span class="flex-between">
 
-          <ThemeToggle />
-          <ThemeSelector />
+          {flags.themes && <ThemeToggle />}
+          {flags.themeSelector && <ThemeSelector />}
         </span>
       </div>
 

@@ -216,7 +216,7 @@
 /* Gradient Effects */
 .main-content .gradient-background {
   position: absolute;
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
 }
 
 .main-content .gradient-blobs {
@@ -226,6 +226,10 @@
 
 .main-content .gradient-grain {
   display: none;
+}
+
+.main-content__gradient-wrapper {
+
 }
 
 .main-content__old-gradient-wrapper {

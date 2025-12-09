@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { NavItem, Conversation } from '../../types';
 import { Icons } from '../Icons/Icons';
 import { Logo } from '../Logo/Logo';
@@ -32,11 +32,13 @@ const recentConversations: Conversation[] = [
 ];
 
 const ConversationItem: React.FC<{ conversation: Conversation, isActive?: boolean, shouldWrap?: boolean }> = ({ conversation, isActive, shouldWrap }) => {
+    const { flags } = useFeatureFlags();
     const [isHovered, setIsHovered] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     
     const itemClasses = ['convo-item', isActive ? 'convo-item--active' : ''].filter(Boolean).join(' ');
     const titleClasses = ['convo-item__title', shouldWrap ? 'convo-item__title--wrap' : ''].filter(Boolean).join(' ');
+    const wrapperClasses = ['convo-item-wrapper', isMenuOpen ? 'convo-item-wrapper--menu-open' : ''].filter(Boolean).join(' ');
     
     const handlePinToggle = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -61,15 +63,19 @@ const ConversationItem: React.FC<{ conversation: Conversation, isActive?: boolea
     
     return (
         <div 
-            className="convo-item-wrapper"
+            className={wrapperClasses}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <a className={itemClasses + " " + titleClasses} title={conversation.title} href="">
                 {conversation.title}
             </a>
-            {(isHovered || isMenuOpen) && (
-                <Dropdown priority="tertiary">
+            {flags.conversationMenu && (isHovered || isMenuOpen) && (
+                <Dropdown 
+                    priority="tertiary" 
+                    showChevron={false}
+                    onOpenChange={setIsMenuOpen}
+                >
                     <Dropdown.Trigger className="convo-item__menu-button">
                         <Icons name="MoreVertical" className="convo-item__menu-icon" />
                     </Dropdown.Trigger>
@@ -177,7 +183,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
                         <div className="sidebar__convo-list-container sidebar__convo-list-container--pinned">
                             <ul className="sidebar__convo-list">
                                 {Object.entries(groupedPinnedConversations).map(([tag, convos]) => (
-                                    <div key={`pinned-${tag}`} className="convo-group">
+                                    <div key={`pinned-${tag}`} className="convo-group convo-group--pinned">
                                         <li className="convo-group__list">
                                             {convos.map((convo) => (
                                                 <ConversationItem
@@ -199,7 +205,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
                 {flags.conversationCollapsible ? (
                     <Collapsible closeOnOutsideClick={false} defaultOpen={false}>
                         <Collapsible.Trigger className="sidebar__section-trigger">
-                            <h3 className="sidebar__section-title">Recent Conversations</h3>
+                            <h3 className="sidebar__section-title sidebar__section-title--recent">Recent Conversations</h3>
                             <Icons name="ChevronDown" className="sidebar__section-chevron" />
                         </Collapsible.Trigger>
                         <Collapsible.Content className="sidebar__recent-content">
@@ -207,9 +213,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
                                 <ul className="sidebar__convo-list">
                                     {Object.entries(groupedUnpinnedConversations).map(([tag, convos], groupIndex) => (
                                         <div key={tag} className="convo-group">
-                                            <li className="convo-group__header">
-                                                <Tag variant="primary" size="md">{tag}</Tag>
-                                            </li>
+                                            {/* {flags.conversationTimestamps && ( */}
+                                                <li className="convo-group__header">
+                                                    <Tag variant="primary" size="md">{tag}</Tag>
+                                                </li>
+                                            {/* )} */}
                                             <li className="convo-group__list">
                                                 {convos.map((convo, convoIndex) => (
                                                     <ConversationItem
@@ -235,9 +243,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
                             <ul className="sidebar__convo-list">
                                 {Object.entries(groupedUnpinnedConversations).map(([tag, convos], groupIndex) => (
                                     <div key={tag} className="convo-group">
-                                        <li className="convo-group__header">
-                                            <Tag variant="primary" size="md">{tag}</Tag>
-                                        </li>
+                                        {/* {flags.conversationTimestamps && ( */}
+                                            <li className="convo-group__header">
+                                                <Tag variant="primary" size="md">{tag}</Tag>
+                                            </li>
+                                        {/* )} */}
                                         <li className="convo-group__list">
                                             {convos.map((convo, convoIndex) => (
                                                 <ConversationItem

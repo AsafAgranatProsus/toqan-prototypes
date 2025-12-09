@@ -20,6 +20,7 @@ interface DropdownContextType {
   size: 'tight' | 'normal' | 'relaxed';
   icon?: React.ReactNode;
   showChevron: boolean;
+  truncateText: boolean;
 }
 
 const DropdownContext = createContext<DropdownContextType | null>(null);
@@ -38,18 +39,30 @@ interface DropdownRootProps {
   size?: 'tight' | 'normal' | 'relaxed';
   icon?: React.ReactNode;
   showChevron?: boolean;
+  truncateText?: boolean;
   className?: string;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 // Fix: Renamed Dropdown to DropdownRoot to use with Object.assign for creating a properly typed compound component.
 // This resolves the error in MainContent.tsx where Dropdown.Trigger props were not being recognized.
-const DropdownRoot = ({ children, priority, size = 'normal', icon, showChevron = true, className }: DropdownRootProps) => {
+const DropdownRoot = ({ children, priority, size = 'normal', icon, showChevron = true, truncateText = true, className, onOpenChange }: DropdownRootProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const close = useCallback(() => setIsOpen(false), []);
-  const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
+  const close = useCallback(() => {
+    setIsOpen(false);
+    onOpenChange?.(false);
+  }, [onOpenChange]);
+  
+  const toggle = useCallback(() => {
+    setIsOpen((prev) => {
+      const newState = !prev;
+      onOpenChange?.(newState);
+      return newState;
+    });
+  }, [onOpenChange]);
 
   useClickOutside(menuRef, (event) => {
     if (triggerRef.current && !triggerRef.current.contains(event.target as Node)) {
@@ -119,7 +132,7 @@ const DropdownRoot = ({ children, priority, size = 'normal', icon, showChevron =
   ].filter(Boolean).join(' ');
 
   return (
-    <DropdownContext.Provider value={{ isOpen, toggle, close, triggerRef, menuRef, getItemProps, size, icon, showChevron }}>
+    <DropdownContext.Provider value={{ isOpen, toggle, close, triggerRef, menuRef, getItemProps, size, icon, showChevron, truncateText }}>
       <div className={dropdownContainerClasses}>{children}</div>
     </DropdownContext.Provider>
   );
@@ -129,7 +142,13 @@ const Trigger: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className,
 }) => {
-  const { toggle, triggerRef, isOpen, icon, showChevron } = useDropdown();
+  const { toggle, triggerRef, isOpen, icon, showChevron, truncateText } = useDropdown();
+  
+  const contentClasses = [
+    'dropdown__content',
+    truncateText ? 'dropdown__content--truncate' : ''
+  ].filter(Boolean).join(' ');
+
   return (
     <button
       ref={triggerRef}
@@ -139,7 +158,9 @@ const Trigger: React.FC<{ children: React.ReactNode; className?: string }> = ({
       aria-expanded={isOpen}
     >
       {icon && <span className="dropdown__icon-left">{icon}</span>}
-      <span className="dropdown__content">{children}</span>
+      <span className={contentClasses}>
+        <span className="dropdown__content-text">{children}</span>
+      </span>
       {showChevron && (
         <svg
           className="dropdown__chevron"

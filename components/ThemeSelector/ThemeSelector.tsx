@@ -103,13 +103,11 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
               <div className="theme-selector__item">
                 <div className="theme-selector__item-header">
                   {/* Color preview swatch */}
-                  {theme.sourceColor && (
-                    <div
-                      className="theme-selector__color-preview"
-                      style={{ backgroundColor: theme.sourceColor }}
-                      aria-hidden="true"
-                    />
-                  )}
+                  <div
+                    className="theme-selector__color-preview"
+                    style={{ backgroundColor: theme.sourceColor || '#4426d9' }}
+                    aria-hidden="true"
+                  />
                   
                   <div className="theme-selector__item-content">
                     <span className="theme-selector__item-name">
@@ -141,3 +139,4 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     </Dropdown>
   );
 };
+

@@ -8,6 +8,11 @@
   z-index: 0;
 }
 
+/* Blob gradient specific styles */
+.gradient-background--blob {
+  /* Inherits base styles */
+}
+
 .gradient-blobs {
   filter: blur(120px);
 }
@@ -28,4 +33,18 @@
   z-index: 1;
   mix-blend-mode: exclusion;
   background-image: url(https://arc.net/noise-light.png);
+}
+
+/* Organic gradient specific styles */
+.gradient-background--organic {
+  /* Inherits base styles */
+}
+
+.gradient-background--organic canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
 }

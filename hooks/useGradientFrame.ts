@@ -6,8 +6,8 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { getRandomFrame, getFrameById } from '../../configs/gradients/registry';
-import { GradientFrame, GradientFrameOptions } from '../../types/gradientFrame';
+import { getRandomFrame, getFrameById } from '../configs/gradients/registry';
+import { GradientFrame, GradientFrameOptions } from '../types/gradientFrame';
 
 /**
  * Hook to load and manage gradient frames

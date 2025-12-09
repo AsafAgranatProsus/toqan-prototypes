@@ -46,12 +46,26 @@
   justify-content: flex-end;
   padding: 8px;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  position: relative;
+  user-select: none;
 }
 
 .color-role:hover {
-  /* transform: scale(1.02); */
-  /* z-index: 1; */
+}
+
+.color-role:active {
+  /* transform: translateY(-1px); */
+  /* transition: transform 0.05s ease; */
+}
+
+.color-role--copied {
+  /* animation: copyPulse 0.4s ease; */
+}
+
+@keyframes copyPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .color-role-name {
@@ -65,6 +79,43 @@
   font-family: 'Roboto Mono', monospace;
   opacity: 0.7;
 }
+
+/* Copied Indicator */
+.color-role-copied-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  /* animation: fadeInScale 0.2s ease; */
+  pointer-events: none;
+  z-index: 10;
+}
+
+.color-role-copied-indicator svg {
+  flex-shrink: 0;
+}
+
+/* @keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+} */
 
 /* Surfaces */
 .scheme-surfaces {

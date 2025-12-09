@@ -56,9 +56,9 @@ const ModelSelector: React.FC = () => {
     return (
         <Dropdown>
             <Dropdown.Trigger className="dropdown__button">
-                <span className="dropdown__label">Toqan (Reasoning) -</span>
+                <span className="dropdown__label">Toqan (Reasoning) - </span>
                 <span className="dropdown__selected-value">{selectedModel.name}</span>
-                <Icons name="ChevronDown" className="dropdown__icon" />
+                {/* <Icons name="ChevronDown" className="dropdown__icon" /> */}
             </Dropdown.Trigger>
             <Dropdown.Menu className="toqan-model-selector">
                 {models.map(model => (
@@ -127,9 +127,18 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                 <div className="main-content-inner-wrapper">
                     {/* <GradientBackground /> */}
                     {showGradient && (
-                        <div className="main-content__old-gradient-wrapper" ref={gradientRef}>
-                            {/* <div className="main-content-grain"></div> */}
-                            <OldGradientBackground />
+                        <div className="main-content__gradient" ref={gradientRef}>
+                            {flags.newMainStage === false && (
+                                <div className="main-content__old-gradient-wrapper" ref={gradientRef}>
+
+                                    <OldGradientBackground />
+                                </div>
+                            )}
+                            {flags.newGradientBackground === true && (
+                                <div className="main-content__gradient-wrapper" ref={gradientRef}>
+                                    <GradientBackground type="organic" />
+                                </div>
+                            )}
                         </div>
                     )}
                     <header className="main-content__header">

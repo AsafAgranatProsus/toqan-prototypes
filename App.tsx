@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { HomePage } from './pages/HomePage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
 import { DesignSystemAltPage } from './pages/DesignSystemAltPage';
-import { GradientPlaygroundPage, GradientFramesDemoPage } from './pages';
+import { GradientPlaygroundPage, GradientFramesDemoPage, GradientPresetsDemo } from './pages';
 import FeatureMenu from './components/FeatureMenu/FeatureMenu';
 import ThemeDebugger from './components/ThemeDebugger/ThemeDebugger';
 import { CustomizationPanel } from './components/CustomizationPanel/CustomizationPanel';
@@ -17,7 +17,8 @@ const AppContent: React.FC = () => {
   // Check if we're on a standalone page
   const isStandalonePage = location.pathname === '/theme-builder' || 
                           location.pathname === '/gradient-playground' ||
-                          location.pathname === '/gradient-frames-demo';
+                          location.pathname === '/gradient-frames-demo' ||
+                          location.pathname === '/gradient-presets-demo';
   
   // Load panel state from localStorage
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(() => {
@@ -49,6 +50,7 @@ const AppContent: React.FC = () => {
         <Route path="/theme-builder" element={<DesignSystemAltPage />} />
         <Route path="/gradient-playground" element={<GradientPlaygroundPage />} />
         <Route path="/gradient-frames-demo" element={<GradientFramesDemoPage />} />
+        <Route path="/gradient-presets-demo" element={<GradientPresetsDemo />} />
       </Routes>
     );
   }

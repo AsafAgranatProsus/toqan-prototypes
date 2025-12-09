@@ -4,12 +4,26 @@
    ============================================ */
 
 .workspace-menu {
+  /* Component Token Layer - Color Palette */
+  --workspace-menu-bg-gradient-start: var(--color-secondary-light);
+  --workspace-menu-bg-gradient-end: var(--color-tertiary-light);
+  --workspace-menu-title-color: var(--color-text-secondary);
+  --workspace-menu-item-hover-bg: var(--color-tertiary-background);
+  --workspace-menu-item-active-bg: var(--color-primary-background);
+  --workspace-menu-item-text: var(--color-text-default);
+  --workspace-menu-check-icon-color: var(--color-primary-default);
+  --workspace-menu-border: var(--color-ui-border);
+  --workspace-menu-footer-text: var(--color-text-secondary);
+  --workspace-menu-footer-text-hover: var(--color-text-default);
+  --workspace-menu-footer-hover-bg: var(--color-ui-hover);
+
+  /* Layout */
   min-width: 280px;
   max-width: 320px;
   background: linear-gradient(
     135deg,
-    var(--color-secondary-light ) 0%,
-    var(--color-tertiary-light) 100%
+    var(--workspace-menu-bg-gradient-start) 0%,
+    var(--workspace-menu-bg-gradient-end) 100%
   );
   border: none;
   border-radius: var(--radius-lg);
@@ -24,8 +38,8 @@
 
 .workspace-menu__title {
   font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-tertiary);
+  font-weight: var(--font-weight-medium);
+  color: var(--workspace-menu-title-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -52,15 +66,15 @@
 }
 
 .workspace-menu__workspace-item:hover {
-  background-color: var(--color-ui-hover);
+  background-color: var(--workspace-menu-item-hover-bg);
 }
 
 .workspace-menu__workspace-item--active {
-  background-color: var(--color-ui-active);
+  background-color: var(--workspace-menu-item-active-bg);
 }
 
 .workspace-menu__workspace-item--active:hover {
-  background-color: var(--color-ui-active);
+  background-color: var(--workspace-menu-item-active-bg);
 }
 
 .workspace-menu__workspace-info {
@@ -74,13 +88,13 @@
 .workspace-menu__workspace-name {
   font-size: var(--font-size-body-default);
   font-weight: var(--font-weight-medium);
-  color: var(--color-text-default);
+  color: var(--workspace-menu-item-text);
   line-height: var(--line-height-default);
 }
 
 .workspace-menu__check-icon {
   flex-shrink: 0;
-  color: var(--color-primary-default);
+  color: var(--workspace-menu-check-icon-color);
 }
 
 .workspace-menu__check-icon svg {
@@ -117,7 +131,7 @@
 .workspace-menu__footer {
   padding: var(--space-2);
   /* background: var(--color-ui-background); */
-  border-top: 1px solid var(--color-ui-border);
+  border-top: 1px solid var(--workspace-menu-border);
 }
 
 .workspace-menu__footer-item {
@@ -133,13 +147,13 @@
   transition: background-color 0.2s ease;
   font-size: var(--font-size-body-sm);
   font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
+  color: var(--workspace-menu-footer-text);
   text-align: left;
 }
 
 .workspace-menu__footer-item:hover {
-  background-color: var(--color-ui-hover);
-  color: var(--color-text-default);
+  background-color: var(--workspace-menu-footer-hover-bg);
+  color: var(--workspace-menu-footer-text-hover);
 }
 
 .workspace-menu__footer-item svg {

@@ -1,5 +1,8 @@
 .gradient-playground {
   min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
   background: var(--color-surface-container-lowest, #121212);
   color: var(--color-on-surface, #ffffff);
   padding: 2rem;
@@ -424,4 +427,35 @@ button {
 
 .controls-panel::-webkit-scrollbar-thumb:hover {
   background: var(--color-outline-variant, #555);
+}
+
+/* Color Preview Box */
+.color-preview {
+  transition: all 0.2s ease;
+  cursor: help;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-preview:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Theme Token Select Styling */
+.control-group select[style*="flex: 1"] {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.control-group select[style*="flex: 1"] option {
+  padding: 0.5rem;
+}
+
+/* Blob Config Cards */
+.blob-config {
+  transition: all 0.2s ease;
+}
+
+.blob-config:hover {
+  border-color: var(--color-primary, #6750a4) !important;
+  box-shadow: 0 2px 8px rgba(103, 80, 164, 0.15);
 }

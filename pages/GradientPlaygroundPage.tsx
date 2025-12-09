@@ -55,6 +55,36 @@ const BLEND_MODES: BlendMode[] = [
 
 const SHAPE_TYPES: ShapeType[] = ['circle', 'triangle', 'rectangle'];
 
+// Theme color tokens available for gradient color stops
+const GRADIENT_COLOR_TOKENS = [
+  // Primary
+  { value: 'primary-default', label: 'Primary', group: 'Primary' },
+  { value: 'primary-hover', label: 'Primary Hover', group: 'Primary' },
+  { value: 'primary-light', label: 'Primary Light', group: 'Primary' },
+  { value: 'primary-background', label: 'Primary Background', group: 'Primary' },
+  
+  // Secondary
+  { value: 'secondary-default', label: 'Secondary', group: 'Secondary' },
+  { value: 'secondary-hover', label: 'Secondary Hover', group: 'Secondary' },
+  { value: 'secondary-light', label: 'Secondary Light', group: 'Secondary' },
+  { value: 'secondary-background', label: 'Secondary Background', group: 'Secondary' },
+  
+  // Tertiary
+  { value: 'tertiary-default', label: 'Tertiary', group: 'Tertiary' },
+  { value: 'tertiary-hover', label: 'Tertiary Hover', group: 'Tertiary' },
+  { value: 'tertiary-light', label: 'Tertiary Light', group: 'Tertiary' },
+  { value: 'tertiary-background', label: 'Tertiary Background', group: 'Tertiary' },
+  
+  // Surface/Neutral
+  { value: 'surface-container', label: 'Surface Container', group: 'Neutral' },
+  { value: 'surface-container-low', label: 'Surface Low', group: 'Neutral' },
+  { value: 'surface-container-high', label: 'Surface High', group: 'Neutral' },
+  { value: 'surface-container-lowest', label: 'Surface Lowest', group: 'Neutral' },
+  { value: 'surface-container-highest', label: 'Surface Highest', group: 'Neutral' },
+  { value: 'ui-background', label: 'Background', group: 'Neutral' },
+  { value: 'ui-background-elevated', label: 'Background Elevated', group: 'Neutral' },
+] as const;
+
 const DEFAULT_BLOBS: ExtendedBlobConfig[] = [
   {
     id: '1',
@@ -104,15 +134,38 @@ export const GradientPlaygroundPage: React.FC = () => {
   const [organicNoiseScale, setOrganicNoiseScale] = useState(2.0);
   const [organicGrainIntensity, setOrganicGrainIntensity] = useState(0.15);
   const [organicIterations, setOrganicIterations] = useState(30);
-  const [organicNoiseAlgorithm, setOrganicNoiseAlgorithm] = useState<NoiseAlgorithm>('value');
-  const [organicColors, setOrganicColors] = useState<ColorStop[]>([
-    { color: '#000000', alpha: 1.0, threshold: 0.0 },
-    { color: '#191a66', alpha: 1.0, threshold: 0.3 },
-    { color: '#19ccc1', alpha: 0.8, threshold: 0.6 },
-    { color: '#cc1980', alpha: 0.8, threshold: 0.85 },
+  const [organicNoiseAlgorithm, setOrganicNoiseAlgorithm] = useState<NoiseAlgorithm>('simplex');
+  const [organicColorStops, setOrganicColorStops] = useState<ThemeColorStop[]>([
+    { token: 'primary-default', alpha: 1.0, threshold: 0.0 },
+    { token: 'secondary-default', alpha: 1.0, threshold: 0.35 },
+    { token: 'tertiary-default', alpha: 0.9, threshold: 0.65 },
+    { token: 'surface-container', alpha: 0.8, threshold: 0.9 },
   ]);
 
-  // Helper: Find nearest theme token for a hex color
+  // Convert theme tokens to actual colors for preview
+  const organicColorsForPreview: ColorStop[] = organicColorStops.map(stop => ({
+    color: getColorToken(stop.token),
+    alpha: stop.alpha,
+    threshold: stop.threshold,
+  }));
+
+  // Generate semantic name from color stops
+  const generateSemanticName = (colorStops: ThemeColorStop[], algorithm: NoiseAlgorithm): string => {
+    // Extract unique base token names (e.g., 'primary', 'secondary')
+    const uniqueTokens = [...new Set(
+      colorStops.map(stop => stop.token.split('-')[0])
+    )];
+    
+    // Create short name from first 3 unique tokens
+    const baseName = uniqueTokens.slice(0, 3).join('-');
+    
+    // Add algorithm suffix if not the default
+    const algoSuffix = algorithm !== 'simplex' ? `-${algorithm}` : '';
+    
+    return `${baseName}${algoSuffix}`;
+  };
+
+  // Helper: Find nearest theme token for a hex color (keep for legacy)
   const findNearestToken = (hexColor: string): string => {
     // Convert hex to RGB
     const hex = hexColor.replace('#', '');
@@ -153,21 +206,44 @@ export const GradientPlaygroundPage: React.FC = () => {
 
   // Export Organic Gradient as themed frame
   const exportOrganicFrame = () => {
-    const frameName = prompt('Enter frame name:', 'My Gradient') || 'Untitled';
-    const frameDescription = prompt('Enter description (optional):', '') || undefined;
-    const frameTags = prompt('Enter tags (comma-separated, optional):', '')?.split(',').map(t => t.trim()).filter(Boolean);
-
-    // Map colors to nearest theme tokens
-    const colorStops: ThemeColorStop[] = organicColors.map(stop => ({
-      token: findNearestToken(stop.color),
-      alpha: stop.alpha,
-      threshold: stop.threshold,
-    }));
-
+    // 1. Auto-generate semantic name
+    const autoName = generateSemanticName(organicColorStops, organicNoiseAlgorithm);
+    
+    // 2. Prompt user with pre-filled name
+    const userInput = prompt(
+      'Enter gradient name (short, semantic):',
+      autoName
+    );
+    
+    if (!userInput) return; // User cancelled
+    
+    // 3. Sanitize filename (lowercase, hyphens only)
+    const filename = userInput
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+    
+    // 4. Get optional description
+    const description = prompt(
+      'Enter description (optional):',
+      `${filename.split('-').join(' ')} gradient with theme colors`
+    );
+    
+    // 5. Extract tags from tokens
+    const tags = [...new Set([
+      ...organicColorStops.map(stop => stop.token.split('-')[0]),
+      'theme-colors',
+      organicNoiseAlgorithm,
+    ])];
+    
+    // 6. Create frame with theme tokens
     const frame: GradientFrame = {
-      id: `gradient-${Date.now()}`,
-      name: frameName,
-      description: frameDescription,
+      id: `${filename}-${Date.now()}`,
+      name: filename.split('-').map(w => 
+        w.charAt(0).toUpperCase() + w.slice(1)
+      ).join(' '),
+      description: description || undefined,
       config: {
         seed: organicSeed,
         blurIntensity: organicBlurIntensity,
@@ -175,25 +251,34 @@ export const GradientPlaygroundPage: React.FC = () => {
         grainIntensity: organicGrainIntensity,
         iterations: organicIterations,
         noiseAlgorithm: organicNoiseAlgorithm,
-        colorStops,
+        colorStops: organicColorStops,
       },
-      tags: frameTags,
+      tags,
       createdAt: new Date().toISOString().split('T')[0],
       author: 'Gradient Playground',
     };
-
-    // Download as JSON
+    
+    // 7. Download as JSON
     const blob = new Blob([JSON.stringify(frame, null, 2)], { 
       type: 'application/json' 
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${frame.id}.json`;
+    a.download = `${filename}.json`;
     a.click();
     URL.revokeObjectURL(url);
 
-    alert(`Frame exported!\n\nDetected theme tokens:\n${colorStops.map((s, i) => `Color ${i + 1}: ${s.token}`).join('\n')}`);
+    // 8. Show success message with instructions
+    alert(
+      `Gradient saved as ${filename}.json\n\n` +
+      `To use this preset:\n` +
+      `1. Move file to: configs/gradients/frames/\n` +
+      `2. Add import to: configs/gradients/presets.ts\n` +
+      `3. Add to GRADIENT_PRESETS object\n` +
+      `4. Use: <GradientBackground preset="${filename}" />\n\n` +
+      `Theme tokens used:\n${organicColorStops.map((s, i) => `  Color ${i + 1}: ${s.token}`).join('\n')}`
+    );
   };
 
   const addBlob = () => {
@@ -291,7 +376,7 @@ export const GradientPlaygroundPage: React.FC = () => {
                 noiseScale={organicNoiseScale}
                 grainIntensity={organicGrainIntensity}
                 iterations={organicIterations}
-                colors={organicColors}
+                colors={organicColorsForPreview}
                 noiseAlgorithm={organicNoiseAlgorithm}
               />
             </div>
@@ -611,15 +696,15 @@ export const GradientPlaygroundPage: React.FC = () => {
                 </section>
 
                 <section className="control-section">
-                  <h2>Color Palette ({organicColors.length} colors)</h2>
+                  <h2>Color Palette ({organicColorStops.length} colors)</h2>
                   
-                  {organicColors.map((colorStop, index) => (
+                  {organicColorStops.map((colorStop, index) => (
                     <div key={index} className="blob-config" style={{ marginBottom: '1rem', padding: '1rem', border: '1px solid var(--color-outline, #444)', borderRadius: '8px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                        <strong>Color {index + 1}</strong>
-                        {organicColors.length > 2 && (
+                        <strong>Color Stop {index + 1}</strong>
+                        {organicColorStops.length > 2 && (
                           <button
-                            onClick={() => setOrganicColors(organicColors.filter((_, i) => i !== index))}
+                            onClick={() => setOrganicColorStops(organicColorStops.filter((_, i) => i !== index))}
                             className="btn-delete"
                             style={{ padding: '0.25rem 0.5rem' }}
                           >
@@ -630,25 +715,41 @@ export const GradientPlaygroundPage: React.FC = () => {
                       
                       <div className="control-group">
                         <label>
-                          Color
-                          <div className="color-input-group">
-                            <input
-                              type="color"
-                              value={colorStop.color}
+                          Theme Token
+                          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '0.5rem' }}>
+                            <select
+                              value={colorStop.token}
                               onChange={(e) => {
-                                const newColors = [...organicColors];
-                                newColors[index].color = e.target.value;
-                                setOrganicColors(newColors);
+                                const newColorStops = [...organicColorStops];
+                                newColorStops[index].token = e.target.value;
+                                setOrganicColorStops(newColorStops);
                               }}
-                            />
-                            <input
-                              type="text"
-                              value={colorStop.color}
-                              onChange={(e) => {
-                                const newColors = [...organicColors];
-                                newColors[index].color = e.target.value;
-                                setOrganicColors(newColors);
+                              style={{ 
+                                flex: 1,
+                                padding: '0.5rem', 
+                                borderRadius: '6px',
+                                border: '1px solid var(--color-outline, #444)',
+                                background: 'var(--color-surface-container, #fff)',
+                                color: 'var(--color-on-surface, #000)',
                               }}
+                            >
+                              {GRADIENT_COLOR_TOKENS.map((token) => (
+                                <option key={token.value} value={token.value}>
+                                  {token.label} ({token.group})
+                                </option>
+                              ))}
+                            </select>
+                            <div 
+                              className="color-preview"
+                              style={{ 
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '6px',
+                                border: '2px solid var(--color-outline, #444)',
+                                backgroundColor: getColorToken(colorStop.token),
+                                flexShrink: 0,
+                              }}
+                              title={`${colorStop.token}: ${getColorToken(colorStop.token)}`}
                             />
                           </div>
                         </label>
@@ -664,9 +765,9 @@ export const GradientPlaygroundPage: React.FC = () => {
                             step="0.01"
                             value={colorStop.alpha}
                             onChange={(e) => {
-                              const newColors = [...organicColors];
-                              newColors[index].alpha = Number(e.target.value);
-                              setOrganicColors(newColors);
+                              const newColorStops = [...organicColorStops];
+                              newColorStops[index].alpha = Number(e.target.value);
+                              setOrganicColorStops(newColorStops);
                             }}
                           />
                         </label>
@@ -682,9 +783,9 @@ export const GradientPlaygroundPage: React.FC = () => {
                             step="0.01"
                             value={colorStop.threshold}
                             onChange={(e) => {
-                              const newColors = [...organicColors];
-                              newColors[index].threshold = Number(e.target.value);
-                              setOrganicColors(newColors);
+                              const newColorStops = [...organicColorStops];
+                              newColorStops[index].threshold = Number(e.target.value);
+                              setOrganicColorStops(newColorStops);
                             }}
                           />
                         </label>
@@ -695,15 +796,15 @@ export const GradientPlaygroundPage: React.FC = () => {
                     </div>
                   ))}
 
-                  {organicColors.length < 8 && (
+                  {organicColorStops.length < 8 && (
                     <button
                       onClick={() => {
-                        const newThreshold = organicColors.length > 0 
-                          ? Math.min(organicColors[organicColors.length - 1].threshold + 0.2, 1.0)
+                        const newThreshold = organicColorStops.length > 0 
+                          ? Math.min(organicColorStops[organicColorStops.length - 1].threshold + 0.2, 1.0)
                           : 0.0;
-                        setOrganicColors([
-                          ...organicColors,
-                          { color: '#ff00ff', alpha: 0.8, threshold: newThreshold }
+                        setOrganicColorStops([
+                          ...organicColorStops,
+                          { token: 'primary-default', alpha: 0.8, threshold: newThreshold }
                         ]);
                       }}
                       className="btn-add"
@@ -713,7 +814,7 @@ export const GradientPlaygroundPage: React.FC = () => {
                     </button>
                   )}
 
-                  {organicColors.length >= 8 && (
+                  {organicColorStops.length >= 8 && (
                     <small style={{ display: 'block', color: 'var(--color-on-surface-variant, #b3b3b3)', textAlign: 'center' }}>
                       Maximum 8 colors
                     </small>

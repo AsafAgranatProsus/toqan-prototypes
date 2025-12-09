@@ -33,6 +33,7 @@
 
 #root {
   display: contents;
+ 
 }
 
 /* ============================================= */
@@ -123,7 +124,9 @@
 /* All MainContent styles moved to components/MainContent/MainContent.css */
 
 .toqan-model-selector {
-  position: fixed;
+  /* width: auto !important; */
+
+  /* position: fixed;
   z-index: 200;
   background-color: var(--theme-bg-menu);
   border: 1px solid var(--theme-border);
@@ -131,7 +134,6 @@
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   min-width: 10rem;
   max-height: 16rem;
-  width: auto !important;
   overflow: auto;
   list-style-type: none;
   margin: 0px;
@@ -139,5 +141,5 @@
   right: auto;
   scrollbar-color: var(--color-ui-border) transparent;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
+  scrollbar-width: thin; */
 }

@@ -47,7 +47,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
-    padding: var(--space-4) var(--space-2);
+    padding: var(--space-3) var(--space-2);
     border-bottom: 1px solid var(--color-ui-border);
   }
 
@@ -71,7 +71,7 @@
   }
 
   .left-sidebar__logo-button:hover {
-    background-color: var(--color-ui-hover);
+    background-color: var(--color-ui-active);
   }
 
   .left-sidebar__workspace-selector {
@@ -98,7 +98,7 @@
 
   /* Workspace selector - separate from logo */
   .left-sidebar__workspace-name {
-    font-size: var(--font-size-body-default);
+    font-size: var(--font-size-body-lg);
     font-weight: var(--font-weight-medium);
     color: var(--color-text-default);
     line-height: var(--line-height-default);
@@ -276,7 +276,7 @@
   }
 
   .left-sidebar__section-toggle:hover {
-    background: var(--color-ui-hover);
+    background: var(--color-ui-active);
     color: var(--color-text-secondary);
   }
 

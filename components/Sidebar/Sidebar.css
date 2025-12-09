@@ -14,18 +14,20 @@
   width: 260px;
   padding: 1.5rem;
   background: transparent;
-  
-  
+
+
   .new__button {
     padding: 0.5rem 0.75rem;
     border-radius: .5rem;
     white-space: nowrap;
-  
+
   }
-  
+
   .new__button span {
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: visible; /* Ensure text is visible */
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    overflow: visible;
+    /* Ensure text is visible */
   }
 
   a {
@@ -95,12 +97,12 @@
 }
 
 .sidebar .collapsible {
-    flex: 1 1 0%;
-    overflow: hidden;
+  flex: 1 1 0%;
+  overflow: hidden;
 
-    .collapsible-content {
-        max-height: 100%;
-    }
+  .collapsible-content {
+    max-height: 100%;
+  }
 }
 
 .sidebar__convo-list-container::before {
@@ -131,7 +133,8 @@
   font-weight: 400;
   margin: 0;
   padding: 0 var(--space-3);
-  flex-shrink: 0; /* Don't shrink the title */
+  flex-shrink: 0;
+  /* Don't shrink the title */
 }
 
 /* Collapsible section trigger */
@@ -156,7 +159,8 @@
   flex: 1;
   padding-left: 0;
   margin-left: -0.75rem;
-  pointer-events: none; /* Let clicks pass through to the button */
+  pointer-events: none;
+  /* Let clicks pass through to the button */
 }
 
 .sidebar__section-chevron {
@@ -166,7 +170,8 @@
   margin-right: var(--space-3);
   transition: transform 0.2s ease;
   flex-shrink: 0;
-  pointer-events: none; /* Let clicks pass through to the button */
+  pointer-events: none;
+  /* Let clicks pass through to the button */
 }
 
 .sidebar__section-trigger[data-state="open"] .sidebar__section-chevron {
@@ -177,9 +182,10 @@
 /* Temporarily removed to test vanilla behavior */
 
 .sidebar__recent-content {
-    max-height: 100%;
-    overflow: auto;
+  max-height: 100%;
+  overflow: auto;
 }
+
 .sidebar__convo-list-container {
   overflow-y: auto;
   position: relative;
@@ -190,10 +196,12 @@
 /* Pinned conversations don't scroll */
 .sidebar__convo-list-container--pinned {
   overflow-y: visible;
-  flex-shrink: 0; /* Don't shrink pinned section */
+  flex-shrink: 0;
+  /* Don't shrink pinned section */
   flex: none;
+
   .sidebar__convo-list {
-    padding: .5rem 0px 0 0 ;
+    padding: .5rem 0px 0 0;
   }
 }
 
@@ -203,9 +211,12 @@
   list-style-type: none;
   margin: 0px;
   padding: .75rem 0px;
-  overflow-y: auto; /* Only the list scrolls */
-  flex: 1 1 auto; /* Allow list to grow and shrink */
-  min-height: 0; /* Important: allows flex child to shrink */
+  overflow-y: auto;
+  /* Only the list scrolls */
+  flex: 1 1 auto;
+  /* Allow list to grow and shrink */
+  min-height: 0;
+  /* Important: allows flex child to shrink */
 }
 
 .sidebar__footer {
@@ -216,7 +227,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  flex-shrink: 0; /* Don't shrink the footer - always visible */
+  flex-shrink: 0;
+  /* Don't shrink the footer - always visible */
 }
 
 /* Mobile specific styles */
@@ -282,19 +294,76 @@
   gap: var(--space-1);
 }
 
-.convo-item-wrapper {
-  position: relative;
-  border-radius: var(--border-radius-md);
+/* Timestamp header - controlled by conversationTimestamps flag */
+.convo-group__header {
+  margin-bottom: var(--space-1);
+  list-style: none;
+}
 
- 
-  .dropdown-container {
-    position: unset;
+/* Hide timestamps when flag is off */
+html:not(.conversation-timestamps) .convo-group__header {
+  /* display: none; */
+
+}
+
+/* Show timestamps when flag is on */
+html.conversation-timestamps {
+  .convo-group:not(.convo-group--pinned) {
+    gap: 0;
+    margin-bottom: .5rem;
+  }
+
+  .convo-group--pinned {
+    gap: 0;
+    margin-bottom: .25rem;
+  }
+}
+
+html.conversation-timestamps .convo-group__header {
+  display: block;
+  margin-bottom: 0;
+
+  .tag {
+    background-color: transparent;
+    color: var(--color-tag-date-text);
+    padding: 0;
+    padding-left: .25rem;
+    font-size: .85rem;
+    /* font-weight: 500; */
 
   }
 }
 
+/* Comversation menu  */
+html.conversation-menu {
+  .convo-item__menu-button:hover, .convo-item__menu-button:focus, .convo-item__menu-button:active {
+    background-color: var(--theme-ui-hover, #e0e0e050) !important;
+  }
+  .convo-item-wrapper {
+    .dropdown-container {
+      justify-self: flex-start;
+    }
+  }
+}
+
+.sidebar__convo-list-container--pinned {
+  margin-bottom: .5rem;
+}
+
+.convo-item-wrapper {
+  position: relative;
+  border-radius: var(--border-radius-md);
+
+
+  .dropdown-container {
+    position: unset;
+ 
+  }
+}
+
+
 .convo-item-wrapper:hover {
-  background-color: var(--theme-btn-secondary-bg);
+  background-color: var(--theme-ui-hover);
 }
 
 .convo-item {
@@ -334,12 +403,12 @@
 }
 
 .convo-item--active {
-  background-color: rgb(233, 239, 247);
+  background-color: var(--theme-ui-active, rgb(233, 239, 247));
 
 }
 
 .convo-item-wrapper:has(.convo-item--active) {
-  background-color:  rgb(233, 239, 247)
+  background-color: rgb(233, 239, 247)
 }
 
 .convo-item--active .convo-item__title {
@@ -370,6 +439,11 @@
   z-index: 1;
 }
 
+/* Hide menu button when flag is off */
+html:not(.conversation-menu) .convo-item__menu-button {
+  display: none;
+}
+
 .convo-item__menu-button:hover,
 .convo-item__menu-button:focus {
   background-color: var(--theme-btn-secondary-bg-hover);
@@ -390,6 +464,11 @@
 .convo-item__menu {
   min-width: 200px;
   padding: var(--space-1);
+}
+
+/* Keep wrapper hovered when menu is open */
+.convo-item-wrapper:has(.dropdown-menu-visible) {
+  background-color: var(--theme-btn-secondary-bg);
 }
 
 .convo-item__menu-item-content {
@@ -421,5 +500,3 @@
     transform: translateX(0);
   }
 }
-
-

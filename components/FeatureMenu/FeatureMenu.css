@@ -301,7 +301,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0;
+  /* padding: 0.5rem 0; */
+  flex-shrink: 1;
+  overflow: hidden;
 }
 
 .theme-selector-label {
@@ -408,4 +410,12 @@
   gap: 0.5rem;
   padding-top: 0.5rem;
   padding-left:1.25rem;
+}
+
+.group-master-toggle {
+  padding: .5rem .5rem .5rem .5rem;
+  margin-left: -.5rem;
+  /* margin-right: -.5rem; */
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: .5rem
 }

@@ -1,5 +1,29 @@
+/* Component Token Layer - Color Palette (Root scope for portaled elements) */
+:root {
+  --dropdown-primary-bg: var(--color-primary-default);
+  --dropdown-primary-text: var(--color-btn-primary-text);
+  --dropdown-primary-hover-bg: var(--color-primary-hover);
+  --dropdown-secondary-bg: var(--color-ui-background-elevated);
+  --dropdown-secondary-text: var(--color-text-default);
+  --dropdown-secondary-border: var(--color-ui-border);
+  --dropdown-secondary-hover-bg: var(--color-ui-active);
+  --dropdown-tertiary-text: var(--color-text-default);
+  --dropdown-tertiary-hover-bg: var(--color-ui-active);
+  --dropdown-button-border: var(--color-ui-border);
+  --dropdown-button-text: var(--color-text-default);
+  --dropdown-button-bg: var(--color-ui-background-elevated);
+  --dropdown-button-hover-border: var(--color-ui-border);
+  --dropdown-button-hover-bg: var(--color-ui-hover);
+  --dropdown-menu-bg: var(--color-ui-background-elevated);
+  --dropdown-menu-border: var(--color-ui-border);
+  --dropdown-menu-item-text: var(--color-text-default);
+  --dropdown-menu-item-hover-bg: var(--color-ui-active);
+  --dropdown-menu-item-selected-bg: var(--color-ui-active);
+}
+
 .dropdown-container {
   position: relative;
+  
   /* CSS Variables for size control */
   --dropdown-padding: var(--space-2) var(--space-3);
   --dropdown-font-size: var(--font-size-body-sm);
@@ -39,33 +63,33 @@
 
 /* Priority Styles */
 .dropdown-container--primary button {
-  background-color: var(--color-primary-default);
-  color: var(--color-btn-primary-text);
+  background-color: var(--dropdown-primary-bg);
+  color: var(--dropdown-primary-text);
   border-color: transparent;
 }
 
 .dropdown-container--primary button:hover {
-  background-color: var(--color-primary-hover);
+  background-color: var(--dropdown-primary-hover-bg);
 }
 
 .dropdown-container--secondary button {
-  background-color: var(--color-ui-background-elevated);
-  color: var(--color-text-default);
-  border-color: var(--color-ui-border);
+  background-color: var(--dropdown-secondary-bg);
+  color: var(--dropdown-secondary-text);
+  border-color: var(--dropdown-secondary-border);
 }
 
 .dropdown-container--secondary button:hover {
-  background-color: var(--color-ui-active);
+  background-color: var(--dropdown-secondary-hover-bg);
 }
 
 .dropdown-container--tertiary button {
   background-color: transparent;
-  color: var(--color-text-default);
+  color: var(--dropdown-tertiary-text);
   border-color: transparent;
 }
 
 .dropdown-container--tertiary button:hover {
-  background-color: var(--color-ui-hover);
+  background-color: var(--dropdown-tertiary-hover-bg);
 }
 
 /* Base button styles - use CSS variables */
@@ -75,18 +99,20 @@ button {
   gap: var(--dropdown-gap);
   padding: var(--dropdown-padding);
   font-size: var(--dropdown-font-size);
-  border: 1px solid var(--color-ui-border);
+  border: 1px solid var(--dropdown-button-border);
   border-radius: var(--radius-default);
   font-weight: 400;
-  color: var(--color-text-default);
-  background-color: var(--color-ui-background-elevated);
+  color: var(--dropdown-button-text);
+  background-color: var(--dropdown-button-bg);
   transition: var(--transition-fast);
   cursor: pointer;
+  min-width: 0;
+  /* Allow flex items to shrink below content size */
 }
 
 button:hover {
-  border-color: var(--color-ui-border);
-  background-color: var(--color-ui-hover);
+  border-color: var(--dropdown-button-hover-border);
+  background-color: var(--dropdown-button-hover-bg);
 }
 
 /* Icon and content layout */
@@ -108,6 +134,18 @@ button:hover {
   text-align: left;
   display: flex;
   align-items: center;
+  min-width: 0;
+  /* Allow content to shrink */
+}
+
+.dropdown__content--truncate {
+  overflow: hidden;
+}
+
+.dropdown__content--truncate .dropdown__content-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dropdown__chevron {
@@ -124,17 +162,17 @@ button:hover {
 .dropdown-menu {
   position: absolute;
   z-index: 100;
-  background-color: var(--theme-surface-container-lowest);
-  border: 1px solid var(--theme-surface-container-low);
+  background-color: var(--dropdown-menu-bg);
+  border: 1px solid var(--dropdown-menu-border);
   border-radius: var(--radius-default);
   box-shadow: var(--shadow-lg);
-  padding: var(--space-4);
+  padding: var(--space-2);
   min-width: 320px;
   max-height: 300px;
   overflow-y: auto;
-  transition: opacity 0.2s cubic-bezier(0.05, 0.84, 0.31, 1), 
-              transform 0.3s cubic-bezier(0.05, 0.84, 0.31, 1), 
-              visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
+  transition: opacity 0.2s cubic-bezier(0.05, 0.84, 0.31, 1),
+    transform 0.3s cubic-bezier(0.05, 0.84, 0.31, 1),
+    visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
 }
 
 .dropdown-menu-hidden {
@@ -150,9 +188,9 @@ button:hover {
 }
 
 .dropdown-menu__item {
-  padding: var(--dropdown-menu-item-padding);
+  padding: var(--dropdown-menu-item-padding, var(--space-1));
   font-size: var(--dropdown-menu-item-font-size);
-  color: var(--color-text-default);
+  color: var(--dropdown-menu-item-text);
   border-radius: var(--radius-default);
   cursor: pointer;
   outline: none;
@@ -162,18 +200,18 @@ button:hover {
 
 .dropdown-menu__item:hover,
 .dropdown-menu__item:focus {
-  background-color: var(--color-ui-hover);
+  background-color: var(--dropdown-menu-item-hover-bg);
 }
 
 .dropdown-menu__item--selected {
-  background-color: var(--color-ui-active);
+  background-color: var(--dropdown-menu-item-selected-bg);
 }
 
 /* Custom menu container - for bespoke menu content */
 .dropdown-menu-custom {
   position: absolute;
   z-index: 100;
-  transition: opacity 0.2s cubic-bezier(0.05, 0.84, 0.31, 1), 
-              transform 0.3s cubic-bezier(0.05, 0.84, 0.31, 1), 
-              visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
+  transition: opacity 0.2s cubic-bezier(0.05, 0.84, 0.31, 1),
+    transform 0.3s cubic-bezier(0.05, 0.84, 0.31, 1),
+    visibility 0.2s cubic-bezier(0.05, 0.84, 0.31, 1);
 }

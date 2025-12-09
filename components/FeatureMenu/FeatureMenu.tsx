@@ -54,7 +54,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
   const contentRef = useRef<HTMLDivElement>(null);
   const cogRef = useRef<HTMLDivElement>(null);
   const { flags, setFlag } = useFeatureFlags();
-  const { themeMode, toggleTheme, designSystem, isNewDesign } = useDesignSystem();
+  const { themeMode, toggleTheme, setThemeMode, designSystem, isNewDesign } = useDesignSystem();
   const { activeScenario, scenarioView, setScenarioView } = useScenarios();
   const location = useLocation();
 
@@ -352,7 +352,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             leftOption="Light"
             rightOption="Dark"
             checked={themeMode === 'dark'}
-            onChange={() => toggleTheme()}
+            onChange={(checked) => setThemeMode(checked ? 'dark' : 'light')}
           />
         </div>
 
@@ -369,11 +369,22 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             <Collapsible.Content>
               <div className="feature-menu-collapsible-content">
                 <Toggle
+                  className="group-master-toggle"
                   label="Enable new features"
                   checked={flags.newBranding}
                   onChange={(checked) => setFlag('newBranding', checked)}
                 />
-                <hr style={{ margin: 'var(--space-3) 0', border: 'none', borderTop: '1px solid var(--color-ui-border)' }} />
+                {/* <hr style={{ margin: 'var(--space-3) 0', border: 'none', borderTop: '1px solid var(--color-ui-border)' }} /> */}
+                <Toggle
+                  label="Color mode"
+                  checked={flags.themes}
+                  onChange={(checked) => setFlag('themes', checked)}
+                />
+                <Toggle
+                  label="Theme selector"
+                  checked={flags.themeSelector}
+                  onChange={(checked) => setFlag('themeSelector', checked)}
+                />
                 <Toggle
                   label="Typography"
                   checked={flags.newTypography}
@@ -410,6 +421,11 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   onChange={(checked) => setFlag('newMainStage', checked)}
                 />
                 <Toggle
+                  label="Gradient Background"
+                  checked={flags.newGradientBackground}
+                  onChange={(checked) => setFlag('newGradientBackground', checked)}
+                />
+                <Toggle
                   label="Resizable Panels"
                   checked={flags.newResizeablePanels}
                   onChange={(checked) => setFlag('newResizeablePanels', checked)}
@@ -431,24 +447,34 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             <Collapsible.Content>
               <div className="feature-menu-collapsible-content">
                 <Toggle
-                  label="Conversation: Pin"
+                  label="Pin"
                   checked={flags.conversationPin}
                   onChange={(checked) => setFlag('conversationPin', checked)}
                 />
                 <Toggle
-                  label="Conversation: Rename"
+                  label="Rename"
                   checked={flags.conversationRename}
                   onChange={(checked) => setFlag('conversationRename', checked)}
                 />
                 <Toggle
-                  label="Conversation: Wrap"
+                  label="Wrap"
                   checked={flags.conversationWrap}
                   onChange={(checked) => setFlag('conversationWrap', checked)}
                 />
                 <Toggle
-                  label="Conversation: Collapsible"
+                  label="Collapsible"
                   checked={flags.conversationCollapsible}
                   onChange={(checked) => setFlag('conversationCollapsible', checked)}
+                />
+                <Toggle
+                  label="Timestamps"
+                  checked={flags.conversationTimestamps}
+                  onChange={(checked) => setFlag('conversationTimestamps', checked)}
+                />
+                <Toggle
+                  label="Menu"
+                  checked={flags.conversationMenu}
+                  onChange={(checked) => setFlag('conversationMenu', checked)}
                 />
               </div>
             </Collapsible.Content>
@@ -475,7 +501,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             </Collapsible.Content>
           </Collapsible>
 
-          <Collapsible closeOnOutsideClick={false} storageKey="personalization">
+          {/* <Collapsible closeOnOutsideClick={false} storageKey="personalization">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>Personalization</span>
               <Icons name="ChevronDown" className="chevron-icon" />
@@ -494,9 +520,9 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                 />
               </div>
             </Collapsible.Content>
-          </Collapsible>
+          </Collapsible> */}
 
-          <Collapsible closeOnOutsideClick={false} storageKey="typography">
+          {/* <Collapsible closeOnOutsideClick={false} storageKey="typography">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>Typography</span>
               <Icons name="ChevronDown" className="chevron-icon" />
@@ -533,10 +559,10 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                 </div>
               </div>
             </Collapsible.Content>
-          </Collapsible>
+          </Collapsible> */}
 
           {Object.keys(flags).filter(flag => 
-            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'plays', 'builtByOther', 'themes', 'showThemeDebugger'].includes(flag)
+            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger'].includes(flag)
           ).map(flag => (
             <Toggle
               key={flag}
