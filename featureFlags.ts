@@ -9,7 +9,7 @@ export const featureFlags = {
   newMainStage: false,
   newGradientBackground: false,
   newResizeablePanels: false,
-  plays: true,
+  plays: false,
   builtByOther: false,
   themes: false,
   themeSelector: false,

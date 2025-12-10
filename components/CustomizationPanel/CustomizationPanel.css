@@ -1,7 +1,7 @@
 /* ============================================
    CUSTOMIZATION PANEL STYLES
-   This panel is META - it should NOT use design tokens
-   to remain agnostic and unaffected by customizations
+   Styled to match M3 Theme Builder left panel
+   Independent from app theme system
    ============================================ */
 
 .customization-panel {
@@ -10,24 +10,24 @@
   top: 0;
   bottom: 0;
   width: 350px;
-  background: #dddddd;
-  border-right: 1px solid #e0e0e0;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+  background: #1e1e1e;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
   z-index: 999;
   display: flex;
   flex-direction: column;
   transition: left 0.3s cubic-bezier(0.05, 0.84, 0.31, 1);
   overflow: hidden;
-  color: currentColor;
-  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; */
-  font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  color: #e0e0e0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 14px;
 }
 
-/* Dark mode for panel - NONE, panel stays light */
-/* The panel should remain neutral and not change with theme */
-.theme-dark {
-    /* color: currentColor */
+/* Panel is independent - not affected by app theme */
+.theme-dark .customization-panel,
+.theme-light .customization-panel {
+  background: #1e1e1e;
+  color: #e0e0e0;
 }
 
 .customization-panel.open {
@@ -38,16 +38,10 @@
 
 .customization-panel-header {
   padding: 20px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
+  background-color: #1e1e1e;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-panel-header {
-    background: #141414;
-    border-bottom-color: #333;
-  }
-} */
 
 .customization-panel-header-top {
   display: flex;
@@ -58,16 +52,10 @@
 
 .customization-panel-title {
   font-size: 18px;
-  font-weight: 700;
-  color: currentColor;
+  font-weight: 500;
+  color: #fff;
   margin: 0;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-panel-title {
-    color: currentColor;
-  }
-} */
 
 .customization-close-button {
   width: 32px;
@@ -76,41 +64,28 @@
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
-  color: currentColor;
+  color: #e0e0e0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .customization-close-button:hover {
-  background: #f3f4f6;
-  border-color: #4f46e5;
-  color: currentColor;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-close-button {
-    border-color: #333;
-    color: currentColor;
-  }
-  
-  .customization-close-button:hover {
-    background: #252525;
-    border-color: #5b8fff;
-    color: currentColor;
-  }
-} */
 
 .customization-panel-mode-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 4px 8px;
-  background: #e0e7ff;
+  background: rgba(147, 51, 234, 0.15);
   border-radius: 4px;
   font-size: 11px;
-  color: #4f46e5;
+  color: #c084fc;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -121,9 +96,9 @@
 }
 
 .customization-panel-mode-badge:hover {
-  background: #c7d2fe;
+  background: rgba(147, 51, 234, 0.25);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 2px 4px rgba(147, 51, 234, 0.3);
 }
 
 .customization-panel-mode-badge:active {
@@ -135,13 +110,6 @@
   height: 12px;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  .customization-panel-mode-badge {
-    background: rgba(91, 143, 255, 0.15);
-    color: #5b8fff;
-  }
-} */
-
 .customization-panel-header-actions {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -152,7 +120,7 @@
 .customization-panel-content {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -167,22 +135,16 @@
 
 .customization-label {
   font-size: 13px;
-  font-weight: 600;
-  color: currentColor;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-label {
-    color: currentColor;
-  }
-} */
 
 .customization-select {
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
-  background: #cccccc;
-  color: currentColor;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -190,31 +152,15 @@
 }
 
 .customization-select:hover {
-  border-color: #4f46e5;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .customization-select:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: #c084fc;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-select {
-    background: transparent;
-    border-color: #333;
-    color: currentColor;
-  }
-  
-  .customization-select:hover,
-  .customization-select:focus {
-    border-color: #5b8fff;
-  }
-  
-  .customization-select:focus {
-    box-shadow: 0 0 0 3px rgba(91, 143, 255, 0.1);
-  }
-} */
 
 /* Custom Themes */
 .customization-theme-list {
@@ -228,35 +174,23 @@
   align-items: center;
   gap: 6px;
   padding: 6px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.03);
   transition: all 0.2s ease;
 }
 
 .customization-theme-item.active {
-  border-color: #4f46e5;
-  background: rgba(79, 70, 229, 0.05);
+  border-color: #c084fc;
+  background: rgba(147, 51, 234, 0.1);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-theme-item {
-    background: #252525;
-    border-color: #333;
-  }
-  
-  .customization-theme-item.active {
-    border-color: #5b8fff;
-    background: rgba(91, 143, 255, 0.1);
-  }
-} */
 
 .customization-theme-button {
   flex: 1;
   padding: 6px 10px;
   background: transparent;
   border: none;
-  color: currentColor;
+  color: #e0e0e0;
   font-size: 13px;
   text-align: left;
   cursor: pointer;
@@ -265,18 +199,8 @@
 }
 
 .customization-theme-button:hover {
-  color: #4f46e5;
+  color: #c084fc;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-theme-button {
-    color: currentColor;
-  }
-  
-  .customization-theme-button:hover {
-    color: #5b8fff;
-  }
-} */
 
 .customization-theme-delete {
   width: 28px;
@@ -286,23 +210,16 @@
   justify-content: center;
   background: transparent;
   border: none;
-  color: currentColor;
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s ease;
 }
 
 .customization-theme-delete:hover {
-  background: #fee2e2;
-  color: #dc2626;
+  background: rgba(220, 38, 38, 0.15);
+  color: #ff5555;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-theme-delete:hover {
-    background: rgba(220, 38, 38, 0.15);
-    color: #ff5555;
-  }
-} */
 
 /* Actions */
 .customization-button {
@@ -328,47 +245,24 @@
 }
 
 .customization-button.primary {
-  background: #4f46e5;
+  background: #9333ea;
   color: #ffffff;
 }
 
 .customization-button.primary:hover:not(:disabled) {
-  background: #4338ca;
+  background: #a855f7;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  .customization-button.primary {
-    background: #5b8fff;
-  }
-  
-  .customization-button.primary:hover:not(:disabled) {
-    background: #7ba5ff;
-  }
-} */
-
 .customization-button.secondary {
-  background: #f3f4f6;
-  color: currentColor;
-  border: 1px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .customization-button.secondary:hover:not(:disabled) {
-  background: #ffffff;
-  border-color: #4f46e5;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-button.secondary {
-    background: #252525;
-    color: currentColor;
-    border-color: #333;
-  }
-  
-  .customization-button.secondary:hover:not(:disabled) {
-    background: #2a2a2a;
-    border-color: #5b8fff;
-  }
-} */
 
 .customization-button:disabled {
   opacity: 0.4;
@@ -381,16 +275,10 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: currentColor;
+  color: #e0e0e0;
   cursor: pointer;
   user-select: none;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-checkbox {
-    color: currentColor;
-  }
-} */
 
 .customization-checkbox input[type="checkbox"] {
   width: 16px;
@@ -407,19 +295,12 @@
 
 .customization-category-title {
   font-size: 16px;
-  font-weight: 700;
-  color: currentColor;
+  font-weight: 500;
+  color: #fff;
   margin: 0;
   padding-bottom: 8px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-category-title {
-    color: currentColor;
-    border-bottom-color: #333;
-  }
-} */
 
 .customization-subcategory {
   display: flex;
@@ -428,21 +309,13 @@
 }
 
 .customization-subcategory-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: currentColor;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
   margin: 2rem 0 .5rem 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  /* opacity: 0.7; */
+  letter-spacing: 0.1em;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-subcategory-title {
-    color: currentColor;
-    opacity: 0.7;
-  }
-} */
 
 .customization-token-list {
   display: flex;
@@ -463,42 +336,31 @@
 }
 
 .customization-dialog {
-  background: #ffffff;
+  background: #1e1e1e;
   border-radius: 12px;
   padding: 24px;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   gap: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-dialog {
-    background: #1a1a1a;
-  }
-} */
 
 .customization-dialog-title {
   font-size: 18px;
-  font-weight: 700;
-  color: currentColor;
+  font-weight: 500;
+  color: #fff;
   margin: 0;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  .customization-dialog-title {
-    color: currentColor;
-  }
-} */
-
 .customization-dialog-input {
   padding: 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
-  background: transparent;
-  color: currentColor;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
   font-size: 14px;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -506,22 +368,9 @@
 
 .customization-dialog-input:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: #c084fc;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .customization-dialog-input {
-    background: transparent;
-    border-color: #333;
-    color: currentColor;
-  }
-  
-  .customization-dialog-input:focus {
-    border-color: #5b8fff;
-    box-shadow: 0 0 0 3px rgba(91, 143, 255, 0.1);
-  }
-} */
 
 .customization-dialog-actions {
   display: flex;

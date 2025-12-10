@@ -45,6 +45,7 @@ export type IconName =
   | 'Copy'
   | 'Check'
   | 'Settings'
+  | 'Settings2'
   | 'Minimize2'
   | 'ExternalLink'
   | 'Layout'

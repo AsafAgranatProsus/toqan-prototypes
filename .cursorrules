@@ -1,0 +1,741 @@
+# Toqan UI Prototypes - AI Context & Preferences
+
+## Project Overview
+React + TypeScript + Vite prototype for Toqan AI chat interface with advanced design system.
+
+**Tech Stack:**
+- React 19 with TypeScript
+- Vite 6 build system
+- GSAP for advanced animations
+- Framer Motion for declarative animations
+- React Router v7 for navigation
+- Material Design 3 color utilities
+- Custom WebGL gradients
+
+**Core Philosophy:** Modular, token-based design system with feature-flag controlled progressive enhancement.
+
+---
+
+## Animation & Transition Preferences ⭐
+
+**CRITICAL:** Prefer high-impact, smooth transitions with steep bezier curves and long tapering:
+- **Default easing:** `cubic-bezier(0.05, 0.84, 0.31, 1)` (available as `--easing-in-out`)
+- Combine smooth transitions with sleek fades
+- Use steep bezier curves with soft transition-end (long tapering)
+- Favor sophisticated animations over abrupt changes
+
+### Transition Patterns We Use:
+
+1. **Shared Element Transition / Container Transform (Primary Pattern)**
+   - Element morphs between states while maintaining visual continuity
+   - Used in: FeatureMenu (FAB → Full Panel with GSAP)
+   - Implementation: GSAP timeline with coordinated property changes
+
+2. **Framer Motion Declarative Animations**
+   - Used for: Modal entrances, list items, page transitions
+   - Spring physics preferred: `type: "spring", stiffness: 300, damping: 30`
+   - AnimatePresence for exit animations
+
+3. **CSS Transitions (Performance Critical)**
+   - Use for: Simple hover states, theme switching
+   - Always use our easing token: `var(--easing-in-out)`
+   - Duration tokens: `--transition-fast` (0.2s), `--transition-medium` (0.3s), `--transition-slow` (0.4s)
+
+4. **WebGL/Canvas Gradients**
+   - Static renders (no animation loop unless explicitly requested)
+   - Smooth interpolation between gradient states
+
+5. **Morphing Transitions**
+   - Shape/size transformations (e.g., FAB → Panel)
+   - Combine: position, scale, opacity, border-radius changes
+
+**When implementing new features:**
+- Default to smooth, high-impact animations
+- Use GSAP for complex coordinated sequences
+- Use Framer Motion for simpler declarative animations
+- Always respect `prefers-reduced-motion` (implement but not shown in examples)
+- Test at 60fps on typical hardware
+
+---
+
+## Architecture
+
+### Context Hierarchy (index.tsx)
+```
+<FeatureFlagProvider>          ← Feature flags & URL params
+  <WorkspaceProvider>           ← Workspace/session management
+    <ScenarioProvider>          ← Demo scenarios
+      <DesignSystemProvider>    ← Design system + theme mode
+        <ThemeCustomizationProvider> ← Runtime token customization
+          <App />
+```
+
+### State Management
+- **No Redux/Zustand** - Context API only
+- Feature flags: `useFeatureFlags()` hook
+- Design system: `useDesignSystem()` hook (also aliased as `useTheme()`)
+- Workspaces: `useWorkspace()` hook
+- Scenarios: `useScenarios()` hook
+
+### Routing Structure
+```
+/ (HomePage)
+/design-system/* (DesignSystemPage - component showcase)
+/theme-builder (DesignSystemAltPage - standalone theme builder)
+/gradient-playground (GradientPlaygroundPage)
+/gradient-frames-demo (GradientFramesDemoPage)
+/gradient-presets-demo (GradientPresetsDemo)
+```
+
+---
+
+## Feature Flag System
+
+**Location:** `featureFlags.ts` (source of truth)
+
+**Current Flags:**
+- `newBranding` - Master switch for new design system
+- `newTypography`, `newTables`, `newBubble`, etc. - Granular feature flags
+- `plays`, `builtByOther`, `themes` - Feature toggles
+- `workspaces` - Multi-workspace feature
+- Conversation flags: `conversationPin`, `conversationRename`, etc.
+
+**How Flags Work:**
+1. Defined in `featureFlags.ts` with default values
+2. Loaded from localStorage on app start
+3. Can be overridden via URL query params (e.g., `?newBranding=true`)
+4. Managed via `FeatureFlagContext`
+5. Applied as CSS classes to `<html>` element using kebab-case
+
+**CSS Coupling Pattern:**
+```css
+/* New features require BOTH newBranding AND specific flag */
+.new-branding.new-typography {
+  /* Only active when BOTH classes present */
+}
+
+/* Non-prototype features work independently */
+.workspaces {
+  /* Active when workspaces flag is true */
+}
+```
+
+**JavaScript Usage:**
+```typescript
+const { flags, setFlag, isFeatureActive } = useFeatureFlags();
+
+// isFeatureActive() handles coupling logic automatically
+if (isFeatureActive('newTypography')) {
+  // Only true if newBranding AND newTypography are both enabled
+}
+```
+
+---
+
+## Design Token System
+
+**Location:** `tokens.css` (loaded globally in styles.css)
+
+### Token Architecture
+Two-layer system:
+1. **Design System** (old vs new) - controlled by `newBranding` flag
+2. **Theme Mode** (light vs dark) - user preference (localStorage)
+
+### CSS Class Application
+Applied to `<html>` element (documentElement):
+- `.new-branding` or `.design-old` (implicit)
+- `.theme-light` or `.theme-dark`
+- All feature flags as kebab-case classes
+
+### Token Categories (90+ tokens)
+```css
+/* Colors */
+--color-primary-default
+--color-ui-background
+--color-text-primary
+--color-error-default
+
+/* Spacing (8px base scale) */
+--space-1 through --space-48
+
+/* Typography */
+--font-size-body-sm/md/lg
+--font-size-heading-sm/md/lg/xl
+--font-weight-regular/medium/semibold/bold
+
+/* Radii */
+--radius-sm/default/lg/xl
+
+/* Shadows */
+--shadow-sm/default/md/lg/xl
+
+/* Animation */
+--easing-in-out: cubic-bezier(0.05, 0.84, 0.31, 1)
+--transition-fast/medium/slow
+
+/* Z-Index */
+--z-base/sidebar/dropdown/modal/tooltip
+
+/* Component-specific */
+--size-button-height
+--gradient-panel-background
+```
+
+### Token Usage Pattern
+```css
+/* ❌ BAD: Hardcoded values */
+.button {
+  background: #4426d9;
+  padding: 12px 16px;
+}
+
+/* ✅ GOOD: Token-based */
+.button {
+  background: var(--color-primary-default);
+  padding: var(--space-3) var(--space-4);
+  transition: var(--transition-medium);
+}
+```
+
+### Token Cascade Example
+```css
+:root {
+  /* Default (OLD Design - Light) */
+  --color-primary-default: #4426d9;
+}
+
+.theme-dark:not(.new-branding) {
+  /* OLD Design - Dark */
+  --color-primary-default: #5B8FFF;
+}
+
+.new-branding {
+  /* NEW Design - Light */
+  --color-primary-default: hsl(250 70% 50%);
+}
+
+.new-branding.theme-dark {
+  /* NEW Design - Dark */
+  --color-primary-default: hsl(250 70% 60%);
+}
+```
+
+**Result:** Components automatically adapt to all 4 combinations (old/new × light/dark)
+
+---
+
+## Component Token Layer Pattern ⭐
+
+**CRITICAL:** Every component CSS file must implement a component token layer for proper theming and maintainability.
+
+### When Working on CSS Files
+
+**ALWAYS** assess whether the Component Token Layer Pattern has been applied:
+
+1. **Check if applied**: Look for a `/* Component Token Layer - Color Palette */` comment at the top of the main component selector
+2. **Check if complete**: Even if present, verify ALL color usages reference component tokens (not direct `--color-*` or `--theme-*` tokens)
+3. **Apply or complete**: If missing or partial, implement the full pattern without breaking existing functionality
+
+### Pattern Overview
+
+Create a semantic abstraction layer over global tokens:
+
+```
+Theme Files (flamingo.css, etc.)
+    ↓ defines
+Global Tokens (--color-*, defined in tokens.css)
+    ↓ referenced by
+Component Tokens (--component-name-*, defined in component CSS)
+    ↓ used in
+Component Selectors (actual CSS rules)
+```
+
+### Implementation Steps
+
+1. **Audit**: Find all `--color-*`, `--theme-*` tokens and hard-coded colors
+2. **Design token names**: Create semantic names following `--component-name-element-property`
+3. **Add definitions**: At top of main selector (or `:root` for portaled components):
+   ```css
+   .component-name {
+     /* Component Token Layer - Color Palette */
+     --component-title-color: var(--color-text-secondary);
+     --component-item-hover-bg: var(--color-ui-active);
+     --component-item-active-bg: var(--color-ui-active);
+     --component-border: var(--color-ui-border);
+     
+     /* Layout properties */
+     display: flex;
+     ...
+   }
+   ```
+4. **Replace usages**: Change all color references to use component tokens
+5. **Migrate legacy**: Convert any `--theme-*` to modern `--color-*` tokens
+
+### Token Naming Rules
+
+✅ **DO:**
+- Use flat naming: `--component-element-property` (single hyphens only)
+- Start with component name: `--feature-menu-`, `--sidebar-`
+- Be semantic: describe purpose, not value
+- Use `:root` for portaled elements (dropdowns, modals, tooltips)
+
+❌ **DON'T:**
+- Use BEM notation: `--component__element` or `--component--modifier`
+- Abbreviate excessively: `--fm-bg` 
+- Be vague: `--component-color-1`
+- Mix `--theme-*` and `--color-*` sources (always use `--color-*`)
+
+### Common Token Patterns
+
+```css
+/* Backgrounds */
+--component-bg: var(--color-ui-background);
+--component-bg-hover: var(--color-ui-active);
+--component-bg-active: var(--color-ui-active);
+
+/* Text */
+--component-text: var(--color-text-default);
+--component-text-secondary: var(--color-text-secondary);
+--component-text-accent: var(--color-primary-default);
+
+/* Borders */
+--component-border: var(--color-ui-border);
+--component-divider: var(--color-ui-border);
+
+/* Icons */
+--component-icon-color: var(--color-text-secondary);
+--component-icon-hover-color: var(--color-primary-default);
+```
+
+### Special Case: Portaled Components
+
+For components that render in React Portals (outside normal DOM hierarchy), define tokens in `:root`:
+
+```css
+/* Component Token Layer - Color Palette (Root scope for portaled elements) */
+:root {
+  --dropdown-menu-bg: var(--color-ui-background-elevated);
+  --dropdown-menu-border: var(--color-ui-border);
+  --dropdown-item-hover-bg: var(--color-ui-active);
+}
+
+.dropdown {
+  /* CSS Variables for size control */
+  --dropdown-padding: var(--space-2);
+  
+  /* Layout properties */
+  display: flex;
+  ...
+}
+```
+
+### Migration Notes
+
+- **No `--color-ui-hover` token exists** - Use `--color-ui-active` for hover states
+- Always migrate `--theme-*` to `--color-*` equivalents
+- Keep existing BEM/selector structure intact (only change token layer)
+- Test in both light and dark modes after implementation
+
+### Safety Requirements
+
+When applying this pattern:
+- ✅ Never break existing functionality
+- ✅ Preserve all visual appearance
+- ✅ Maintain responsive behavior
+- ✅ Keep all hover/active/focus states
+- ✅ Test thoroughly before and after
+
+**Reference Documentation:** `docs/COMPONENT_TOKEN_PATTERN.md`
+
+---
+
+## Component Structure
+
+### Standard Pattern
+```
+components/
+  ComponentName/
+    ComponentName.tsx    ← Component logic
+    ComponentName.css    ← Scoped styles (using tokens)
+    README.md           ← (optional) Complex components only
+```
+
+### Component Guidelines
+- **Functional components** with hooks (no class components)
+- **TypeScript strict mode** - all props typed
+- **Token-based styling** - no hardcoded colors/spacing
+- **Responsive by default** - use container queries where appropriate
+- **Accessible** - semantic HTML, ARIA when needed
+
+### Key Components
+
+**FeatureMenu** (`components/FeatureMenu/FeatureMenu.tsx`)
+- FAB (Floating Action Button) that morphs into settings panel
+- Uses GSAP for Container Transform animation (FAB → Panel)
+- Manages feature flags, themes, typography testing
+
+**CustomizationPanel** (`components/CustomizationPanel/CustomizationPanel.tsx`)
+- Left-side panel for runtime token customization
+- Controls: colors, typography, spacing, shadows
+- State persisted to localStorage
+- Slide-in/out animation with smooth transitions
+
+**GradientBackground** (`components/GradientBackground/GradientBackground.tsx`)
+- Two modes: 'blob' (CSS) or 'organic' (WebGL)
+- Blob: 4 animated CSS blobs with blur filter
+- Organic: Custom WebGL shader with noise algorithms
+- Config-driven, theme-aware
+
+**OrganicGradient** (`components/OrganicGradient/OrganicGradient.tsx`)
+- WebGL canvas gradient with fragment shaders
+- Noise-based color mixing
+- Static render (no animation loop) for performance
+- Used by GradientBackground
+
+**Modal/Plays** - Framer Motion powered modals with spring animations
+
+---
+
+## Gradient System
+
+### Gradient Types
+1. **Blob Gradient** (CSS-based)
+   - 4 animated divs with blur filter
+   - Excellent performance on all devices
+   - Theme-aware color generation
+
+2. **Organic Gradient** (WebGL-based)
+   - Custom fragment shaders
+   - Noise algorithms: simplex, perlin, voronoi
+   - Static render for battery life
+
+### Gradient Configuration
+```typescript
+interface OrganicGradientConfig {
+  colorStops: ColorStop[];        // HSL colors with positions
+  noiseAlgorithm: 'simplex' | 'perlin' | 'voronoi';
+  iterations: number;             // 20-60 (quality vs performance)
+  blurIntensity: number;          // 0-3
+  seed?: number;                  // For animation
+}
+```
+
+### Gradient Tools
+- **Gradient Playground** (`/gradient-playground`) - Interactive editor with live preview
+- **Gradient Frames System** - Preset gradient configurations
+- **gradientUtils.ts** - Conversion, generation, interpolation utilities
+
+### Theme Integration
+```typescript
+// Gradients respect theme mode
+const { isDark } = useDesignSystem();
+const config = generateRandomGradientConfig(isDark);
+```
+
+---
+
+## Theme System
+
+### Theme Loading
+- Dynamic theme loading from `public/themes/*.css`
+- Theme manifest: `public/themes/themes.json`
+- Loaded via `loadTheme()` utility
+- Applied as stylesheet to document head
+
+### Theme Builder (`/theme-builder`)
+- Material Design 3 integration
+- HCT color space (Hue, Chroma, Tone)
+- Generate full color palettes from seed color
+- Export to CSS (saved to library in dev mode)
+- Standalone page (no FeatureMenu/CustomizationPanel)
+
+### Theme Selection
+- Via FeatureMenu dropdown
+- Persisted to localStorage
+- Applied on next load via `initializeTheme()`
+
+---
+
+## File Organization
+
+### Key Directories
+```
+components/          ← React components
+context/            ← Context providers & hooks
+hooks/              ← Custom hooks
+pages/              ← Route pages
+styles/             ← Global styles (reset, typography, utilities)
+themes/             ← Theme utilities & color generation
+  colors/           ← Theme loading system
+  m3/              ← Material Design 3 utilities
+configs/gradients/  ← Gradient presets
+docs/               ← Feature documentation
+readme/             ← Implementation guides & architecture
+types/              ← TypeScript type definitions
+utils/              ← Utility functions
+```
+
+### Documentation Structure
+- **readme/** - Step-by-step implementation guides, architecture diagrams
+- **docs/** - Feature-specific technical docs
+- **Component READMEs** - Complex component documentation (in component folder)
+
+---
+
+## Code Style & Patterns
+
+### TypeScript
+- Strict mode enabled
+- Prefer interfaces over types for object shapes
+- Export types alongside components
+- Use type inference where obvious
+
+### React Patterns
+```typescript
+// ✅ Prefer named exports for components
+export const MyComponent: React.FC<Props> = ({ prop1, prop2 }) => {
+  // ...
+};
+
+// ✅ Use custom hooks for reusable logic
+const useMyFeature = () => {
+  // ...
+  return { state, actions };
+};
+
+// ✅ Memoize expensive computations
+const value = useMemo(() => expensiveCalc(), [deps]);
+
+// ✅ Stable callbacks
+const handleClick = useCallback(() => {
+  // ...
+}, [deps]);
+```
+
+### CSS Patterns
+```css
+/* ✅ Use tokens */
+.component {
+  color: var(--color-text-primary);
+}
+
+/* ✅ BEM-like naming for variants */
+.button--primary { }
+.button--secondary { }
+
+/* ✅ Feature flag coupling */
+.new-branding .button {
+  /* New design overrides */
+}
+
+/* ✅ Theme-aware selectors */
+.theme-dark .component {
+  /* Dark mode overrides */
+}
+```
+
+### Animation Patterns
+```typescript
+// ✅ GSAP for complex sequences
+const tl = gsap.timeline();
+tl.to(element, { 
+  duration: 0.5, 
+  ease: 'power4.out',
+  opacity: 1 
+});
+
+// ✅ Framer Motion for declarative
+<motion.div
+  initial={{ opacity: 0, scale: 0.9 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+/>
+
+// ✅ CSS for simple transitions
+.element {
+  transition: var(--transition-medium);
+}
+```
+
+---
+
+## Common Patterns & Gotchas
+
+### Feature Flag Coupling
+```typescript
+// ❌ BAD: Checking flags independently
+if (flags.newTypography) {
+  // Missing newBranding check
+}
+
+// ✅ GOOD: Use isFeatureActive helper
+if (isFeatureActive('newTypography')) {
+  // Correctly checks newBranding AND newTypography
+}
+```
+
+### Theme Access
+```typescript
+// ✅ Both work (aliased)
+const { isDark, themeMode } = useDesignSystem();
+const { isDark, themeMode } = useTheme();
+```
+
+### Token Naming
+- Use semantic names, not values
+- `--color-primary-default` not `--color-purple`
+- `--space-4` not `--spacing-16px`
+
+### WebGL Gradients
+- Always provide fallback for WebGL unavailability
+- Use static rendering (no animation loop) by default
+- Animate via config changes, not continuous rendering
+
+### Responsive Design
+- Mobile-first approach
+- Use CSS Grid/Flexbox
+- Container queries for component-level responsiveness
+- Test on actual devices, not just browser DevTools
+
+---
+
+## Development Workflow
+
+### Starting Dev Server
+```bash
+pnpm dev          # Starts on port 3000
+```
+
+### Feature Development Process
+1. Check if feature flag exists in `featureFlags.ts`, add if needed
+2. Add CSS class coupling in component styles
+3. Use tokens exclusively (no hardcoded values)
+4. Test in all 4 combinations (old/new × light/dark)
+5. Add smooth transitions/animations (see Animation Preferences)
+6. Update documentation in `readme/` if significant
+
+### URL Testing
+```
+?newBranding=true&newTypography=true   ← Enable features
+?theme=dark                            ← Force theme mode
+?cleanUrl=true                         ← Auto-clean URL after load
+```
+
+### Animation Performance
+- Target 60fps on mid-range devices
+- Use `will-change` sparingly (add/remove dynamically)
+- Prefer `transform` and `opacity` for animations
+- Use `requestAnimationFrame` for JS-driven animations
+- Test with Chrome DevTools Performance tab
+
+---
+
+## Testing & Quality
+
+### Manual Testing Checklist
+- [ ] Test in OLD design (light + dark)
+- [ ] Test in NEW design (light + dark)
+- [ ] Test with feature flag off/on
+- [ ] Test responsive breakpoints
+- [ ] Test animations at 60fps
+- [ ] Check accessibility (keyboard nav, screen reader)
+- [ ] Test on real devices (not just DevTools)
+
+### Common Issues
+- **Token not updating:** Check CSS selector specificity in tokens.css
+- **Animation jank:** Use `transform`/`opacity` only, check for layout thrashing
+- **Feature not showing:** Check feature flag coupling (newBranding + specific flag)
+- **Theme not applying:** Check if theme CSS is loaded in head, inspect localStorage
+
+---
+
+## Key Files Reference
+
+**Core Configuration:**
+- `index.tsx` - App entry, context providers
+- `App.tsx` - Router, layout, CustomizationPanel integration
+- `featureFlags.ts` - Feature flag definitions
+- `tokens.css` - Design token definitions
+- `styles.css` - Global styles entry point
+
+**Contexts:**
+- `context/FeatureFlagContext.tsx` - Feature flag management
+- `context/DesignSystemContext.tsx` - Design system + theme mode
+- `context/ThemeCustomizationContext.tsx` - Runtime token overrides
+- `context/WorkspaceContext.tsx` - Multi-workspace support
+- `context/ScenarioContext.tsx` - Demo scenarios
+
+**Key Components:**
+- `components/FeatureMenu/FeatureMenu.tsx` - Settings FAB/Panel (GSAP animation)
+- `components/CustomizationPanel/CustomizationPanel.tsx` - Token customization
+- `components/GradientBackground/GradientBackground.tsx` - Background gradients
+- `components/OrganicGradient/OrganicGradient.tsx` - WebGL gradients
+
+**Utilities:**
+- `utils/gradientUtils.ts` - Gradient helpers
+- `themes/colors/loadTheme.ts` - Theme loading system
+- `hooks/useViewport.ts` - Responsive helpers
+
+---
+
+## Project Status & Goals
+
+**Current State:** Advanced prototype with production-ready design system architecture
+
+**Key Features Complete:**
+- ✅ Dual design system (old + new) with feature flags
+- ✅ Token-based styling system (90+ tokens)
+- ✅ Theme system (light/dark + custom themes)
+- ✅ Runtime token customization
+- ✅ Advanced gradient system (CSS + WebGL)
+- ✅ Workspace/session management
+- ✅ Material Design 3 theme builder
+- ✅ Smooth animations (GSAP + Framer Motion)
+
+**Design Principles:**
+- Progressive enhancement via feature flags
+- Token-based theming for flexibility
+- Smooth, high-impact animations as default
+- Performance-conscious (60fps target)
+- Mobile-first responsive design
+- Accessibility built-in
+
+---
+
+## Important Notes
+
+1. **Always use tokens** - No hardcoded colors, spacing, or shadows
+2. **Feature flag coupling** - "new" prefixed features require `newBranding` to be enabled
+3. **Test all combinations** - old/new × light/dark (4 total)
+4. **Animation quality** - Smooth transitions with steep bezier curves and long tapering
+5. **Context providers** - Check index.tsx for provider hierarchy
+6. **Standalone pages** - Some routes exclude FeatureMenu/CustomizationPanel
+7. **WebGL gradients** - Static render by default, animate via config changes
+8. **Documentation** - Update readme/ for significant changes
+
+---
+
+## Quick Commands
+
+```bash
+# Development
+pnpm dev                  # Start dev server (port 3000)
+
+# Build
+pnpm build               # Production build
+pnpm preview             # Preview production build
+
+# Project Structure
+components/              # React components
+context/                # Context providers
+pages/                  # Route components  
+tokens.css              # Design tokens
+featureFlags.ts         # Feature flags
+```
+
+---
+
+**Last Verified:** Current codebase state verified against architecture documentation
+**Package Manager:** pnpm (lockfile: pnpm-lock.yaml)
+**Port:** 3000 (configured in vite.config.ts)
+

@@ -104,7 +104,7 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
             className="left-sidebar__logo-button"
             aria-label="Open workspace menu"
           >
-            <span className="flex items-center">
+            <span className="flex items-center gap-1">
               <Logo variant="minimal" />
               <Icons name="ChevronDown" />
             </span>

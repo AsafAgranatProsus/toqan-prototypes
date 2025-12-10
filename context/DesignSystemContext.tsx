@@ -84,7 +84,7 @@ const getStoredThemeMode = (): ThemeMode => {
   }
   
   // 3. Default to auto mode (follows system preference)
-  return 'auto';
+  return 'light';
 };
 
 /**

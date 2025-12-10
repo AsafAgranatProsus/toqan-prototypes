@@ -49,9 +49,13 @@ const toSentenceCase = (str: string) => {
 
 const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCustomization }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const fabRef = useRef<HTMLButtonElement>(null);
+  const scrimRef = useRef<HTMLDivElement>(null);
   const cogRef = useRef<HTMLDivElement>(null);
   const { flags, setFlag } = useFeatureFlags();
   const { themeMode, toggleTheme, setThemeMode, designSystem, isNewDesign } = useDesignSystem();
@@ -151,28 +155,88 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
     };
   }, [isOpen, isMinimized]);
 
-  // Animate menu in/out
+  // Container Transform animation: FAB <-> Menu
   useEffect(() => {
-    if (!menuRef.current || !contentRef.current) return;
+    if (!containerRef.current || !menuRef.current || !contentRef.current || !fabRef.current || !scrimRef.current) return;
 
     if (isOpen && !isMinimized) {
-      gsap.fromTo(
-        menuRef.current,
-        {
-          scale: 0.9,
-          opacity: 0,
-          x: 20,
-        },
-        {
-          scale: 1,
-          opacity: 1,
-          x: 0,
-          duration: 0.2,
-          delay: 0,
-
-          ease: 'power3.out',
+      setIsAnimating(true);
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setIsAnimating(false);
+          // After animation completes, clear height so menu can grow naturally
+          gsap.set(menuRef.current, { clearProps: 'height' });
         }
-      );
+      });
+      
+      // Get FAB bounds for morphing
+      const fabBounds = fabRef.current.getBoundingClientRect();
+      
+      // Clear any previous GSAP properties and reset to natural state to measure
+      gsap.set(menuRef.current, {
+        clearProps: 'width,height,borderRadius,bottom,right',
+        opacity: 1,
+      });
+      
+      // Make content visible to measure its height
+      gsap.set(contentRef.current, {
+        opacity: 1,
+        visibility: 'visible',
+      });
+      
+      // Measure the actual content height in natural state (capped by max-height)
+      // Match CSS: calc(100vh - 2.5rem) assuming 16px base font
+      const maxHeight = window.innerHeight - (2.5 * 16);
+      const contentHeight = Math.min(menuRef.current.scrollHeight, maxHeight);
+      
+      // Now set initial FAB state for animation start (including position)
+      gsap.set(menuRef.current, {
+        width: fabBounds.width,
+        height: fabBounds.height,
+        borderRadius: '50%',
+        bottom: '-1rem',
+        right: '-1rem',
+        opacity: 1,
+      });
+      
+      gsap.set(contentRef.current, {
+        opacity: 0,
+      });
+      
+      // Fade in scrim
+      tl.to(scrimRef.current, {
+        opacity: 1,
+        duration: 0.3,
+        ease: 'power4.out',
+      }, 0);
+      
+      // Hide FAB immediately as menu takes over
+      tl.set(fabRef.current, { opacity: 0 }, 0);
+      
+      // Morph container from FAB size to menu size (including position animation)
+      tl.to(menuRef.current, {
+        width: 320,
+        height: contentHeight,
+        borderRadius: '2rem',
+        bottom: 0,
+        right: 0,
+        duration: 0.5,
+        ease: 'power4.out',
+      }, 0.1);
+      
+      // Animate elevation (shadow)
+      tl.to(menuRef.current, {
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+        duration: 0.5,
+        ease: 'power4.out',
+      }, 0.1);
+      
+      // Fade in content after container starts morphing
+      tl.to(contentRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: 'power4.out',
+      }, 0.3);
     }
   }, [isOpen, isMinimized]);
 
@@ -187,19 +251,67 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
   };
 
   const handleClose = () => {
-    if (menuRef.current) {
-      gsap.to(menuRef.current, {
-        scale: 0.8,
-        opacity: 0,
-        x: 20,
-        duration: 0.3,
-        ease: 'power3.in',
-        onComplete: () => {
-          setIsOpen(false);
-          setIsMinimized(false);
-        },
-      });
-    }
+    if (!containerRef.current || !menuRef.current || !contentRef.current || !fabRef.current || !scrimRef.current) return;
+    
+    // Capture current height before starting animation (menu may have grown)
+    const currentHeight = menuRef.current.offsetHeight;
+    
+    setIsAnimating(true);
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setIsOpen(false);
+        setIsMinimized(false);
+        setIsAnimating(false);
+        // Reset FAB visibility
+        gsap.set(fabRef.current, { opacity: 1 });
+      },
+    });
+    
+    // Set the current height and position explicitly so GSAP can animate from them
+    gsap.set(menuRef.current, { 
+      height: currentHeight,
+      bottom: 0,
+      right: 0,
+    });
+    
+    // Fade out scrim
+    tl.to(scrimRef.current, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.in',
+    }, 0);
+    
+    // Fade out menu content first
+    tl.to(contentRef.current, {
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power3.in',
+    }, 0);
+    
+    // Morph container back to FAB size and position
+    tl.to(menuRef.current, {
+      width: 40,
+      height: 40,
+      borderRadius: '50%',
+      bottom: '-1rem',
+      right: '-1rem',
+      duration: 0.5,
+      ease: 'power4.out',
+    }, 0.15);
+    
+    // Animate elevation back down
+    tl.to(menuRef.current, {
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+      duration: 0.5,
+      ease: 'power4.out',
+    }, 0.15);
+    
+    // Show FAB at the end
+    tl.to(fabRef.current, {
+      opacity: 1,
+      duration: 0.25,
+      ease: 'power4.out',
+    }, 0.45);
   };
 
   // Feature flag classes are now applied to HTML element by DesignSystemContext
@@ -229,12 +341,45 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
     localStorage.setItem('testFont-serif', serifFont);
   }, [sansSerifFont, serifFont]);
 
-  if (!isOpen) {
-    return null;
-  }
-
   return (
-    <div className="feature-menu" ref={menuRef}>
+    <>
+      {/* Scrim overlay */}
+      <div 
+        ref={scrimRef}
+        className="feature-menu-scrim"
+        style={{ 
+          opacity: 0,
+          pointerEvents: (isOpen || isAnimating) ? 'auto' : 'none'
+        }}
+        onClick={handleClose}
+      />
+      
+      {/* Container for shared element transition */}
+      <div ref={containerRef} className="feature-menu-container">
+        {/* FAB Button */}
+        <button
+          ref={fabRef}
+          className="feature-menu-fab"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open feature menu"
+          title="Open menu (Alt+/)"
+          style={{ 
+            opacity: (isOpen || isAnimating) ? 0 : 1,
+            pointerEvents: (isOpen || isAnimating) ? 'none' : 'auto'
+          }}
+        >
+          <Icons name="Settings2" />
+        </button>
+        
+        {/* Menu - morphs from FAB */}
+        <div 
+          className="feature-menu" 
+          ref={menuRef}
+          style={{ 
+            opacity: (isOpen || isAnimating) ? 1 : 0,
+            pointerEvents: (isOpen || isAnimating) ? 'auto' : 'none'
+          }}
+        >
       {/* Cog icon for minimized state */}
       {/* <div 
         className="feature-menu-cog" 
@@ -286,7 +431,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                 <span className="design-system-label">Design System</span>
               </div> */}
               <div className="design-system-actions">
-                {/* <button
+                <button
                   className="design-system-action-btn"
                   onClick={() => {
                     onOpenCustomization?.();
@@ -294,21 +439,21 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   }}
                   title="Edit design tokens (Alt+\)"
                 >
-                  Edit
-                </button> */}
+                  Tweak
+                </button>
                 <Link
                   to="/theme-builder"
                   className="design-system-action-btn"
                   onClick={() => setIsOpen(false)}
                 >
-                  Theme Builder
+                  Builder
                 </Link>
                 <Link
                   to="/design-system"
                   className="design-system-action-btn"
                   onClick={() => setIsOpen(false)}
                 >
-                  System tokens
+                  Tokens
                 </Link>
               </div>
             </div>
@@ -385,26 +530,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   checked={flags.themeSelector}
                   onChange={(checked) => setFlag('themeSelector', checked)}
                 />
-                <Toggle
-                  label="Typography"
-                  checked={flags.newTypography}
-                  onChange={(checked) => setFlag('newTypography', checked)}
-                />
-                <Toggle
-                  label="Chat Bubbles"
-                  checked={flags.newBubble}
-                  onChange={(checked) => setFlag('newBubble', checked)}
-                />
-                <Toggle
-                  label="Tables"
-                  checked={flags.newTables}
-                  onChange={(checked) => setFlag('newTables', checked)}
-                />
-                <Toggle
-                  label="Top bar"
-                  checked={flags.newTopNavbar}
-                  onChange={(checked) => setFlag('newTopNavbar', checked)}
-                />
+               
                 <Toggle
                   label="Left Sidebar"
                   checked={flags.newLeftSidebar}
@@ -434,6 +560,26 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   label="Workspaces"
                   checked={flags.workspaces}
                   onChange={(checked) => setFlag('workspaces', checked)}
+                />
+                 <Toggle
+                  label="Typography"
+                  checked={flags.newTypography}
+                  onChange={(checked) => setFlag('newTypography', checked)}
+                />
+                <Toggle
+                  label="Chat Bubbles"
+                  checked={flags.newBubble}
+                  onChange={(checked) => setFlag('newBubble', checked)}
+                />
+                <Toggle
+                  label="Tables"
+                  checked={flags.newTables}
+                  onChange={(checked) => setFlag('newTables', checked)}
+                />
+                <Toggle
+                  label="Top bar"
+                  checked={flags.newTopNavbar}
+                  onChange={(checked) => setFlag('newTopNavbar', checked)}
                 />
               </div>
             </Collapsible.Content>
@@ -562,7 +708,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           </Collapsible> */}
 
           {Object.keys(flags).filter(flag => 
-            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger'].includes(flag)
+            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger', 'newGradientBackground'].includes(flag)
           ).map(flag => (
             <Toggle
               key={flag}
@@ -594,7 +740,9 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           </>
         )}
       </div>
-    </div>
+        </div>
+      </div>
+    </>
   );
 };
 

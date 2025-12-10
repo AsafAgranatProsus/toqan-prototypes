@@ -1,26 +1,153 @@
-.feature-menu {
+/* ============================================
+   Feature Menu CSS Variables (Meta Menu)
+   Independent from global app theme system
+   ============================================ */
+
+.feature-menu-container {
+  /* Colors */
+  --fm-bg: white;
+  --fm-border: #ccc;
+  --fm-shadow-default: rgba(0, 0, 0, 0.15);
+  --fm-shadow-hover: rgba(0, 0, 0, 0.2);
+  --fm-shadow-elevated: rgba(0, 0, 0, 0.25);
+  
+  /* Scrim */
+  --fm-scrim-light: transparent;
+  --fm-scrim-dark: rgba(0, 0, 0, 0.5);
+  
+  /* FAB Icon */
+  --fm-fab-icon-color: #2196F3;
+  
+  /* Text colors */
+  --fm-text-default: #333;
+  --fm-text-muted: #666;
+  --fm-text-error: rgb(220, 38, 38);
+  
+  /* Interactive states */
+  --fm-hover-bg: rgba(0, 0, 0, 0.05);
+  --fm-hover-error-bg: rgba(220, 38, 38, 0.1);
+  --fm-active-bg: rgba(0, 0, 0, 0.1);
+  
+  /* Backgrounds */
+  --fm-info-bg: #f5f5f5;
+  --fm-link-bg: #f0f0f0;
+  --fm-link-bg-hover: #e0e0e0;
+  
+  /* Scrollbar */
+  --fm-scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --fm-scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+  
+  /* Dividers */
+  --fm-divider: #e0e0e0;
+  
+  /* Dropdowns */
+  --fm-dropdown-border-hover: #999;
+  --fm-dropdown-focus-border: #4F46E5;
+  --fm-dropdown-focus-shadow: rgba(79, 70, 229, 0.1);
+  
+  /* Sizing */
+  --fm-border-radius: 2rem;
+  --fm-fab-size: 40px;
+  --fm-menu-width: 320px;
+  
+  /* Z-index */
+  --fm-z-container: 9999;
+  --fm-z-scrim: 9998;
+}
+
+/* Container for shared element transition */
+.feature-menu-container {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  z-index: 9999;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: var(--fm-z-container);
+  pointer-events: none;
+}
+
+.feature-menu-container > * {
+  pointer-events: auto;
+}
+
+/* Scrim overlay */
+.feature-menu-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--fm-scrim-light);
+  z-index: var(--fm-z-scrim);
+  transition: opacity 0.3s ease;
+}
+
+.feature-menu {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--fm-bg);
+  border: 1px solid var(--fm-border);
+  border-radius: var(--fm-border-radius);
+  box-shadow: 0 4px 12px var(--fm-shadow-default);
   filter: invert(1) contrast(0.75);
-  min-width: 280px;
-  max-width: 320px;
-  width: 320px;
+  width: var(--fm-menu-width);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   overflow: hidden;
+  will-change: width, height, border-radius, box-shadow;
 
   .toggle-container {
     .toggle-option {
       flex: 1
     }
   }
+}
+
+/* Floating FAB Button */
+.feature-menu-fab {
+  position: absolute;
+  bottom: -1rem;
+  right: -1rem;
+  width: var(--fm-fab-size);
+  height: var(--fm-fab-size);
+  border: 1px solid var(--fm-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--fm-shadow-default);
+  filter: invert(1) contrast(0.75);
+  transition: opacity 0.25s ease;
+  padding: 0;
+  will-change: opacity;
+}
+
+.feature-menu-fab svg {
+  width: 20px;
+  height: 20px;
+  color: var(--fm-fab-icon-color);
+}
+
+.feature-menu-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px var(--fm-shadow-hover);
+}
+
+.feature-menu-fab:active {
+  transform: scale(0.95);
+}
+
+/* Dark mode for scrim */
+.theme-dark .feature-menu-scrim {
+  background-color: var(--fm-scrim-dark);
+}
+
+/* Dark mode for FAB */
+.theme-dark .feature-menu-fab {
+  filter: invert(0);
+  background-color: var(--fm-bg);
+}
+
+.theme-dark .feature-menu-fab svg {
+  color: var(--fm-fab-icon-color);
 }
 
 /* .feature-menu-cog {
@@ -49,7 +176,7 @@
   flex-direction: column;
   gap: .5rem;
   position: relative;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 2.5rem);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 20px 24px 20px 20px;
@@ -66,18 +193,18 @@
 }
 
 .feature-menu-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--fm-scrollbar-thumb);
   border-radius: 3px;
 }
 
 .feature-menu-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--fm-scrollbar-thumb-hover);
 }
 
 .feature-menu-header {
   position: fixed;
-  top: .5rem;
-  right: .5rem;
+  top: 1rem;
+  right: 1rem;
   display: flex;
   gap: 0.25rem;
   z-index: 10;
@@ -94,16 +221,16 @@
   justify-content: center;
   border-radius: 4px;
   transition: all 0.2s ease;
-  color: #666;
+  color: var(--fm-text-muted);
   
   svg {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.05);
-    color: #333;
+    background: var(--fm-hover-bg);
+    color: var(--fm-text-default);
   }
 
   &:active {
@@ -113,8 +240,8 @@
 
 .feature-menu-close {
   &:hover {
-    background: rgba(220, 38, 38, 0.1);
-    color: rgb(220, 38, 38);
+    background: var(--fm-hover-error-bg);
+    color: var(--fm-text-error);
   }
 }
 
@@ -149,7 +276,7 @@
 
 .theme-dark .feature-menu {
   filter: invert(0);
-  color: #333
+  color: var(--fm-text-default);
 }
 
 .feature-menu h3 {
@@ -164,7 +291,7 @@
 
 .feature-menu hr {
   border: none;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--fm-divider);
   margin: 0.75rem 0;
 }
 
@@ -178,7 +305,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background-color: #f5f5f5;
+  background-color: var(--fm-info-bg);
   padding: 0.75rem;
   border-radius: 6px;
   margin-bottom: 0.5rem;
@@ -244,7 +371,7 @@
 
 .helper-text {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--fm-text-muted);
   margin: 0 0 0.5rem 0;
   font-style: italic;
 }
@@ -265,18 +392,18 @@
 .font-selector label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #666;
+  color: var(--fm-text-muted);
 }
 
 .font-dropdown {
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--fm-divider);
   border-radius: 6px;
-  background-color: white;
+  background-color: var(--fm-bg);
   font-size: 0.875rem;
   font-weight: 400;
-  color: #333;
+  color: var(--fm-text-default);
   cursor: pointer;
   transition: all 0.2s ease;
   appearance: none;
@@ -287,13 +414,13 @@
 }
 
 .font-dropdown:hover {
-  border-color: #999;
+  border-color: var(--fm-dropdown-border-hover);
 }
 
 .font-dropdown:focus {
   outline: none;
-  border-color: #4F46E5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: var(--fm-dropdown-focus-border);
+  box-shadow: 0 0 0 3px var(--fm-dropdown-focus-shadow);
 }
 
 /* Theme Selector */
@@ -312,7 +439,7 @@
   gap: 0.375rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #666;
+  color: var(--fm-text-muted);
   white-space: nowrap;
 }
 
@@ -324,12 +451,12 @@
 .theme-dropdown {
   flex: 1;
   padding: 0.375rem 0.5rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--fm-divider);
   border-radius: 6px;
-  background-color: white;
+  background-color: var(--fm-bg);
   font-size: 0.8125rem;
   font-weight: 400;
-  color: #333;
+  color: var(--fm-text-default);
   cursor: pointer;
   transition: all 0.2s ease;
   appearance: none;
@@ -341,13 +468,13 @@
 }
 
 .theme-dropdown:hover {
-  border-color: #999;
+  border-color: var(--fm-dropdown-border-hover);
 }
 
 .theme-dropdown:focus {
   outline: none;
-  border-color: #4F46E5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+  border-color: var(--fm-dropdown-focus-border);
+  box-shadow: 0 0 0 2px var(--fm-dropdown-focus-shadow);
 }
 
 .theme-builder-link {
@@ -357,15 +484,15 @@
   width: 28px;
   height: 28px;
   border-radius: 6px;
-  background: #f0f0f0;
-  color: #666;
+  background: var(--fm-link-bg);
+  color: var(--fm-text-muted);
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .theme-builder-link:hover {
-  background: #e0e0e0;
-  color: #333;
+  background: var(--fm-link-bg-hover);
+  color: var(--fm-text-default);
 }
 
 .theme-builder-link svg {
@@ -386,12 +513,12 @@
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
-  color: #333;
+  color: var(--fm-text-default);
   transition: all 0.2s ease;
 }
 
 .feature-menu-collapsible-trigger:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--fm-hover-bg);
 }
 
 .feature-menu-collapsible-trigger .chevron-icon {
@@ -416,6 +543,6 @@
   padding: .5rem .5rem .5rem .5rem;
   margin-left: -.5rem;
   /* margin-right: -.5rem; */
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--fm-active-bg);
   border-radius: .5rem
 }
