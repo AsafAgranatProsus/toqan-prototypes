@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import { useDesignSystem } from '../../context/DesignSystemContext';
 import { useScenarios } from '../../context/ScenarioContext';
+import { useConcept, CONCEPTS, ConceptId } from '../../context/ConceptContext';
 import Toggle from '../Toggle/Toggle';
 import Collapsible from '../Collapsible/Collapsible';
 import { Icons } from '../Icons/Icons';
@@ -60,7 +61,9 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
   const { flags, setFlag } = useFeatureFlags();
   const { themeMode, toggleTheme, setThemeMode, designSystem, isNewDesign } = useDesignSystem();
   const { activeScenario, scenarioView, setScenarioView } = useScenarios();
+  const { conceptId, setConcept, concepts } = useConcept();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Typography testing state
   const [sansSerifFont, setSansSerifFont] = useState<string>(() => {
@@ -457,6 +460,37 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                 </Link>
               </div>
             </div>
+          </div>
+          
+          {/* Concept Selector */}
+          <div className="concept-selector">
+            <label htmlFor="concept-select" className="concept-selector-label">
+              <Icons name="Layers" />
+              <span>Concept</span>
+            </label>
+            <select
+              id="concept-select"
+              value={conceptId}
+              onChange={(e) => {
+                const newConceptId = e.target.value as ConceptId;
+                setConcept(newConceptId);
+                // Navigate to concept's home route
+                const concept = concepts[newConceptId];
+                if (concept.routePrefix) {
+                  navigate(concept.routePrefix);
+                } else {
+                  navigate('/');
+                }
+                setIsOpen(false);
+              }}
+              className="concept-dropdown"
+            >
+              {Object.values(concepts).map(concept => (
+                <option key={concept.id} value={concept.id}>
+                  {concept.name}
+                </option>
+              ))}
+            </select>
           </div>
           
           {/* Theme Selector */}

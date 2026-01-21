@@ -8,11 +8,27 @@ import FeatureMenu from './components/FeatureMenu/FeatureMenu';
 import ThemeDebugger from './components/ThemeDebugger/ThemeDebugger';
 import { CustomizationPanel } from './components/CustomizationPanel/CustomizationPanel';
 import { useFeatureFlags } from './context/FeatureFlagContext';
+import { useConcept } from './context/ConceptContext';
+
+// Concept-specific pages
+import { RestaurantHomePage } from './concepts/restaurant';
 
 // Inner component that has access to useLocation
 const AppContent: React.FC = () => {
   const { flags } = useFeatureFlags();
+  const { conceptId, setConcept } = useConcept();
   const location = useLocation();
+  
+  // Sync concept from route prefix (e.g., /restaurant/... sets restaurant concept)
+  React.useEffect(() => {
+    if (location.pathname.startsWith('/restaurant')) {
+      if (conceptId !== 'restaurant') {
+        setConcept('restaurant');
+      }
+    }
+    // Note: We don't auto-switch back to 'core' when leaving concept routes
+    // This allows users to navigate freely while staying in their concept
+  }, [location.pathname, conceptId, setConcept]);
   
   // Check if we're on a standalone page
   const isStandalonePage = location.pathname === '/theme-builder' || 
@@ -52,6 +68,43 @@ const AppContent: React.FC = () => {
         <Route path="/gradient-frames-demo" element={<GradientFramesDemoPage />} />
         <Route path="/gradient-presets-demo" element={<GradientPresetsDemo />} />
       </Routes>
+    );
+  }
+
+  // Check if we're on a concept-specific route
+  const isConceptRoute = location.pathname.startsWith('/restaurant');
+  
+  // Render concept-specific routes
+  if (isConceptRoute) {
+    return (
+      <>
+        <CustomizationPanel 
+          isOpen={isCustomizationOpen} 
+          onToggle={handleToggleCustomization} 
+        />
+        <div 
+          className="app-content" 
+          style={{ 
+            marginLeft: isCustomizationOpen ? '350px' : '0',
+            transition: 'margin-left 0.3s cubic-bezier(0.05, 0.84, 0.31, 1)',
+          }}
+        >
+          <FeatureMenu onOpenCustomization={() => {
+            setIsCustomizationOpen(true);
+            try {
+              localStorage.setItem('toqan-customization-panel-open', 'true');
+            } catch (error) {
+              console.error('Failed to save panel state:', error);
+            }
+          }} />
+          <Routes>
+            {/* Restaurant concept routes */}
+            <Route path="/restaurant" element={<RestaurantHomePage />} />
+            <Route path="/restaurant/*" element={<RestaurantHomePage />} />
+          </Routes>
+          {flags.showThemeDebugger && <ThemeDebugger />}
+        </div>
+      </>
     );
   }
 

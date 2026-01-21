@@ -57,7 +57,10 @@ export type IconName =
   | 'History'
   | 'FileText'
   | 'CornerDownRight'
-  | 'ArrowUpDown';
+  | 'ArrowUpDown'
+  | 'PanelLeft'
+  | 'Layers'
+  | 'Palette';
 
 export interface Model {
   id: string;
