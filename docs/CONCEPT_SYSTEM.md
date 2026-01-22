@@ -2,7 +2,11 @@
 
 ## Overview
 
-The Concept System allows you to work on parallel, isolated variants of Toqan without affecting the core prototype. Each concept can have its own pages, components, configs, and styles while sharing core infrastructure.
+The Concept System allows you to work on parallel, isolated variants of Toqan without affecting the core prototype. Each concept can have its own component configurations, layout arrangements, and styles while sharing core infrastructure.
+
+The system has two layers:
+1. **ConceptContext** - Manages which concept is active (core, restaurant, etc.)
+2. **Composer Pattern** - Defines what components render in each layout area per concept
 
 ## Quick Start
 
@@ -152,32 +156,97 @@ Concept classes are applied to `<html>` element:
 }
 ```
 
+## The Composer Pattern
+
+The Composer Pattern enables concepts to customize **what renders where** without forking pages.
+
+### How It Works
+
+Each concept defines a **composer** that specifies:
+- Which components fill each content area (leftPanel, mainStage, rightPanel, etc.)
+- Layout mode (standard, dashboard, focus, etc.)
+- Feature flag overrides
+- Token/style overrides
+
+```typescript
+// concepts/composer/composers.ts
+export const restaurantComposer: ConceptComposer = {
+  id: 'restaurant',
+  name: 'Restaurant',
+  layoutMode: 'standard',
+  components: {
+    topBar: 'default',           // Use core TopNavbar
+    leftPanel: RestaurantSidebar, // Custom component
+    mainStage: 'default',        // Use core MainContent
+    rightPanel: null,            // Hide right panel
+  },
+  featureOverrides: {
+    workspaces: true,
+  },
+  tokenOverrides: {
+    '--color-primary-default': 'hsl(25, 85%, 55%)',
+  },
+};
+```
+
+### Component Config Options
+
+| Value | Meaning |
+|-------|---------|
+| `'default'` | Use the core/default component |
+| `ComponentType` | Use a specific component |
+| `null` | Hide/disable this area |
+
+### Layout Modes
+
+| Mode | Description |
+|------|-------------|
+| `standard` | Current Toqan layout (left sidebar, main content, optional right panel) |
+| `dashboard` | Main stage is a dashboard/grid, chat moves to panel |
+| `focus` | Minimal layout, just main content |
+| `split` | Equal split between main areas |
+
 ## Three Levels of Customization
 
 | Level | Use When | How |
 |-------|----------|-----|
-| **Style only** | Different colors, fonts, branding | Concept-specific CSS/tokens |
-| **Component variants** | Different UI, same logic | Override components in concept folder |
-| **Full divergence** | Completely different UX | Concept-specific pages, optional git branch |
+| **Style only** | Different colors, fonts, branding | `tokenOverrides` in composer |
+| **Component swap** | Different UI for an area | Set component in `components` |
+| **Layout change** | Different arrangement | Change `layoutMode` |
 
-### Example: Component Override
+### Example: Custom Sidebar for Restaurant
 
 ```typescript
-// concepts/restaurant/components/ChatInput.tsx
-// Custom ChatInput for restaurant concept
+// concepts/restaurant/components/RestaurantSidebar.tsx
+import React from 'react';
+import { AreaProps } from '../../composer/types';
 
-import { BaseChatInput } from '../../../components/ChatInput/ChatInput';
-
-export const RestaurantChatInput = () => {
-  // Wrap or extend the base component
+export const RestaurantSidebar: React.FC<AreaProps> = ({ isOpen, setOpen, isMobile }) => {
   return (
-    <div className="restaurant-chat-wrapper">
-      <BaseChatInput 
-        placeholder="Ask about orders, menu items..."
-        suggestions={['Check order status', 'Update menu']}
-      />
-    </div>
+    <aside className="restaurant-sidebar">
+      <nav>
+        <a href="/restaurant/orders">Orders</a>
+        <a href="/restaurant/menu">Menu</a>
+        <a href="/restaurant/analytics">Analytics</a>
+      </nav>
+    </aside>
   );
+};
+```
+
+Then update the composer:
+
+```typescript
+// concepts/composer/composers.ts
+import { RestaurantSidebar } from '../restaurant/components/RestaurantSidebar';
+
+export const restaurantComposer: ConceptComposer = {
+  // ...
+  components: {
+    leftPanel: RestaurantSidebar,  // Use custom sidebar
+    mainStage: 'default',
+    // ...
+  },
 };
 ```
 
@@ -223,8 +292,19 @@ export const featureDefaults = {
 
 ## File Reference
 
+### Core Files
 - `context/ConceptContext.tsx` - Concept state management
+- `concepts/composer/types.ts` - Composer type definitions
+- `concepts/composer/composers.ts` - Composer definitions (core, restaurant, etc.)
+- `concepts/composer/ComposerContext.tsx` - Composer context provider
+- `components/ComposedLayout/ComposedLayout.tsx` - Layout that uses composer
+
+### Concept Files
 - `concepts/index.ts` - Concept registry
 - `concepts/[name]/index.ts` - Concept entry point
+- `concepts/[name]/components/` - Concept-specific components
+
+### App Integration
 - `App.tsx` - Concept-aware routing
+- `pages/HomePage.tsx` - Uses ComposedLayout
 - `components/FeatureMenu/FeatureMenu.tsx` - Concept selector UI

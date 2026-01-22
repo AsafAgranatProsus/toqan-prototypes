@@ -5,6 +5,7 @@ import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
 import type { Model, ScenarioView } from '../../types';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
+import { useComposer } from '../../concepts/composer';
 import GradientBackground from '../GradientBackground/GradientBackground';
 import OldGradientBackground from '../OldGradientBackground/OldGradientBackground';
 import Conversation from '../Conversation/Conversation';
@@ -94,6 +95,7 @@ interface MainContentProps {
 const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenarioView }) => {
     const { flags } = useFeatureFlags();
     const { activeScenario } = useScenarios();
+    const { composer } = useComposer();
     const [showGradient, setShowGradient] = useState(true);
     const gradientRef = useRef<HTMLDivElement>(null);
 
@@ -145,7 +147,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                         {isMobile && (
                             <Button variant="tertiary" icon="Menu" onClick={onMenuClick} aria-label="Open menu" />
                         )}
-                        {!activeScenario && <ModelSelector />}
+                        {!activeScenario && composer.id !== 'restaurant' && <ModelSelector />}
                     </header>
 
                     {activeScenario ? (

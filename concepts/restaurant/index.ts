@@ -12,6 +12,20 @@
 // Pages
 export { RestaurantHomePage } from './pages/RestaurantHomePage';
 
+// Context
+export { RestaurantProvider, useRestaurant } from './context/RestaurantContext';
+
+// Components
+export { LeftSidebarRestaurant } from './components/LeftSidebarRestaurant';
+export { SecondaryPanel } from './components/SecondaryPanel';
+export { PrioritiesPanel } from './components/PrioritiesPanel';
+export { TopNavbarRestaurant } from './components/TopNavbarRestaurant';
+export { RestaurantLeftPanelWrapper } from './components/RestaurantLeftPanelWrapper';
+export { AssetCanvas } from './components/AssetCanvas';
+
+// Data
+export { RESTAURANT_ASSETS, ASSET_CATEGORIES, getAssetById } from './data/assets';
+
 // Routes configuration
 export const routes = {
   home: '/restaurant',

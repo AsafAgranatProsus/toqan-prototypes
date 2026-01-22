@@ -8,10 +8,7 @@ import FeatureMenu from './components/FeatureMenu/FeatureMenu';
 import ThemeDebugger from './components/ThemeDebugger/ThemeDebugger';
 import { CustomizationPanel } from './components/CustomizationPanel/CustomizationPanel';
 import { useFeatureFlags } from './context/FeatureFlagContext';
-import { useConcept } from './context/ConceptContext';
-
-// Concept-specific pages
-import { RestaurantHomePage } from './concepts/restaurant';
+import { useConcept, CONCEPTS } from './context/ConceptContext';
 
 // Inner component that has access to useLocation
 const AppContent: React.FC = () => {
@@ -21,16 +18,27 @@ const AppContent: React.FC = () => {
   
   // Sync concept from route prefix (e.g., /restaurant/... sets restaurant concept)
   React.useEffect(() => {
-    if (location.pathname.startsWith('/restaurant')) {
-      if (conceptId !== 'restaurant') {
-        setConcept('restaurant');
+    // Root path "/" always shows core concept
+    if (location.pathname === '/') {
+      if (conceptId !== 'core') {
+        setConcept('core');
+      }
+      return;
+    }
+    
+    // Check all concepts for matching route prefix
+    for (const [id, concept] of Object.entries(CONCEPTS)) {
+      if (concept.routePrefix && location.pathname.startsWith(concept.routePrefix)) {
+        if (conceptId !== id) {
+          setConcept(id as keyof typeof CONCEPTS);
+        }
+        return;
       }
     }
-    // Note: We don't auto-switch back to 'core' when leaving concept routes
-    // This allows users to navigate freely while staying in their concept
+    // For other paths (e.g., /design-system), keep current concept
   }, [location.pathname, conceptId, setConcept]);
   
-  // Check if we're on a standalone page
+  // Check if we're on a standalone page (no FeatureMenu/CustomizationPanel)
   const isStandalonePage = location.pathname === '/theme-builder' || 
                           location.pathname === '/gradient-playground' ||
                           location.pathname === '/gradient-frames-demo' ||
@@ -71,43 +79,8 @@ const AppContent: React.FC = () => {
     );
   }
 
-  // Check if we're on a concept-specific route
-  const isConceptRoute = location.pathname.startsWith('/restaurant');
-  
-  // Render concept-specific routes
-  if (isConceptRoute) {
-    return (
-      <>
-        <CustomizationPanel 
-          isOpen={isCustomizationOpen} 
-          onToggle={handleToggleCustomization} 
-        />
-        <div 
-          className="app-content" 
-          style={{ 
-            marginLeft: isCustomizationOpen ? '350px' : '0',
-            transition: 'margin-left 0.3s cubic-bezier(0.05, 0.84, 0.31, 1)',
-          }}
-        >
-          <FeatureMenu onOpenCustomization={() => {
-            setIsCustomizationOpen(true);
-            try {
-              localStorage.setItem('toqan-customization-panel-open', 'true');
-            } catch (error) {
-              console.error('Failed to save panel state:', error);
-            }
-          }} />
-          <Routes>
-            {/* Restaurant concept routes */}
-            <Route path="/restaurant" element={<RestaurantHomePage />} />
-            <Route path="/restaurant/*" element={<RestaurantHomePage />} />
-          </Routes>
-          {flags.showThemeDebugger && <ThemeDebugger />}
-        </div>
-      </>
-    );
-  }
-
+  // Standard layout with FeatureMenu and CustomizationPanel
+  // HomePage uses ComposedLayout which renders based on active concept's composer
   return (
     <>
       <CustomizationPanel 
@@ -130,8 +103,16 @@ const AppContent: React.FC = () => {
           }
         }} />
         <Routes>
+          {/* Core routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/design-system/*" element={<DesignSystemPage />} />
+          
+          {/* Concept routes - all use HomePage with ComposedLayout */}
+          {/* The composer pattern determines what components render */}
+          <Route path="/restaurant" element={<HomePage />} />
+          <Route path="/restaurant/*" element={<HomePage />} />
+          
+          {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         {flags.showThemeDebugger && <ThemeDebugger />}

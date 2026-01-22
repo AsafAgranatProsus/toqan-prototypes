@@ -4,12 +4,14 @@ import Modal from '../Modal/Modal';
 import './ChatInput.css';
 import { useScenarios } from '../../context/ScenarioContext';
 import { scenarios } from '../../context/scenarios';
+import { useFeatureFlags } from '../../context/FeatureFlagContext';
 
 const ChatInput: React.FC = () => {
   const [message, setMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const hasText = message.trim().length > 0;
   const { setActiveScenario, scenarios } = useScenarios();
+  const { flags } = useFeatureFlags();
 
   const handleSend = () => {
     if (hasText) {
@@ -35,6 +37,53 @@ const ChatInput: React.FC = () => {
     }
   };
 
+  // New chat input layout (feature flag enabled)
+  if (flags.newChatInput) {
+    return (
+      <>
+        <div className="chat-input-container chat-input-container--new">
+          <div className="chat-input-prefix">
+            <Button icon="Plus" variant="text" shape="rounded" aria-label="Add content" />
+          </div>
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
+            placeholder="Message Toqan"
+            className="chat-input-field"
+          />
+          <div className="chat-input-suffix">
+            {hasText ? (
+              <Button
+                variant="primary"
+                icon="ArrowUp"
+                aria-label="Send message"
+                onClick={handleSend}
+              />
+            ) : (
+              <Button
+                icon="Mic"
+                variant="text"
+                shape="rounded"
+                aria-label="Use microphone"
+                onClick={() => setShowModal(true)}
+              />
+            )}
+          </div>
+        </div>
+        <Modal show={showModal} onClose={() => setShowModal(false)}>
+          <div>
+            <p>Microphone input is not yet implemented.</p>
+            <Button onClick={() => setShowModal(false)}>OK</Button>
+          </div>
+        </Modal>
+      </>
+    );
+  }
+
+  // Original chat input layout
   return (
     <>
       <div className="chat-input-container">

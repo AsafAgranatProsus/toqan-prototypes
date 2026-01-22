@@ -456,11 +456,45 @@ const config = generateRandomGradientConfig(isDark);
 
 ---
 
+## Concept System
+
+The Concept System enables parallel, isolated variants of Toqan (e.g., Restaurant, Education) without affecting the core prototype.
+
+### Quick Reference
+- **Access:** `/restaurant` or `?concept=restaurant` or via FeatureMenu dropdown
+- **Switch:** FeatureMenu → Concept dropdown (navigates to concept home)
+- **Create new:** Add to `CONCEPTS` in `context/ConceptContext.tsx`, create folder in `concepts/`
+
+### Concept Folder Structure
+```
+concepts/
+  restaurant/           # Restaurant concept
+    index.ts            # Exports, routes, metadata
+    pages/              # Concept-specific pages
+    components/         # Overrides or new components
+    configs/            # Custom configurations
+    styles/             # Concept-specific tokens
+```
+
+### CSS Concept Classes
+Applied to `<html>`: `.concept-core`, `.concept-restaurant`, etc.
+
+```css
+.concept-restaurant .my-component {
+  --accent: hsl(25, 85%, 55%); /* Restaurant-specific */
+}
+```
+
+**Full docs:** `docs/CONCEPT_SYSTEM.md`
+
+---
+
 ## File Organization
 
 ### Key Directories
 ```
 components/          ← React components
+concepts/           ← Concept-specific code (restaurant, etc.)
 context/            ← Context providers & hooks
 hooks/              ← Custom hooks
 pages/              ← Route pages

@@ -1,0 +1,405 @@
+/**
+ * Restaurant Left Sidebar Styles
+ * 
+ * Based on core LeftSidebar but customized for restaurant concept.
+ * Uses restaurant warm accent color and restaurant-specific styling.
+ */
+
+.left-sidebar-restaurant {
+  /* Component Token Layer - local variables mapping to design tokens */
+  --restaurant-sidebar-bg: var(--color-ui-background-elevated);
+  --restaurant-sidebar-border: var(--color-ui-border);
+  --restaurant-sidebar-text: var(--color-text-default);
+  --restaurant-sidebar-text-secondary: var(--color-text-secondary);
+  --restaurant-sidebar-accent: var(--color-primary-default);
+  --restaurant-sidebar-active-bg: var(--color-ui-active);
+  --restaurant-sidebar-header-height: var(--header-height);
+  --restaurant-sidebar-transition: 0.3s cubic-bezier(0.05, 0.84, 0.31, 1);
+  --restaurant-sidebar-transition-fast: 0.15s cubic-bezier(0.05, 0.84, 0.31, 1);
+  --restaurant-sidebar-collapsed-width: var(--collapsed-sidebar-width);
+
+  /* Container query setup */
+  container-type: inline-size;
+  container-name: sidebar;
+
+  /* Layout */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--restaurant-sidebar-bg);
+  border-right: 1px solid var(--restaurant-sidebar-border);
+  overflow: hidden; /* Clip content during collapse/expand animation */
+  transition: width var(--restaurant-sidebar-transition),
+              min-width var(--restaurant-sidebar-transition),
+              max-width var(--restaurant-sidebar-transition);
+
+  .logo {
+    align-self: flex-start;
+    svg {
+      height: 30px;
+    }
+  }
+}
+
+/* Content container - fixed width to prevent reflow during animation */
+.left-sidebar-restaurant__content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.left-sidebar-restaurant__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* gap: var(--space-2); */
+  padding: var(--space-2);
+  height: var(--restaurant-sidebar-header-height);
+  border-bottom: 1px solid var(--restaurant-sidebar-border);
+  transition: padding var(--restaurant-sidebar-transition);
+}
+
+/* Compound selector to override .btn library styles */
+.btn.left-sidebar-restaurant__logo-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-default);
+  overflow: hidden;
+  transition: background-color 0.2s ease, transform 0.3s ease;
+
+  .logo {
+    flex-shrink: 0;
+    
+    svg {
+      height: 30px;
+    }
+  }
+
+  svg:not(.logo svg) {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: var(--restaurant-sidebar-active-bg);
+  }
+}
+
+/* Compound selector to override .btn library styles */
+.btn.left-sidebar-restaurant__menu-button {
+  flex-shrink: 0;
+}
+
+.left-sidebar-restaurant__workspace-selector {
+  .dropdown__content {
+    gap: var(--space-4);
+  }
+
+  button {
+    border: none;
+    background: transparent;
+    font-size: var(--font-size-body-default);
+    gap: var(--space-4);
+  }
+}
+
+.left-sidebar-restaurant__workspace-name {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--restaurant-sidebar-text);
+  line-height: var(--line-height-default);
+}
+
+.left-sidebar-restaurant__workspace-name-title {
+  font-size: var(--font-size-body-xxs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--restaurant-sidebar-accent);
+}
+
+.left-sidebar-restaurant__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--restaurant-sidebar-border);
+}
+
+.left-sidebar-restaurant__nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-default);
+  color: var(--restaurant-sidebar-text-secondary);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--restaurant-sidebar-active-bg);
+    color: var(--restaurant-sidebar-text);
+  }
+}
+
+.left-sidebar-restaurant__nav-item--active {
+  background: var(--restaurant-sidebar-active-bg);
+  color: var(--restaurant-sidebar-accent);
+}
+
+.left-sidebar-restaurant__nav-item--with-chevron {
+  justify-content: space-between;
+
+  > span {
+    flex: 1;
+  }
+
+  > svg:last-child {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+}
+
+.left-sidebar-restaurant__nav-badge {
+  margin-left: auto;
+  padding: 2px 6px;
+  min-width: 20px;
+  font-size: var(--font-size-body-xs);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  color: white;
+  background: var(--restaurant-sidebar-accent);
+  border-radius: var(--radius-sm);
+}
+
+.left-sidebar-restaurant__sessions-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-1) var(--space-2);
+}
+
+.left-sidebar-restaurant__sessions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.left-sidebar-restaurant__session-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  margin-bottom: var(--space-1);
+  border-radius: var(--radius-default);
+  color: var(--restaurant-sidebar-text-secondary);
+  font-size: var(--font-size-body-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  svg:first-child {
+    width: 20px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: var(--space-1);
+  }
+
+  &:hover {
+    background: var(--restaurant-sidebar-active-bg);
+    color: var(--restaurant-sidebar-text);
+  }
+}
+
+.left-sidebar-restaurant__session-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: var(--line-height-tight);
+}
+
+.left-sidebar-restaurant__session-list {
+  animation: slideDownRestaurant 0.2s ease-out;
+}
+
+.left-sidebar-restaurant__section-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-1);
+  border-radius: var(--radius-default);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  > svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: var(--restaurant-sidebar-active-bg);
+    color: var(--restaurant-sidebar-text-secondary);
+  }
+}
+
+.left-sidebar-restaurant__section-toggle-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+.left-sidebar-restaurant__footer {
+  padding: var(--space-3);
+  border-top: 1px solid var(--restaurant-sidebar-border);
+}
+
+/* ============================================
+   Collapsed state
+   ============================================ */
+.left-sidebar-restaurant--collapsed {
+  /* Hide menu button with opacity/visibility */
+  .btn.left-sidebar-restaurant__menu-button {
+    /* opacity: 0;
+    visibility: hidden;
+    position: absolute; */
+
+    /* pointer-events: none; */
+
+
+  }
+
+  /* Show logo button as collapsed state trigger */
+  .btn.left-sidebar-restaurant__logo-button {
+    opacity: 1;
+    overflow: visible;
+    width: auto;
+    min-width: 26px;
+    pointer-events: auto;
+    transform: translatex(-4px);
+
+    svg:not(.logo svg) {
+      /* display: none; */
+      opacity: 0;
+    }
+  }
+
+  /* Hide other sections */
+  .left-sidebar-restaurant__workspace-selector,
+  .left-sidebar-restaurant__nav,
+  .left-sidebar-restaurant__sessions-container,
+  .left-sidebar-restaurant__footer {
+    /* opacity: 0; */
+    /* pointer-events: none; */
+    transition: opacity var(--restaurant-sidebar-transition-fast);
+  }
+
+  .left-sidebar-restaurant__content {
+    background: var(--restaurant-sidebar-bg);
+    border-right: 1px solid var(--restaurant-sidebar-border);
+  }
+  
+  .left-sidebar-restaurant__nav-item {
+    transform: translatex(-4px);
+  }
+  
+  &.left-sidebar-restaurant--hovered {
+    overflow: visible;
+    z-index: 100;
+    pointer-events: auto;
+
+    .btn.left-sidebar-restaurant__logo-button {
+      svg:not(.logo svg) {
+        /* display: none; */
+        opacity: 1;
+      }
+    }
+  }
+
+  &:not(.left-sidebar-restaurant--hovered) {
+    .left-sidebar-restaurant__nav-item {
+      align-self: flex-start;
+      span {
+        display: none;
+    }
+    }
+  }
+  .left-sidebar-restaurant__content--hovered {
+    > * {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+/* ============================================
+   Expanded state
+   ============================================ */
+.left-sidebar-restaurant:not(.left-sidebar-restaurant--collapsed) {
+  .left-sidebar-restaurant__workspace-selector,
+  .btn.left-sidebar-restaurant__logo-button,
+  .left-sidebar-restaurant__nav,
+  .left-sidebar-restaurant__sessions-container,
+  .left-sidebar-restaurant__footer {
+    opacity: 1;
+    transition: opacity var(--restaurant-sidebar-transition) 0.1s, transform 0.3s ease;
+  }
+}
+
+/* ============================================
+   Mobile styles
+   ============================================ */
+.left-sidebar-restaurant--mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  z-index: 999;
+  transform: translateX(-100%);
+
+  &.left-sidebar-restaurant--open {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes slideDownRestaurant {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   Container Queries
+   ============================================ */
+/* Reserved for future container query usage */

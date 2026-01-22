@@ -10,6 +10,7 @@ import { ScenarioProvider } from './context/ScenarioContext';
 import { ThemeCustomizationProvider } from './context/ThemeCustomizationContext';
 import { WorkspaceProvider } from './context/WorkspaceContext';
 import { ConceptProvider } from './context/ConceptContext';
+import { ComposerProvider } from './concepts/composer';
 import { initializeTheme } from './themes/colors/loadTheme';
 
 // Initialize saved theme from localStorage
@@ -25,15 +26,17 @@ root.render(
   <React.StrictMode>
     <FeatureFlagProvider>
       <ConceptProvider>
-        <WorkspaceProvider>
-          <ScenarioProvider>
-            <DesignSystemProvider>
-              <ThemeCustomizationProvider>
-                <App />
-              </ThemeCustomizationProvider>
-            </DesignSystemProvider>
-          </ScenarioProvider>
-        </WorkspaceProvider>
+        <ComposerProvider>
+          <WorkspaceProvider>
+            <ScenarioProvider>
+              <DesignSystemProvider>
+                <ThemeCustomizationProvider>
+                  <App />
+                </ThemeCustomizationProvider>
+              </DesignSystemProvider>
+            </ScenarioProvider>
+          </WorkspaceProvider>
+        </ComposerProvider>
       </ConceptProvider>
     </FeatureFlagProvider>
   </React.StrictMode>

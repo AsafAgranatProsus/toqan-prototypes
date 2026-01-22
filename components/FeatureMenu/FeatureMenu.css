@@ -62,6 +62,8 @@
   right: 20px;
   z-index: var(--fm-z-container);
   pointer-events: none;
+  /* width: 40px;  
+  height: 40px; */
 }
 
 .feature-menu-container > * {
@@ -118,6 +120,13 @@
   transition: opacity 0.25s ease;
   padding: 0;
   will-change: opacity;
+  transform: scale(.8) translate(1rem, 1rem);
+   /* transform: translate(1rem, 1rem); */
+    transition: transform 0.25s ease;
+
+  /*  &:hover {
+      transform: translate(0, 0);
+    } */
 }
 
 .feature-menu-fab svg {

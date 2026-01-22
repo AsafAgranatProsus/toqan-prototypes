@@ -60,7 +60,17 @@ export type IconName =
   | 'ArrowUpDown'
   | 'PanelLeft'
   | 'Layers'
-  | 'Palette';
+  | 'Palette'
+  | 'FileStack'
+  | 'Truck'
+  | 'AlertCircle'
+  | 'TrendingUp'
+  | 'Users'
+  | 'Package'
+  | 'DollarSign'
+  | 'Utensils'
+  | 'AlertTriangle'
+  | 'Info';
 
 export interface Model {
   id: string;

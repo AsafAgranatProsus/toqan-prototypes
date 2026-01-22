@@ -199,6 +199,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
         borderRadius: '50%',
         bottom: '-1rem',
         right: '-1rem',
+        transform: 'scale(.8)',
         opacity: 1,
       });
       
@@ -224,6 +225,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
         bottom: 0,
         right: 0,
         duration: 0.5,
+        transform: 'scale(1)',
         ease: 'power4.out',
       }, 0.1);
       
@@ -299,6 +301,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
       bottom: '-1rem',
       right: '-1rem',
       duration: 0.5,
+      transform: 'scale(.8) translate(1rem, 1rem)',
       ease: 'power4.out',
     }, 0.15);
     
@@ -606,6 +609,11 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   onChange={(checked) => setFlag('newBubble', checked)}
                 />
                 <Toggle
+                  label="Chat Input"
+                  checked={flags.newChatInput}
+                  onChange={(checked) => setFlag('newChatInput', checked)}
+                />
+                <Toggle
                   label="Tables"
                   checked={flags.newTables}
                   onChange={(checked) => setFlag('newTables', checked)}
@@ -621,7 +629,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
 
           <Collapsible closeOnOutsideClick={false} storageKey="conversations">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
-              <span>Conversations</span>
+              <span>Chats</span>
               <Icons name="ChevronDown" className="chevron-icon" />
             </Collapsible.Trigger>
             <Collapsible.Content>
@@ -680,6 +688,35 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
               </div>
             </Collapsible.Content>
           </Collapsible>
+
+          {/* Restaurant concept flags - only visible when in restaurant concept */}
+          {conceptId === 'restaurant' && (
+            <Collapsible closeOnOutsideClick={false} storageKey="restaurant" defaultOpen={true}>
+              <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+                <span>Restaurant</span>
+                <Icons name="ChevronDown" className="chevron-icon" />
+              </Collapsible.Trigger>
+              <Collapsible.Content>
+                <div className="feature-menu-collapsible-content">
+                  <Toggle
+                    label="Breadcrumbs"
+                    checked={flags.restaurantBreadcrumbs}
+                    onChange={(checked) => setFlag('restaurantBreadcrumbs', checked)}
+                  />
+                  <Toggle
+                    label="Top Nav Buttons"
+                    checked={flags.restaurantTopNavButtons}
+                    onChange={(checked) => setFlag('restaurantTopNavButtons', checked)}
+                  />
+                  <Toggle
+                    label="Top Nav Search Bar"
+                    checked={flags.restaurantTopNavSearchBar}
+                    onChange={(checked) => setFlag('restaurantTopNavSearchBar', checked)}
+                  />
+                </div>
+              </Collapsible.Content>
+            </Collapsible>
+          )}
 
           {/* <Collapsible closeOnOutsideClick={false} storageKey="personalization">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
@@ -742,7 +779,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           </Collapsible> */}
 
           {Object.keys(flags).filter(flag => 
-            !['newBranding', 'newTypography', 'newBubble', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger', 'newGradientBackground'].includes(flag)
+            !['newBranding', 'newTypography', 'newBubble', 'newChatInput', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger', 'newGradientBackground', 'restaurantBreadcrumbs', 'restaurantTopNavButtons', 'restaurantTopNavSearchBar'].includes(flag)
           ).map(flag => (
             <Toggle
               key={flag}
