@@ -6,7 +6,14 @@ import { useScenarios } from '../../context/ScenarioContext';
 import { scenarios } from '../../context/scenarios';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
 
-const ChatInput: React.FC = () => {
+interface ChatInputProps {
+  /** Optional custom send handler. If provided, overrides default scenario behavior. */
+  onSend?: (message: string) => void;
+  /** Optional placeholder text */
+  placeholder?: string;
+}
+
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, placeholder }) => {
   const [message, setMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const hasText = message.trim().length > 0;
@@ -15,7 +22,11 @@ const ChatInput: React.FC = () => {
 
   const handleSend = () => {
     if (hasText) {
-      setActiveScenario(message);
+      if (onSend) {
+        onSend(message);
+      } else {
+        setActiveScenario(message);
+      }
       setMessage('');
     }
   };
@@ -51,7 +62,7 @@ const ChatInput: React.FC = () => {
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             onKeyDown={handleKeyDown}
-            placeholder="Message Toqan"
+            placeholder={placeholder ?? "Message Toqan"}
             className="chat-input-field"
           />
           <div className="chat-input-suffix">
@@ -104,7 +115,7 @@ const ChatInput: React.FC = () => {
           onChange={(e) => setMessage(e.target.value)}
           onKeyPress={handleKeyPress}
           onKeyDown={handleKeyDown}
-          placeholder="Message Toqan"
+          placeholder={placeholder ?? "Message Toqan"}
           className="chat-input-field"
         />
         <div className="chat-input-suffix">

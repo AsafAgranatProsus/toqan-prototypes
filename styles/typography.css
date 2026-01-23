@@ -36,14 +36,14 @@
   h2 {
     font-size: var(--font-size-heading-xl);
     line-height: var(--line-height-tight);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     margin: 0 0 0.875rem 0;
   }
 
   h3 {
     font-size: var(--font-size-heading-lg);
     line-height: var(--line-height-tight);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-medium);
     margin: 0 0 0.75rem 0;
   }
 

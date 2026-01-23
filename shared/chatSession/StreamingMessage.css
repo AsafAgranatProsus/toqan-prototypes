@@ -1,0 +1,78 @@
+/**
+ * Streaming Message Styles
+ */
+
+.streaming-message {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Content wrapper - typography handled by .prose class from typography.css */
+.streaming-message__content {
+  /* Layout only - typography comes from .prose */
+}
+
+/* First heading shouldn't have top margin */
+.streaming-message__content h1:first-child,
+.streaming-message__content h2:first-child,
+.streaming-message__content h3:first-child {
+  margin-top: 0;
+}
+
+/* Table enhancements beyond base prose */
+.streaming-message__content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-3) 0;
+}
+
+.streaming-message__content th,
+.streaming-message__content td {
+  padding: var(--space-2);
+  border: 1px solid var(--color-ui-border);
+  text-align: left;
+}
+
+.streaming-message__content th {
+  background: var(--color-surface-container-low);
+}
+
+/* Blockquote styling for chat context */
+.streaming-message__content blockquote {
+  background: var(--color-surface-container-low);
+  border-radius: 0 var(--radius-default) var(--radius-default) 0;
+}
+
+/* Streaming cursor */
+.streaming-message__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--color-primary-default);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* States */
+.streaming-message--thinking {
+  min-height: 40px;
+}
+
+.streaming-message--streaming .streaming-message__content {
+  /* Slight overflow for smooth scrolling */
+  max-height: none;
+}
+
+.streaming-message--complete .streaming-message__cursor {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

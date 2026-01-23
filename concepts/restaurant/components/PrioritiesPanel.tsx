@@ -3,6 +3,7 @@
  * 
  * Displays a list of priority tickets that need user attention.
  * Grouped by urgency: Urgent, High Impact, Worth Reviewing, Completed.
+ * Clicking a ticket starts a chat flow focused on that priority.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -10,6 +11,8 @@ import { Icons } from '../../../components/Icons/Icons';
 import Button from '../../../components/Button/Button';
 import { ResizeHandle } from '../../../components/ResizeHandle/ResizeHandle';
 import { useFeatureFlags } from '../../../context/FeatureFlagContext';
+import { useChatSessionOptional } from '../../../shared/chatSession';
+import { getFlowIdForPriority } from '../flows';
 import type { IconName } from '../../../types';
 import './PrioritiesPanel.css';
 
@@ -137,6 +140,40 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
     completed: false,
   });
   const { isFeatureActive } = useFeatureFlags();
+  const chatSession = useChatSessionOptional();
+
+  // Handle clicking on a priority ticket
+  const handleTicketClick = (ticket: PriorityTicket) => {
+    if (!chatSession) {
+      console.warn('Chat session not available');
+      return;
+    }
+    
+    const flowId = getFlowIdForPriority(ticket.id);
+    if (flowId) {
+      chatSession.startSession({
+        type: 'contextItem',
+        flowId,
+        context: {
+          ticketId: ticket.id,
+          ticketTitle: ticket.title,
+          ticketSummary: ticket.summary,
+          ticketLevel: ticket.level,
+        },
+      });
+    } else {
+      // No specific flow - start with the ticket as context
+      chatSession.startSession({
+        type: 'contextItem',
+        userMessage: `Tell me about: ${ticket.title}`,
+        context: {
+          ticketId: ticket.id,
+          ticketTitle: ticket.title,
+          ticketSummary: ticket.summary,
+        },
+      });
+    }
+  };
   
   // Load width from localStorage
   const [width, setWidth] = useState(() => {
@@ -233,7 +270,19 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
               {isExpanded && tickets.length > 0 && (
                 <div className="priorities-panel__tickets">
                   {tickets.map(ticket => (
-                    <div key={ticket.id} className={`priorities-panel__ticket priorities-panel__ticket--${level}`}>
+                    <div 
+                      key={ticket.id} 
+                      className={`priorities-panel__ticket priorities-panel__ticket--${level} priorities-panel__ticket--clickable`}
+                      onClick={() => handleTicketClick(ticket)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleTicketClick(ticket);
+                        }
+                      }}
+                    >
                       <div className="priorities-panel__ticket-header">
                         <Icons name={ticket.icon || levelMeta.icon} />
                         <span className="priorities-panel__ticket-title">{ticket.title}</span>
@@ -242,19 +291,6 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
                         )}
                       </div>
                       <p className="priorities-panel__ticket-summary">{ticket.summary}</p>
-                      {/* {ticket.actions && ticket.actions.length > 0 && (
-                        <div className="priorities-panel__ticket-actions">
-                          {ticket.actions.map((action, idx) => (
-                            <Button
-                              key={idx}
-                              variant={action.variant === 'primary' ? 'filled' : 'outlined'}
-                              size="small"
-                            >
-                              {action.label}
-                            </Button>
-                          ))}
-                        </div>
-                      )} */}
                     </div>
                   ))}
                 </div>

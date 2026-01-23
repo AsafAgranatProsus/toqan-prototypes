@@ -26,6 +26,9 @@ export { AssetCanvas } from './components/AssetCanvas';
 // Data
 export { RESTAURANT_ASSETS, ASSET_CATEGORIES, getAssetById } from './data/assets';
 
+// Flows
+export { registerRestaurantFlows, restaurantFlows, getFlowIdForPriority } from './flows';
+
 // Routes configuration
 export const routes = {
   home: '/restaurant',

@@ -1,0 +1,104 @@
+/**
+ * Reply Buttons Styles
+ * 
+ * Styles for chat reply buttons and chips.
+ * Buttons wrap to new lines (no horizontal overflow).
+ * Staggered reveal animation when appearing.
+ */
+
+.reply-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.reply-buttons--inline {
+  margin-top: var(--space-3);
+}
+
+.reply-buttons__button {
+  flex-shrink: 0;
+  /* Staggered animation - set via inline style or nth-child */
+  opacity: 0;
+  transform: translateY(8px);
+  animation: revealButton 0.3s ease-out forwards;
+}
+
+/* Staggered delays for buttons */
+.reply-buttons__button:nth-child(1) { animation-delay: 0ms; }
+.reply-buttons__button:nth-child(2) { animation-delay: 75ms; }
+.reply-buttons__button:nth-child(3) { animation-delay: 150ms; }
+.reply-buttons__button:nth-child(4) { animation-delay: 225ms; }
+.reply-buttons__button:nth-child(5) { animation-delay: 300ms; }
+.reply-buttons__button:nth-child(6) { animation-delay: 375ms; }
+
+@keyframes revealButton {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hidden state before streaming complete */
+.reply-buttons--hidden {
+  display: none;
+}
+
+/* Chip style for inline buttons */
+.reply-buttons__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-ui-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-ui-background);
+  color: var(--color-text-default);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  /* Staggered animation */
+  opacity: 0;
+  transform: translateY(8px);
+  animation: revealButton 0.3s ease-out forwards;
+}
+
+/* Staggered delays for chips */
+.reply-buttons__chip:nth-child(1) { animation-delay: 0ms; }
+.reply-buttons__chip:nth-child(2) { animation-delay: 75ms; }
+.reply-buttons__chip:nth-child(3) { animation-delay: 150ms; }
+.reply-buttons__chip:nth-child(4) { animation-delay: 225ms; }
+
+.reply-buttons__chip:hover:not(:disabled) {
+  background: var(--color-ui-hover);
+  border-color: var(--color-primary-default);
+}
+
+.reply-buttons__chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  animation: none;
+}
+
+.reply-buttons__chip--primary {
+  background: var(--color-primary-default);
+  border-color: var(--color-primary-default);
+  color: var(--color-primary-on);
+}
+
+.reply-buttons__chip--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.reply-buttons__chip > svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.reply-buttons__button-label{
+  font-weight: var(--font-weight-regular);
+}

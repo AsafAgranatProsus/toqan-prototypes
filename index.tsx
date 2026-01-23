@@ -11,10 +11,15 @@ import { ThemeCustomizationProvider } from './context/ThemeCustomizationContext'
 import { WorkspaceProvider } from './context/WorkspaceContext';
 import { ConceptProvider } from './context/ConceptContext';
 import { ComposerProvider } from './concepts/composer';
+import { ChatSessionProvider } from './shared/chatSession';
 import { initializeTheme } from './themes/colors/loadTheme';
+import { registerRestaurantFlows } from './concepts/restaurant';
 
 // Initialize saved theme from localStorage
 initializeTheme();
+
+// Register concept-specific chat flows
+registerRestaurantFlows();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -31,7 +36,9 @@ root.render(
             <ScenarioProvider>
               <DesignSystemProvider>
                 <ThemeCustomizationProvider>
-                  <App />
+                  <ChatSessionProvider fallbackContext={{ conceptId: 'restaurant' }}>
+                    <App />
+                  </ChatSessionProvider>
                 </ThemeCustomizationProvider>
               </DesignSystemProvider>
             </ScenarioProvider>

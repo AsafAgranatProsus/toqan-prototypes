@@ -11,6 +11,7 @@ import OldGradientBackground from '../OldGradientBackground/OldGradientBackgroun
 import Conversation from '../Conversation/Conversation';
 import './MainContent.css';
 import { useScenarios } from '../../context/ScenarioContext';
+import { useChatSessionOptional, ChatSessionRenderer } from '../../shared/chatSession';
 import BuiltByOthers from '../BuiltByOthers/BuiltByOthers';
 import Plays from '../Plays/Plays';
 import gsap from 'gsap';
@@ -96,12 +97,16 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
     const { flags } = useFeatureFlags();
     const { activeScenario } = useScenarios();
     const { composer } = useComposer();
+    const chatSession = useChatSessionOptional();
     const [showGradient, setShowGradient] = useState(true);
     const gradientRef = useRef<HTMLDivElement>(null);
 
+    // Check if we have an active conversation (either old scenario system or new chat session)
+    const hasActiveConversation = activeScenario || chatSession?.isSessionActive;
+
     // Fade out and remove gradient when entering conversation view
     useEffect(() => {
-        if (activeScenario && gradientRef.current) {
+        if (hasActiveConversation && gradientRef.current) {
             gsap.to(gradientRef.current, {
                 opacity: 0,
                 duration: 0.4,
@@ -110,7 +115,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                     setShowGradient(false);
                 }
             });
-        } else if (!activeScenario && !showGradient) {
+        } else if (!hasActiveConversation && !showGradient) {
             // Fade back in when returning to home view
             setShowGradient(true);
             if (gradientRef.current) {
@@ -121,7 +126,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                 );
             }
         }
-    }, [activeScenario, showGradient]);
+    }, [hasActiveConversation, showGradient]);
 
     return (
         <main className="main-content">
@@ -147,21 +152,43 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                         {isMobile && (
                             <Button variant="tertiary" icon="Menu" onClick={onMenuClick} aria-label="Open menu" />
                         )}
-                        {!activeScenario && composer.id !== 'restaurant' && <ModelSelector />}
+                        {!hasActiveConversation && composer.id !== 'restaurant' && <ModelSelector />}
+                        {chatSession?.isSessionActive && (
+                            <h2 className="conversation-title">
+                                {chatSession.currentFlow?.name ?? 'Conversation'}
+                            </h2>
+                        )}
                     </header>
 
-                    {activeScenario ? (
+                    {/* Priority 1: New chat session system */}
+                    {chatSession?.isSessionActive ? (
+                        <>
+                            <ChatSessionRenderer 
+                                className="main-content__chat-session"
+                            />
+                            <div className="main-content__chat-input-wrapper">
+                                <ChatInput 
+                                    onSend={(message) => chatSession.handleUserInput(message)}
+                                    placeholder="Type a message or click a button above..."
+                                />
+                            </div>
+                        </>
+                    ) : activeScenario ? (
+                        /* Priority 2: Legacy scenario system */
                         <Conversation activeScenario={activeScenario} scenarioView={scenarioView} />
                     ) : (
+                        /* Default: Home view */
                         <div className="main-content__body">
                             <div className="main-content__inner">
                                 <h1 className="main-content__title">
                                     How can Toqan help you today?
                                 </h1>
                                 <div className="main-content__chat-section">
-                                    <div className="main-content__agent-selector">
-                                        <AgentSelector />
-                                    </div>
+                                    {!flags.newChatInput && (
+                                        <div className="main-content__agent-selector">
+                                            <AgentSelector />
+                                        </div>
+                                    )}
 
                                     <ChatInput />
 

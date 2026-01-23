@@ -1,0 +1,106 @@
+/**
+ * Chat Session Renderer Styles
+ */
+
+.chat-session-renderer {
+  --chat-session-max-width: 800px;
+
+  
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-ui-background);
+}
+
+.chat-session-renderer__header {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-ui-border);
+}
+
+.chat-session-renderer__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--chat-session-max-width);
+  margin: 0 auto;
+}
+
+/* Message styles */
+.chat-session-renderer__message {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-session-renderer__message--user {
+  align-items: flex-end;
+}
+
+.chat-session-renderer__message--assistant {
+  align-items: flex-start;
+}
+
+.chat-session-renderer__user-message {
+  max-width: 80%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary-default);
+  color: var(--color-btn-primary-text);
+  border-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-sm);
+  font-size: var(--font-size-body-sm);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-medium);
+}
+
+.chat-session-renderer__assistant-message {
+  max-width: 100%;
+  animation: fadeInUp 0.2s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Content wrapper - typography handled by .prose class from typography.css */
+.chat-session-renderer__content {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+/* First heading shouldn't have top margin */
+.chat-session-renderer__content h1:first-child,
+.chat-session-renderer__content h2:first-child,
+.chat-session-renderer__content h3:first-child {
+  margin-top: 0;
+}
+
+/* Compact variant */
+.chat-session-renderer--compact .chat-session-renderer__messages {
+  padding: var(--space-3);
+  gap: var(--space-3);
+}
+
+/* Fallback response styling */
+.fallback-response {
+  padding: var(--space-3);
+  background: var(--color-surface-container-low);
+  border-radius: var(--radius-default);
+  border-left: 3px solid var(--color-warning-default);
+}
+
+.fallback-response p {
+  margin: 0 0 var(--space-2) 0;
+}
+
+.fallback-response p:last-child {
+  margin-bottom: 0;
+}
