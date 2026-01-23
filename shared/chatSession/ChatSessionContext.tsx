@@ -48,15 +48,48 @@ function loadFromStorage(): SessionStorage {
 
 function saveToStorage(storage: SessionStorage): void {
   try {
-    // Limit stored sessions
-    const limitedSessions = storage.sessions.slice(0, MAX_SESSIONS);
+    // Get persisted sessions (where user contributed)
+    const persistedSessions = storage.sessions.filter(s => s.isPersisted);
+    
+    // Also include the active session if it exists but isn't persisted yet
+    // This allows restoration on refresh
+    const activeSession = storage.activeSessionId 
+      ? storage.sessions.find(s => s.id === storage.activeSessionId)
+      : null;
+    
+    let sessionsToSave = persistedSessions;
+    if (activeSession && !activeSession.isPersisted) {
+      // Include the active non-persisted session for refresh restoration
+      sessionsToSave = [activeSession, ...persistedSessions];
+    }
+    
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      ...storage,
-      sessions: limitedSessions,
+      sessions: sessionsToSave.slice(0, MAX_SESSIONS),
+      activeSessionId: storage.activeSessionId,
     }));
   } catch (error) {
     console.error('Failed to save chat sessions to storage:', error);
   }
+}
+
+/**
+ * Generate a title for the session from first user message or flow name.
+ */
+function generateSessionTitle(session: ChatSession, flow: ChatFlow | null): string {
+  // Try to get first user message
+  const firstUserMessage = session.history.find(h => h.type === 'user');
+  if (firstUserMessage) {
+    // Truncate to 50 chars
+    const text = firstUserMessage.content;
+    return text.length > 50 ? text.substring(0, 47) + '...' : text;
+  }
+  
+  // Fall back to flow name
+  if (flow) {
+    return flow.name;
+  }
+  
+  return 'New conversation';
 }
 
 // ============================================
@@ -176,6 +209,12 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
       timestamp: now + 1,
     });
     
+    // Determine if user contributed input
+    // - freeText: user typed something
+    // - quickAction: user clicked a starter chip
+    // - Other triggers: system-initiated (user hasn't contributed yet)
+    const userContributed = trigger.type === 'freeText' || trigger.type === 'quickAction';
+    
     // Create the session
     const session: ChatSession = {
       id: generateId(),
@@ -186,6 +225,10 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
       triggerContext: trigger.context,
       createdAt: now,
       updatedAt: now,
+      isPersisted: userContributed,
+      title: userContributed 
+        ? (trigger.userMessage?.substring(0, 50) || flow?.name || 'New conversation')
+        : undefined,
     };
     
     // Add to storage and set as active
@@ -230,9 +273,16 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
       timestamp: now + 1,
     });
     
+    // User clicking a button = user contributed, so mark as persisted
+    const shouldPersist = userMessage !== undefined;
+    
     updateSession(activeSession.id, {
       currentNodeId: nodeId,
       history: newHistory,
+      ...(shouldPersist && !activeSession.isPersisted ? {
+        isPersisted: true,
+        title: generateSessionTitle({ ...activeSession, history: newHistory }, currentFlow),
+      } : {}),
     });
   }, [activeSession, currentFlow, updateSession]);
   
@@ -293,6 +343,25 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
   }, []);
   
   /**
+   * Start a new chat - clears active session to show cold-start view.
+   * If current session is not persisted (no user contribution), remove it.
+   */
+  const startNewChat = useCallback(() => {
+    setStorage(prev => {
+      // If active session is not persisted, remove it entirely
+      const activeSession = prev.sessions.find(s => s.id === prev.activeSessionId);
+      const shouldRemove = activeSession && !activeSession.isPersisted;
+      
+      return {
+        sessions: shouldRemove 
+          ? prev.sessions.filter(s => s.id !== prev.activeSessionId)
+          : prev.sessions,
+        activeSessionId: null,
+      };
+    });
+  }, []);
+  
+  /**
    * Clear all sessions.
    */
   const clearAllSessions = useCallback(() => {
@@ -303,10 +372,17 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
   // Context Value
   // ============================================
   
+  // Filter to only persisted sessions for history display
+  const persistedSessions = useMemo(() => 
+    storage.sessions.filter(s => s.isPersisted),
+    [storage.sessions]
+  );
+  
   const value: ChatSessionContextValue = useMemo(() => ({
     // State
     activeSession,
     sessions: storage.sessions,
+    persistedSessions,
     currentFlow,
     currentNode,
     isSessionActive: activeSession !== null,
@@ -317,10 +393,12 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
     handleUserInput,
     resumeSession,
     endSession,
+    startNewChat,
     clearAllSessions,
   }), [
     activeSession,
     storage.sessions,
+    persistedSessions,
     currentFlow,
     currentNode,
     startSession,
@@ -328,6 +406,7 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
     handleUserInput,
     resumeSession,
     endSession,
+    startNewChat,
     clearAllSessions,
   ]);
   

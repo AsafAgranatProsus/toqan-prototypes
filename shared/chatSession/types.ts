@@ -39,6 +39,18 @@ export interface ChatSession {
   
   /** Last update timestamp */
   updatedAt: number;
+  
+  /** 
+   * Whether this session has been persisted to history.
+   * Sessions are only persisted when user contributes input.
+   */
+  isPersisted: boolean;
+  
+  /**
+   * Optional title for display in recent chats.
+   * Auto-generated from first user message or flow name.
+   */
+  title?: string;
 }
 
 /**
@@ -240,6 +252,9 @@ export interface ChatSessionActions {
   /** End the current session */
   endSession: () => void;
   
+  /** Start a new chat (clears active session, shows cold-start) */
+  startNewChat: () => void;
+  
   /** Clear all sessions */
   clearAllSessions: () => void;
 }
@@ -253,6 +268,9 @@ export interface ChatSessionContextValue extends ChatSessionActions {
   
   /** All stored sessions for history */
   sessions: ChatSession[];
+  
+  /** Only sessions that have been persisted (user contributed) */
+  persistedSessions: ChatSession[];
   
   /** Current flow (if activeSession has a flowId) */
   currentFlow: ChatFlow | null;

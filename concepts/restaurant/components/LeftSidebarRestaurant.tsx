@@ -23,6 +23,7 @@ import { ThemeToggle } from '../../../components/ThemeToggle/ThemeToggle';
 import { ThemeSelector } from '../../../components/ThemeSelector';
 import { AreaProps } from '../../composer/types';
 import { useRestaurant } from '../context/RestaurantContext';
+import { useChatSession } from '../../../shared/chatSession';
 import type { IconName } from '../../../types';
 import './LeftSidebarRestaurant.css';
 
@@ -59,9 +60,18 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
     isSecondaryPanelOpen,
     toggleSecondaryPanel,
     openSecondaryPanel,
+    closeSecondaryPanel,
     activeNavId,
-    setActiveNavId
+    setActiveNavId,
+    selectAsset,
   } = useRestaurant();
+  
+  const { 
+    persistedSessions, 
+    startNewChat, 
+    resumeSession,
+    activeSession,
+  } = useChatSession();
 
   // Load width from localStorage
   const [width, setWidth] = useState(() => {
@@ -85,6 +95,9 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
 
   // Restaurant-specific: Orders section expanded state
   const [ordersExpanded, setOrdersExpanded] = useState(true);
+  
+  // Recent chats expanded state
+  const [recentChatsExpanded, setRecentChatsExpanded] = useState(true);
 
   // Hover state for collapsed sidebar reveal
   const [isHovered, setIsHovered] = useState(false);
@@ -232,6 +245,14 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
                 icon="SquarePen"
                 aria-label="New conversation"
                 className="left-sidebar-restaurant__new-button"
+                onClick={() => {
+                  // Clear active chat
+                  startNewChat();
+                  // Close secondary panels (assets, priorities)
+                  closeSecondaryPanel();
+                  // Close canvas if open
+                  selectAsset(null);
+                }}
               >
                 {width < 200 ? null : 'New'}
               </Button>
@@ -332,13 +353,42 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
           )}
 
           {/* Recent Chats */}
-          <div className="left-sidebar-restaurant__section-toggle">
+          <div 
+            className="left-sidebar-restaurant__section-toggle"
+            onClick={() => setRecentChatsExpanded(!recentChatsExpanded)}
+          >
             <div className="left-sidebar-restaurant__section-toggle-content">
               <Icons name="History" />
               <span>Recent Chats</span>
             </div>
-            <Icons name="ChevronDown" />
+            <Icons name={recentChatsExpanded ? "ChevronDown" : "ChevronRight"} />
           </div>
+          
+          {recentChatsExpanded && persistedSessions.length > 0 && (
+            <div className="left-sidebar-restaurant__session-list">
+              {persistedSessions.slice(0, 10).map((session) => {
+                const isActive = activeSession?.id === session.id;
+                return (
+                  <div 
+                    key={session.id}
+                    className={`left-sidebar-restaurant__session-item ${isActive ? 'left-sidebar-restaurant__session-item--active' : ''}`}
+                    onClick={() => resumeSession(session.id)}
+                  >
+                    <Icons name="MessageSquare" />
+                    <span className="left-sidebar-restaurant__session-title">
+                      {session.title || 'Conversation'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          
+          {recentChatsExpanded && persistedSessions.length === 0 && (
+            <div className="left-sidebar-restaurant__empty-state">
+              <span>No recent chats</span>
+            </div>
+          )}
         </div>
 
         {(flags.themes || flags.themeSelector) && (

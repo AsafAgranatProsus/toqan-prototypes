@@ -226,6 +226,25 @@
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: var(--line-height-tight);
+  /* Limit to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.left-sidebar-restaurant__session-item--active {
+  background: var(--restaurant-sidebar-active-bg);
+  color: var(--restaurant-sidebar-accent);
+}
+
+.left-sidebar-restaurant__empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--space-3);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-body-sm);
+  font-style: italic;
 }
 
 .left-sidebar-restaurant__session-list {
