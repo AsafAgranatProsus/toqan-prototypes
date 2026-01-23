@@ -9,6 +9,8 @@ import { FeatureFlagProvider } from './context/FeatureFlagContext';
 import { ScenarioProvider } from './context/ScenarioContext';
 import { ThemeCustomizationProvider } from './context/ThemeCustomizationContext';
 import { WorkspaceProvider } from './context/WorkspaceContext';
+import { ConceptProvider } from './context/ConceptContext';
+import { ComposerProvider } from './concepts/composer';
 import { initializeTheme } from './themes/colors/loadTheme';
 
 // Initialize saved theme from localStorage
@@ -23,15 +25,19 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <FeatureFlagProvider>
-      <WorkspaceProvider>
-      <ScenarioProvider>
-        <DesignSystemProvider>
-          <ThemeCustomizationProvider>
-            <App />
-          </ThemeCustomizationProvider>
-        </DesignSystemProvider>
-      </ScenarioProvider>
-      </WorkspaceProvider>
+      <ConceptProvider>
+        <ComposerProvider>
+          <WorkspaceProvider>
+            <ScenarioProvider>
+              <DesignSystemProvider>
+                <ThemeCustomizationProvider>
+                  <App />
+                </ThemeCustomizationProvider>
+              </DesignSystemProvider>
+            </ScenarioProvider>
+          </WorkspaceProvider>
+        </ComposerProvider>
+      </ConceptProvider>
     </FeatureFlagProvider>
   </React.StrictMode>
 );

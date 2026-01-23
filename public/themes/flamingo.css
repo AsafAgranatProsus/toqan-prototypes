@@ -148,8 +148,8 @@
   --color-inverse-primary: #894c59;
 
   /* Text */
-  --color-text-default: #e7e0eb;
-  --color-text-secondary: #cdc3d3;
+  --color-text-default: #cdc3d3;
+  --color-text-secondary: #b7adbd;
   --color-text-tertiary: #968e9c;
   --color-text-light: #FFFFFF;
   --color-text-placeholder: #615d66;
@@ -160,9 +160,9 @@
   --color-info-background: #6e354226;
 
   /* Error */
-  --color-error-default: #ffb4ab;
   --color-error-background: #93000a26;
-  --color-error-hover: #ff897d;
+  --color-error-default: #f11c1c;
+  --color-error-hover: #b20f1a;
 
   /* Warning (derived or from extended) */
   --color-warning-default: #ffb4a5;

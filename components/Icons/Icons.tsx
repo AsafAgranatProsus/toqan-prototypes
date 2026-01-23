@@ -43,7 +43,20 @@ import {
   History,
   FileText,
   CornerDownRight,
-  ArrowUpDown
+  ArrowUpDown,
+  PanelLeft,
+  Layers,
+  Palette,
+  FileStack,
+  Truck,
+  AlertCircle,
+  TrendingUp,
+  Users,
+  Package,
+  DollarSign,
+  Utensils,
+  AlertTriangle,
+  Info,
 } from 'lucide-react';
 import type { IconName } from '../../types';
 
@@ -108,7 +121,20 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   History,
   FileText,
   CornerDownRight,
-  ArrowUpDown
+  ArrowUpDown,
+  PanelLeft,
+  Layers,
+  Palette,
+  FileStack,
+  Truck,
+  AlertCircle,
+  TrendingUp,
+  Users,
+  Package,
+  DollarSign,
+  Utensils,
+  AlertTriangle,
+  Info,
 };
 
 export const Icons: React.FC<IconProps> = ({ name, ...props }) => {

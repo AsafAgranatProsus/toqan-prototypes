@@ -20,7 +20,9 @@ interface LeftSidebarProps {
 const DEFAULT_WIDTH = 220;
 const MIN_WIDTH = 150;
 const MAX_WIDTH = 600;
+const COLLAPSED_WIDTH = 48; // Width when collapsed (just enough for the menu button)
 const STORAGE_KEY = 'toqan-left-sidebar-width';
+const COLLAPSED_STORAGE_KEY = 'toqan-left-sidebar-collapsed';
 
 export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMobile }) => {
   const { isFeatureActive, flags } = useFeatureFlags();
@@ -33,6 +35,16 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
       return stored ? parseInt(stored, 10) : DEFAULT_WIDTH;
     } catch {
       return DEFAULT_WIDTH;
+    }
+  });
+
+  // Collapsed state
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    try {
+      const stored = localStorage.getItem(COLLAPSED_STORAGE_KEY);
+      return stored === 'true';
+    } catch {
+      return false;
     }
   });
 
@@ -51,6 +63,15 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
     }
   }, [width]);
 
+  // Save collapsed state to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(COLLAPSED_STORAGE_KEY, String(isCollapsed));
+    } catch (error) {
+      console.error('Failed to save sidebar collapsed state:', error);
+    }
+  }, [isCollapsed]);
+
   // Only render if feature is active (requires newBranding AND newLeftSidebar)
   if (!isFeatureActive('newLeftSidebar')) {
     return null;
@@ -60,16 +81,21 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
     setWidth(newWidth);
   };
 
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   const sidebarClasses = [
     'left-sidebar side-panel',
     isMobile ? 'left-sidebar--mobile' : '',
-    isOpen ? 'left-sidebar--open' : ''
+    isOpen ? 'left-sidebar--open' : '',
+    isCollapsed ? 'left-sidebar--collapsed' : ''
   ].filter(Boolean).join(' ');
 
   const sidebarStyle: React.CSSProperties = {
-    width: isMobile ? '100%' : `${width}px`,
-    minWidth: isMobile ? undefined : `${width}px`, // Force the width
-    maxWidth: isMobile ? undefined : `${width}px`, // Force the width
+    width: isMobile ? '100%' : isCollapsed ? `${COLLAPSED_WIDTH}px` : `${width}px`,
+    minWidth: isMobile ? undefined : isCollapsed ? `${COLLAPSED_WIDTH}px` : `${width}px`, // Force the width
+    maxWidth: isMobile ? undefined : isCollapsed ? `${COLLAPSED_WIDTH}px` : `${width}px`, // Force the width
   };
 
   return (
@@ -102,7 +128,8 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
           <Button
             variant="text"
             className="left-sidebar__logo-button"
-            aria-label="Open workspace menu"
+            aria-label={isCollapsed ? "Expand sidebar" : "Open workspace menu"}
+            onClick={isCollapsed ? toggleCollapse : undefined}
           >
             <span className="flex items-center gap-1">
               <Logo variant="minimal" />
@@ -110,6 +137,14 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
             </span>
           </Button>
         )}
+        <Button
+          variant="text"
+          shape="circle"
+          icon="PanelLeft"
+          className="left-sidebar__menu-button"
+          aria-label="Collapse sidebar"
+          onClick={toggleCollapse}
+        />
       </div>
 
       <nav className="left-sidebar__nav">
@@ -226,16 +261,18 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isOpen, setOpen, isMob
         )}
       </div>
 
-      <div className="left-sidebar__footer">
-        <span class="flex-between">
+      {(flags.themes || flags.themeSelector) && (
+        <div className="left-sidebar__footer">
+          <span class="flex-between">
 
-          {flags.themes && <ThemeToggle />}
-          {flags.themeSelector && <ThemeSelector />}
-        </span>
-      </div>
+            {flags.themes && <ThemeToggle />}
+            {flags.themeSelector && <ThemeSelector />}
+          </span>
+        </div>
+      )}
 
-      {/* Resize handle - only shows when resizable panels feature is active */}
-      {isFeatureActive('newResizeablePanels') && !isMobile && (
+      {/* Resize handle - only shows when resizable panels feature is active and not collapsed */}
+      {isFeatureActive('newResizeablePanels') && !isMobile && !isCollapsed && (
         <ResizeHandle
           onResize={handleResize}
           currentWidth={width}

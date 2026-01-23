@@ -1,0 +1,126 @@
+/**
+ * Composed Layout Styles
+ * 
+ * Layout modes and concept-specific layout variations.
+ * These extend rather than replace the core app-layout styles.
+ */
+
+/* Layout mode: standard (current Toqan layout) */
+.app-layout--standard {
+  /* Inherits from app-layout in styles.css */
+  /* No additional styles needed - this is the default */
+}
+
+/* Layout mode: dashboard (main stage is dashboard, chat in panel) */
+.app-layout--dashboard {
+  /* Future: Different grid arrangement */
+}
+
+/* Layout mode: focus (minimal, just main content) */
+.app-layout--focus {
+  /* Future: Hide panels, maximize main content */
+}
+
+/* Layout mode: split (equal split between areas) */
+.app-layout--split {
+  /* Future: 50/50 or 33/33/33 split */
+}
+
+/* Concept-specific layout adjustments */
+/* These allow concepts to customize layout without changing global styles */
+
+[data-concept="core"] {
+  /* Core concept - baseline styling */
+}
+
+/**
+ * Restaurant Concept Layout
+ * 
+ * Grid structure (without secondary panel):
+ * ┌─────────────┬─────────────────────────────────────────┐
+ * │ leftSidebar │              TopNavbar                  │
+ * ├─────────────┼─────────────────────────────────────────┤
+ * │ leftSidebar │            mainContent                  │
+ * │             │                                         │
+ * └─────────────┴─────────────────────────────────────────┘
+ * 
+ * Grid structure (with secondary panel):
+ * ┌─────────────┬─────────────────────────────────────────┐
+ * │ leftSidebar │              TopNavbar                  │
+ * ├─────────────┼───────────────┬─────────────────────────┤
+ * │ leftSidebar │ secondaryPanel│      mainContent        │
+ * │             │               │                         │
+ * └─────────────┴───────────────┴─────────────────────────┘
+ * 
+ * Grid structure (with secondary panel + canvas):
+ * ┌─────────────┬─────────────────────────────────────────┐
+ * │ leftSidebar │              TopNavbar                  │
+ * ├─────────────┼───────────────┬──────────┬──────────────┤
+ * │ leftSidebar │ secondaryPanel│  canvas  │ mainContent  │
+ * │             │               │          │              │
+ * └─────────────┴───────────────┴──────────┴──────────────┘
+ */
+.app-layout[data-concept="restaurant"] {
+  /* Restaurant layout variables */
+  --restaurant-topnav-height: 56px;
+  
+  display: grid;
+  grid-template-columns: auto 1fr;
+  /* Use auto for topbar row so it collapses when navbar is hidden */
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar main";
+  height: 100vh;
+  width: 100%;
+}
+
+/* When secondary panel is open */
+.app-layout[data-concept="restaurant"].has-secondary-panel {
+  grid-template-columns: auto auto 1fr;
+  grid-template-areas:
+    "sidebar topbar topbar"
+    "sidebar secondary main";
+}
+
+/* When secondary panel AND canvas are open */
+.app-layout[data-concept="restaurant"].has-secondary-panel.has-canvas {
+  grid-template-columns: auto auto auto 1fr;
+  grid-template-areas:
+    "sidebar topbar topbar topbar"
+    "sidebar secondary canvas main";
+}
+
+/* Restaurant: Left sidebar */
+.app-layout[data-concept="restaurant"] .left-sidebar-restaurant {
+  grid-area: sidebar;
+}
+
+/* Restaurant: TopNavbar */
+.app-layout[data-concept="restaurant"] .top-navbar-restaurant {
+  grid-area: topbar;
+}
+
+/* Restaurant: Secondary panel */
+.app-layout[data-concept="restaurant"] .secondary-panel,
+.app-layout[data-concept="restaurant"] .priorities-panel {
+  grid-area: secondary;
+  /* Height is controlled by grid row sizing */
+}
+
+/* Restaurant: Asset Canvas */
+.app-layout[data-concept="restaurant"] .asset-canvas {
+  grid-area: canvas;
+  overflow: hidden;
+}
+
+/* Restaurant: Main content area */
+.app-layout[data-concept="restaurant"] .main-content {
+  grid-area: main;
+  overflow: auto;
+}
+
+/* Right panel shares main area */
+.app-layout[data-concept="restaurant"] .right-panel-container {
+  grid-area: main;
+}

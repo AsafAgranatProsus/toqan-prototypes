@@ -9,6 +9,7 @@ export const featureFlags = {
   newMainStage: false,
   newGradientBackground: false,
   newResizeablePanels: false,
+  newChatInput: false,
   plays: false,
   builtByOther: false,
   themes: false,
@@ -21,4 +22,8 @@ export const featureFlags = {
   conversationTimestamps: false,
   conversationMenu: false,
   workspaces: false,
+  // Restaurant concept flags
+  restaurantBreadcrumbs: false,
+  restaurantTopNavButtons: false,
+  restaurantTopNavSearchBar: true,
 };

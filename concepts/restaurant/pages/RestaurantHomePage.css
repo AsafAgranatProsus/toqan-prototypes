@@ -1,0 +1,158 @@
+/**
+ * Restaurant Home Page Styles
+ * 
+ * This is concept-specific styling. Feel free to:
+ * - Use different tokens than core
+ * - Override component styles
+ * - Experiment with new layouts
+ * 
+ * Uses Component Token Layer Pattern for maintainability.
+ */
+
+.restaurant-home {
+  /* Component Token Layer - Color Palette */
+  --restaurant-bg: var(--color-ui-background);
+  --restaurant-card-bg: var(--color-ui-background-elevated);
+  --restaurant-text: var(--color-text-default);
+  --restaurant-text-secondary: var(--color-text-secondary);
+  --restaurant-accent: var(--color-primary-default);
+  --restaurant-border: var(--color-ui-border);
+  
+  /* Restaurant-specific accent (warm, food-friendly) */
+  --restaurant-accent-warm: hsl(25, 85%, 55%);
+  
+  /* Layout */
+  min-height: 100vh;
+  padding: var(--space-6);
+  background: var(--restaurant-bg);
+  color: var(--restaurant-text);
+}
+
+.restaurant-home__header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.restaurant-home__title {
+  font-size: var(--font-size-heading-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--restaurant-accent-warm);
+  margin: 0 0 var(--space-2);
+}
+
+.restaurant-home__subtitle {
+  font-size: var(--font-size-body-lg);
+  color: var(--restaurant-text-secondary);
+  margin: 0;
+}
+
+.restaurant-home__content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.restaurant-home__welcome-card {
+  background: var(--restaurant-card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  border: 1px solid var(--restaurant-border);
+  margin-bottom: var(--space-6);
+}
+
+.restaurant-home__welcome-card h2 {
+  font-size: var(--font-size-heading-md);
+  margin: 0 0 var(--space-3);
+  color: var(--restaurant-text);
+}
+
+.restaurant-home__welcome-card p {
+  color: var(--restaurant-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--space-4);
+}
+
+.restaurant-home__features {
+  background: var(--restaurant-bg);
+  border-radius: var(--radius-default);
+  padding: var(--space-4);
+}
+
+.restaurant-home__features h3 {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-3);
+  color: var(--restaurant-text);
+}
+
+.restaurant-home__features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-2);
+}
+
+.restaurant-home__features li {
+  color: var(--restaurant-text-secondary);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+.restaurant-home__features li:hover {
+  background: var(--color-ui-active);
+}
+
+.restaurant-home__quick-actions h3 {
+  font-size: var(--font-size-heading-sm);
+  margin: 0 0 var(--space-4);
+  color: var(--restaurant-text);
+}
+
+.restaurant-home__actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-4);
+}
+
+.restaurant-home__action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--restaurant-card-bg);
+  border: 1px solid var(--restaurant-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition-medium);
+  color: var(--restaurant-text);
+}
+
+.restaurant-home__action-btn:hover {
+  border-color: var(--restaurant-accent-warm);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.restaurant-home__action-icon {
+  font-size: 2rem;
+}
+
+.restaurant-home__footer {
+  text-align: center;
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--restaurant-border);
+}
+
+.restaurant-home__concept-badge {
+  display: inline-block;
+  background: var(--restaurant-accent-warm);
+  color: white;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-default);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+}

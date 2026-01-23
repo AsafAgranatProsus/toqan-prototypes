@@ -4,6 +4,7 @@
 @import url("styles/soehne.css");
 @import url("styles/reset.css");
 @import url("tokens.css");  /* Design System Tokens - MUST be imported before other styles */
+@import url("styles/variables.css");  /* Global layout and component variables */
 @import url("styles/typography.css");
 @import url("styles/tables.css");
 @import url("styles/utilities.css");

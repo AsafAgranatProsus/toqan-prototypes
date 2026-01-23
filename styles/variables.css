@@ -1,0 +1,13 @@
+/**
+ * Global Variables
+ * 
+ * General-purpose CSS custom properties used across the application.
+ * These are layout and component-level variables that don't belong in design tokens.
+ */
+
+:root {
+  /* Layout dimensions */
+  --header-height: 56px;
+  --sidebar-width: 280px;
+  --collapsed-sidebar-width: 56px;
+}

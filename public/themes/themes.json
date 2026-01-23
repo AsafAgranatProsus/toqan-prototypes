@@ -42,6 +42,15 @@
         "neutral": "#1f1c24",
         "neutralVariant": "#312b37"
       }
+    },
+    {
+      "id": "flamingo-final",
+      "name": "Flamingo (final)",
+      "description": "Theme generated from source color #ffa9ae",
+      "sourceColor": "#ffa9ae",
+      "filename": "flamingo-final.css",
+      "displayFont": "Inter",
+      "bodyFont": "Inter"
     }
   ]
 }

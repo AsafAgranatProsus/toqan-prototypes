@@ -1,0 +1,125 @@
+/**
+ * Top Navbar Restaurant Styles
+ * 
+ * Positioned to the right of the left sidebar.
+ * Uses component token layer pattern.
+ */
+
+.top-navbar-restaurant {
+  /* Component Token Layer */
+  --topnav-bg: var(--color-surface-container);
+  --topnav-border: var(--color-ui-border);
+  --topnav-text: var(--color-text-default);
+  --topnav-text-secondary: var(--color-text-secondary);
+  --topnav-accent: hsl(25, 85%, 55%);
+  --topnav-hover-bg: var(--color-ui-active);
+
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: var(--restaurant-topnav-height, 56px);
+  padding: 0 var(--space-4);
+  background: var(--topnav-bg);
+  border-bottom: 1px solid var(--topnav-border);
+}
+
+.top-navbar-restaurant__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.top-navbar-restaurant__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-body-sm);
+}
+
+.top-navbar-restaurant__breadcrumb > svg {
+  width: 14px;
+  height: 14px;
+  color: var(--topnav-text-secondary);
+}
+
+.top-navbar-restaurant__breadcrumb-item {
+  color: var(--topnav-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.top-navbar-restaurant__breadcrumb-item:hover {
+  color: var(--topnav-text);
+}
+
+.top-navbar-restaurant__breadcrumb-item--current {
+  color: var(--topnav-text);
+  font-weight: var(--font-weight-medium);
+  cursor: default;
+}
+
+.top-navbar-restaurant__center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.top-navbar-restaurant__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-ui-background-elevated);
+  border: 1px solid var(--topnav-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.top-navbar-restaurant__search:focus-within {
+  border-color: var(--topnav-accent);
+  box-shadow: 0 0 0 2px hsla(25, 85%, 55%, 0.15);
+}
+
+.top-navbar-restaurant__search > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--topnav-text-secondary);
+  flex-shrink: 0;
+}
+
+.top-navbar-restaurant__search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--topnav-text);
+  font-size: var(--font-size-body-sm);
+  outline: none;
+}
+
+.top-navbar-restaurant__search-input::placeholder {
+  color: var(--topnav-text-secondary);
+}
+
+.top-navbar-restaurant__search-shortcut {
+  font-size: var(--font-size-body-xs);
+  color: var(--topnav-text-secondary);
+  background: var(--topnav-hover-bg);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+}
+
+.top-navbar-restaurant__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.top-navbar-restaurant__btn--active {
+  background: hsla(25, 85%, 55%, 0.15) !important;
+  color: var(--topnav-accent) !important;
+}

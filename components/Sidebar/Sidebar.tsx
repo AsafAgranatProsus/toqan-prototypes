@@ -11,7 +11,7 @@ import Dropdown from '../Dropdown/Dropdown';
 import './Sidebar.css';
 
 const navItems: NavItem[] = [
-    { id: 'conversations', label: 'Conversations', icon: 'MessageSquare' },
+    { id: 'conversations', label: 'Chats', icon: 'MessageSquare' },
     { id: 'agents', label: 'Agents', icon: 'Bot' },
     // { id: 'data-analysts', label: 'Data Analysts', icon: 'Database' },
     { id: 'integrations', label: 'Integrations', icon: 'Plug', beta: true },

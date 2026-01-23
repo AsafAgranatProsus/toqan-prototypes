@@ -30,7 +30,10 @@
     height: 100%;
     background: var(--color-ui-background-elevated);
     border-right: 1px solid var(--color-ui-border);
-    transition: transform 0.3s ease;
+    transition: width 0.3s cubic-bezier(0.05, 0.84, 0.31, 1),
+                min-width 0.3s cubic-bezier(0.05, 0.84, 0.31, 1),
+                max-width 0.3s cubic-bezier(0.05, 0.84, 0.31, 1);
+    overflow: hidden;
 
     .logo {
       align-self: flex-start;
@@ -47,8 +50,61 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
-    padding: var(--space-3) var(--space-2);
+    padding: var(--space-3) ; /*var(--space-2);*/
     border-bottom: 1px solid var(--color-ui-border);
+    transition: padding 0.3s cubic-bezier(0.05, 0.84, 0.31, 1);
+  }
+
+  .left-sidebar__menu-button {
+    flex-shrink: 0;
+  }
+
+  /* Collapsed state */
+  .left-sidebar--collapsed {
+    .left-sidebar__header {
+      padding: var(--space-3);
+      justify-content: center;
+    }
+
+    /* Hide menu button with opacity/visibility */
+    .left-sidebar__menu-button {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    /* Show logo button as collapsed state trigger */
+    .left-sidebar__logo-button {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .left-sidebar__logo-button svg:not(.logo svg) {
+      display: none; /* Hide chevron when collapsed */
+    }
+
+    /* Hide workspace selector and other content */
+    .left-sidebar__workspace-selector,
+    .left-sidebar__nav,
+    .left-sidebar__sessions-container,
+    .left-sidebar__footer {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s cubic-bezier(0.05, 0.84, 0.31, 1);
+    }
+  }
+
+  /* When not collapsed, ensure content is visible */
+  .left-sidebar:not(.left-sidebar--collapsed) {
+    .left-sidebar__workspace-selector,
+    .left-sidebar__logo-button,
+    .left-sidebar__nav,
+    .left-sidebar__sessions-container,
+    .left-sidebar__footer {
+      opacity: 1;
+      transition: opacity 0.3s cubic-bezier(0.05, 0.84, 0.31, 1) 0.1s;
+    }
   }
 
   .left-sidebar__logo-button {
