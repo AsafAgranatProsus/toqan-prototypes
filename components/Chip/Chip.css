@@ -1,0 +1,179 @@
+/* ============================================= */
+/*                CHIP COMPONENT                */
+/* Clickable pill/tag for actions and filters   */
+/* ============================================= */
+
+/* ===== COMPONENT TOKENS ===== */
+.chip {
+  /* Spacing */
+  --chip-padding-y: var(--space-2);
+  --chip-padding-x: var(--space-3);
+  --chip-gap: var(--space-2);
+  
+  /* Typography */
+  --chip-font-size: var(--font-size-body-sm);
+  --chip-font-weight: var(--font-weight-medium);
+  
+  /* Border */
+  --chip-border-radius: var(--radius-full);
+  --chip-border-width: 1px;
+  
+  /* Icon */
+  --chip-icon-size: var(--icon-size-sm);
+  
+  /* Colors - Base (applied via CSS custom properties) */
+  --chip-bg: transparent;
+  --chip-bg-hover: var(--color-ui-hover);
+  --chip-bg-active: var(--color-ui-active);
+  --chip-border-color: var(--color-ui-border);
+  --chip-border-color-hover: var(--color-ui-border-hover, var(--color-ui-border));
+  --chip-text-color: var(--theme-text-main);
+  
+  /* Colors - Outlined variant */
+  --chip-outlined-bg: transparent;
+  --chip-outlined-border-color: var(--color-ui-border);
+  --chip-outlined-text-color: var(--theme-text-main);
+  
+  /* Colors - Filled variant */
+  --chip-filled-bg: var(--color-surface-container);
+  --chip-filled-border-color: transparent;
+  --chip-filled-text-color: var(--theme-text-main);
+  
+  /* Colors - Default/Subtle variant */
+  --chip-default-bg: var(--color-ui-background);
+  --chip-default-border-color: var(--color-ui-border);
+  --chip-default-text-color: var(--theme-text-secondary);
+  
+  /* Colors - Selected state */
+  --chip-selected-bg: var(--color-primary-background);
+  --chip-selected-border-color: var(--color-primary-default);
+  --chip-selected-text-color: var(--color-primary-default);
+  --chip-selected-filled-bg: var(--color-primary-default);
+  --chip-selected-filled-text-color: var(--color-primary-on-container);
+}
+
+/* ===== BASE STYLES ===== */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chip-gap);
+  padding: var(--chip-padding-y) var(--chip-padding-x);
+  border-radius: var(--chip-border-radius);
+  font-family: var(--font-family-default);
+  font-size: var(--chip-font-size);
+  font-weight: var(--chip-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+  
+  /* Apply variant colors */
+  background-color: var(--chip-bg);
+  border: var(--chip-border-width) solid var(--chip-border-color);
+  color: var(--chip-text-color);
+}
+
+/* ===== VARIANTS ===== */
+
+/* Outlined (default) */
+.chip--outlined {
+  --chip-bg: var(--chip-outlined-bg);
+  --chip-border-color: var(--chip-outlined-border-color);
+  --chip-text-color: var(--chip-outlined-text-color);
+}
+
+.chip--outlined.chip--clickable:hover {
+  --chip-bg: var(--chip-bg-hover);
+  --chip-border-color: var(--chip-border-color-hover);
+}
+
+.chip--outlined.chip--clickable:active {
+  --chip-bg: var(--chip-bg-active);
+}
+
+.chip--outlined.chip--selected {
+  --chip-bg: var(--chip-selected-bg);
+  --chip-border-color: var(--chip-selected-border-color);
+  --chip-text-color: var(--chip-selected-text-color);
+}
+
+/* Filled */
+.chip--filled {
+  --chip-bg: var(--chip-filled-bg);
+  --chip-border-color: var(--chip-filled-border-color);
+  --chip-text-color: var(--chip-filled-text-color);
+}
+
+.chip--filled.chip--clickable:hover {
+  --chip-bg: var(--chip-bg-hover);
+}
+
+.chip--filled.chip--clickable:active {
+  --chip-bg: var(--chip-bg-active);
+}
+
+.chip--filled.chip--selected {
+  --chip-bg: var(--chip-selected-filled-bg);
+  --chip-text-color: var(--chip-selected-filled-text-color);
+}
+
+/* Default (subtle) */
+.chip--default {
+  --chip-bg: var(--chip-default-bg);
+  --chip-border-color: var(--chip-default-border-color);
+  --chip-text-color: var(--chip-default-text-color);
+}
+
+.chip--default.chip--clickable:hover {
+  --chip-bg: var(--chip-bg-hover);
+  --chip-text-color: var(--chip-outlined-text-color);
+}
+
+/* ===== SIZES ===== */
+
+.chip--sm {
+  --chip-padding-y: var(--space-1);
+  --chip-padding-x: var(--space-2);
+  --chip-font-size: var(--font-size-body-xs);
+  --chip-icon-size: 12px;
+}
+
+.chip--lg {
+  --chip-padding-y: var(--space-3);
+  --chip-padding-x: var(--space-4);
+  --chip-font-size: var(--font-size-body-md);
+  --chip-icon-size: var(--icon-size-md);
+}
+
+/* ===== STATES ===== */
+
+.chip--clickable {
+  cursor: pointer;
+}
+
+.chip--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== FOCUS ===== */
+
+.chip:focus-visible {
+  outline: 2px solid var(--theme-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ===== ICON ===== */
+
+.chip__icon {
+  width: var(--chip-icon-size);
+  height: var(--chip-icon-size);
+  flex-shrink: 0;
+}
+
+/* ===== LABEL ===== */
+
+.chip__label {
+  white-space: nowrap;
+}

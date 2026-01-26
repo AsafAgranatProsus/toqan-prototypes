@@ -1,0 +1,38 @@
+/**
+ * Message Actions Styles
+ */
+
+/* Component Token Layer */
+.message-actions {
+  /* Colors */
+  --action-text-active: var(--color-primary-default);
+  
+  /* Spacing */
+  --action-gap: var(--space-1);
+}
+
+/* Base Styles */
+.message-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--action-gap);
+  margin-top: var(--space-2);
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+  margin-left: calc(var(--space-2) * -1);
+}
+
+/* Show on hover of parent message */
+.chat-session-renderer__assistant-message:hover .message-actions,
+.message-actions:focus-within {
+  opacity: 1;
+}
+
+/* Active state for buttons */
+.message-actions__button--active {
+  color: var(--action-text-active);
+}
+
+.message-actions__button--active:hover {
+  color: var(--action-text-active);
+}

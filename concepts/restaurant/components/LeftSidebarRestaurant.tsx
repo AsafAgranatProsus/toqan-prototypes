@@ -275,10 +275,12 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
           {RESTAURANT_NAV.map((item) => {
             const hasSidePanel = item.id === 'Assets' || item.id === 'priorities';
             const isHome = item.id === 'home';
-            // Home is active when there's no active session and no secondary panel open
+            // Home is active when:
+            // - Explicitly selected (activeNavId === 'home') AND no active chat session
+            // - OR: No active session and no secondary panel open (cold start/default state)
             // Other items: show active if panel is open (for items with side panels)
             const isActive = isHome 
-              ? activeNavId === 'home' || (!activeSession && !isSecondaryPanelOpen)
+              ? (activeNavId === 'home' && !activeSession) || (!activeSession && !isSecondaryPanelOpen)
               : activeNavId === item.id && (!hasSidePanel || isSecondaryPanelOpen);
 
             const handleClick = () => {
@@ -390,7 +392,6 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
                     className={`left-sidebar-restaurant__session-item ${isActive ? 'left-sidebar-restaurant__session-item--active' : ''}`}
                     onClick={() => resumeSession(session.id)}
                   >
-                    <Icons name="MessageSquare" />
                     <span className="left-sidebar-restaurant__session-title">
                       {session.title || 'Conversation'}
                     </span>

@@ -45,6 +45,7 @@ export type IconName =
   | 'Monitor'
   | 'Copy'
   | 'Check'
+  | 'CheckCheck'
   | 'Settings'
   | 'Settings2'
   | 'Minimize2'
@@ -71,7 +72,10 @@ export type IconName =
   | 'DollarSign'
   | 'Utensils'
   | 'AlertTriangle'
-  | 'Info';
+  | 'Info'
+  | 'ThumbsUp'
+  | 'ThumbsDown'
+  | 'Bookmark';
 
 export interface Model {
   id: string;

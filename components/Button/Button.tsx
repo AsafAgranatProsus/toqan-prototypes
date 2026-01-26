@@ -9,6 +9,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
   icon?: IconName;
   iconPosition?: 'left' | 'right';
+  /** Transparent background (can be applied to any variant) */
+  transparent?: boolean;
+  /** Remove border (can be applied to any variant) */
+  noBorder?: boolean;
   children?: React.ReactNode;
 }
 
@@ -18,6 +22,8 @@ const Button: React.FC<ButtonProps> = ({
   size = 'md',
   icon,
   iconPosition = 'left',
+  transparent = false,
+  noBorder = false,
   children,
   className,
   ...props
@@ -33,6 +39,8 @@ const Button: React.FC<ButtonProps> = ({
     `btn--${buttonShape}`,
     size !== 'md' ? `btn--${size}` : '',
     isIconOnly ? 'btn--icon-only' : '',
+    transparent ? 'btn--transparent' : '',
+    noBorder ? 'btn--no-border' : '',
     className
   ].filter(Boolean).join(' ');
 

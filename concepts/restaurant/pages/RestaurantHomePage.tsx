@@ -5,20 +5,30 @@ import './RestaurantHomePage.css';
  * Restaurant Concept - Home Page
  * 
  * This is the main entry point for the restaurant concept.
- * Feel free to break things here - it won't affect core Toqan!
- * 
- * Ideas to explore:
- * - Dashboard with order overview
- * - Quick actions for common tasks
- * - AI assistant focused on restaurant operations
+ * Displays personalized greeting, contextual insights, and quick actions.
  */
+
+// TODO: These would come from user context/API
+const userName = 'Asaf';
+const greeting = getGreeting();
+const insight = 'Everything looks stable. Cash flow is tight next week.';
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good Morning';
+  if (hour < 17) return 'Good Afternoon';
+  return 'Good Evening';
+}
+
 export const RestaurantHomePage: React.FC = () => {
   return (
     <div className="restaurant-home">
       <header className="restaurant-home__header">
-        <h1 className="restaurant-home__title">Toqan for Restaurants</h1>
+        <h1 className="restaurant-home__title">
+          {greeting}, {userName}.
+        </h1>
         <p className="restaurant-home__subtitle">
-          Your AI assistant for restaurant management
+          {insight}
         </p>
       </header>
 

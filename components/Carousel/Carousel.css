@@ -1,0 +1,153 @@
+/* ============================================= */
+/*              CAROUSEL COMPONENT              */
+/* Utility-focused horizontal scroll container  */
+/* ============================================= */
+
+/* ===== CONTAINER ===== */
+.carousel {
+  position: relative;
+  max-width: 100%;
+  width: auto
+}
+
+/* ===== SCROLLABLE TRACK ===== */
+.carousel__track {
+  display: flex;
+  gap: var(--carousel-gap, var(--space-4));
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Hide scrollbar by default */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== SCROLLBAR VISIBLE ===== */
+.carousel--show-scrollbar .carousel__track {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ui-border) transparent;
+}
+
+.carousel--show-scrollbar .carousel__track::-webkit-scrollbar {
+  display: block;
+  height: 6px;
+}
+
+.carousel--show-scrollbar .carousel__track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.carousel--show-scrollbar .carousel__track::-webkit-scrollbar-thumb {
+  background-color: var(--color-ui-border);
+  border-radius: var(--radius-full);
+}
+
+.carousel--show-scrollbar .carousel__track::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-ui-border-hover, var(--color-ui-border));
+}
+
+/* ===== NAVIGATION ARROWS ===== */
+.carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  
+  /* Hidden by default, shown when can scroll */
+  opacity: 0;
+  pointer-events: none;
+  
+  /* Smooth fade animation */
+  transition: opacity var(--transition-normal, 200ms ease);
+}
+
+.carousel__arrow--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Arrow positioning - overlay variant (default) */
+.carousel__arrow--left {
+  left: var(--space-2);
+}
+
+.carousel__arrow--right {
+  right: var(--space-2);
+}
+
+/* Arrow button styling */
+.carousel__arrow .btn {
+  background-color: var(--color-surface-elevated, var(--theme-surface));
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-ui-border);
+}
+
+.carousel__arrow .btn:hover:not(:disabled) {
+  background-color: var(--color-surface-hover, var(--theme-surface-hover));
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== ARROWS OUTSIDE VARIANT ===== */
+.carousel--arrows-outside {
+  padding: 0 calc(var(--size-button-height, 40px) + var(--space-4));
+}
+
+.carousel--arrows-outside .carousel__arrow--left {
+  left: 0;
+}
+
+.carousel--arrows-outside .carousel__arrow--right {
+  right: 0;
+}
+
+/* ===== DISABLED MODE ===== */
+.carousel--disabled .carousel__track {
+  overflow: visible;
+  flex-wrap: wrap;
+}
+
+.carousel--disabled .carousel__arrow {
+  display: none;
+}
+
+/* ===== FOCUS STATES ===== */
+.carousel__arrow .btn:focus-visible {
+  outline: 2px solid var(--theme-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ===== TOUCH OPTIMIZATION ===== */
+@media (pointer: coarse) {
+  /* Larger touch targets on touch devices */
+  .carousel__arrow .btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  /* Hide arrows on touch devices by default - rely on swipe */
+  .carousel__arrow {
+    opacity: 0;
+  }
+  
+  /* Show arrows only when hovering (for hybrid devices) */
+  .carousel:hover .carousel__arrow--visible {
+    opacity: 1;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .carousel__track {
+    scroll-behavior: auto;
+  }
+  
+  .carousel__arrow {
+    transition: none;
+  }
+}

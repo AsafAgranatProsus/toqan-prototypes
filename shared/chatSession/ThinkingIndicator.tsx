@@ -61,6 +61,9 @@ interface ThinkingIndicatorProps {
   
   /** Callback to report the actual duration and processes when complete */
   onThinkingData?: (data: { duration: number; processes: string[] }) => void;
+  
+  /** Callback when expanded state changes */
+  onExpandChange?: (isExpanded: boolean) => void;
 }
 
 export const ThinkingIndicator: React.FC<ThinkingIndicatorProps> = ({
@@ -69,6 +72,7 @@ export const ThinkingIndicator: React.FC<ThinkingIndicatorProps> = ({
   duration = 3500,
   onComplete,
   onThinkingData,
+  onExpandChange,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentProcess, setCurrentProcess] = useState('');
@@ -149,12 +153,16 @@ export const ThinkingIndicator: React.FC<ThinkingIndicatorProps> = ({
     <div className={`thinking-indicator ${isComplete ? 'thinking-indicator--completed' : ''}`}>
       <button 
         className="thinking-indicator__header"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => {
+          const newExpanded = !isExpanded;
+          setIsExpanded(newExpanded);
+          onExpandChange?.(newExpanded);
+        }}
         aria-expanded={isExpanded}
       >
         <div className="thinking-indicator__status">
           {isComplete ? (
-            <Icons name="Check" className="thinking-indicator__check" />
+            <Icons name="CheckCheck" className="thinking-indicator__check" />
           ) : (
             <div className="thinking-indicator__spinner" />
           )}
@@ -177,7 +185,7 @@ export const ThinkingIndicator: React.FC<ThinkingIndicatorProps> = ({
                 !isComplete && idx === processHistory.length - 1 ? 'thinking-indicator__process--active' : ''
               }`}
             >
-              <span className="thinking-indicator__bullet">{isComplete ? '✓' : '›'}</span>
+              <span className="thinking-indicator__bullet">{isComplete ?  <Icons name="Check" className="thinking-indicator__check" /> : '›'}</span>
               {process}
             </div>
           ))}

@@ -219,7 +219,7 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
   } : {};
 
   return (
-    <aside className="priorities-panel" style={panelStyle}>
+    <aside className="priorities-panel panel-with-shadow" style={panelStyle}>
       {/* Resize handle */}
       {isResizable && (
         <ResizeHandle

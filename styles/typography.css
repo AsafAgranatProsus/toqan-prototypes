@@ -36,7 +36,7 @@
   h2 {
     font-size: var(--font-size-heading-xl);
     line-height: var(--line-height-tight);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-medium);
     margin: 0 0 0.875rem 0;
   }
 
@@ -44,7 +44,7 @@
     font-size: var(--font-size-heading-lg);
     line-height: var(--line-height-tight);
     font-weight: var(--font-weight-medium);
-    margin: 0 0 0.75rem 0;
+    margin: 1.5rem 0 0.75rem 0;
   }
 
   h4 {
@@ -71,11 +71,13 @@
   p {
     font-size: var(--font-size-body-md);
     line-height: var(--line-height-normal);
-    margin: 0 0 1rem 0;
+    margin: 0 0 .5rem 0;
   }
 
   strong {
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-medium);
+    /* Add space after strong when followed by inline text (CSS-only fix for missing whitespace) */
+    /* margin-inline-end: 0.2em; */
   }
 
   ul, ol {
@@ -85,7 +87,7 @@
   }
 
   li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
   }
 
   blockquote {

@@ -1196,7 +1196,7 @@ export const AssetCanvas: React.FC = () => {
   } : {};
   
   return (
-    <div className="asset-canvas" style={panelStyle}>
+    <div className="asset-canvas panel-with-shadow" style={panelStyle}>
       {/* Resize handle */}
       {isResizable && (
         <ResizeHandle
@@ -1237,7 +1237,7 @@ export const AssetCanvas: React.FC = () => {
         </div>
       </div>
       
-      <div className="asset-canvas__content">
+      <div className="asset-canvas__content" key={selectedAssetId}>
         {asset.content.map((block, idx) => (
           <ContentBlockRenderer key={idx} block={block} />
         ))}

@@ -248,6 +248,7 @@
 }
 
 .left-sidebar-restaurant__session-list {
+  padding-left: calc(var(--space-8) + var(--space-1));
   animation: slideDownRestaurant 0.2s ease-out;
 }
 

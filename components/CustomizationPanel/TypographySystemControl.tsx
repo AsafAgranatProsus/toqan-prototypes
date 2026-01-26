@@ -15,8 +15,8 @@ export const TypographySystemControl: React.FC = () => {
   const baseFontValue = getCurrentTokenValue('--font-size-base') || '1rem';
   const [baseFontSize, setBaseFontSize] = useState(parseFloat(baseFontValue));
   
-  // Modular scale ratio (default: 1.10 - subtle, tight hierarchy for chat)
-  const [scaleRatio, setScaleRatio] = useState(1.10);
+  // Modular scale ratio (default: 1.115 - subtle, tight hierarchy for chat)
+  const [scaleRatio, setScaleRatio] = useState(1.115);
   
   // Line height ratio (default: 1.65 - improved vertical scanning)
   const [lineHeight, setLineHeight] = useState(1.4);

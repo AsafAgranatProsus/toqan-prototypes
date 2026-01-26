@@ -101,7 +101,7 @@
 .btn--icon {
   background-color: var(--theme-btn-icon-bg);
   color: var(--theme-btn-icon-text);
-  border: 1px solid var(--theme-btn-icon-border);
+  /* border: 1px solid var(--theme-btn-icon-border); */
   padding: var(--space-2);
 }
 
@@ -271,6 +271,22 @@
 .btn-group--attached .btn:last-child {
   border-top-right-radius: var(--radius-default);
   border-bottom-right-radius: var(--radius-default);
+}
+
+/* ===== MODIFIERS ===== */
+
+/* Transparent background - can be applied to any variant */
+.btn--transparent {
+  background-color: transparent;
+}
+
+.btn--transparent:hover:not(:disabled) {
+  /* background-color: var(--color-ui-hover); */
+}
+
+/* No border - can be applied to any variant */
+.btn--no-border {
+  border: none;
 }
 
 /* ===== RESPONSIVE ===== */

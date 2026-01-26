@@ -4,6 +4,7 @@
  * Renders the active chat session including:
  * - Conversation history with streaming simulation
  * - Thinking indicators before AI responses
+ * - Message action buttons (thumbs, save, copy)
  * - Reply buttons (revealed after streaming completes)
  * 
  * Note: Input is handled externally via the shared ChatInput component.
@@ -13,6 +14,7 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useChatSession } from './ChatSessionContext';
 import { ReplyButtons } from './ReplyButtons';
 import { StreamingMessage } from './StreamingMessage';
+import { MessageActions } from './MessageActions';
 import type { ReplyButton, ChatHistoryEntry } from './types';
 import HtmlRenderer from '../../components/HtmlRenderer/HtmlRenderer';
 import './ChatSessionRenderer.css';
@@ -26,12 +28,16 @@ interface ChatSessionRendererProps {
 
   /** Enable streaming simulation (default: true) */
   enableStreaming?: boolean;
+  
+  /** Callback when a message is saved */
+  onSaveMessage?: (content: string) => void;
 }
 
 export const ChatSessionRenderer: React.FC<ChatSessionRendererProps> = ({
   header,
   className = '',
   enableStreaming = true,
+  onSaveMessage,
 }) => {
   const {
     activeSession,
@@ -142,6 +148,15 @@ export const ChatSessionRenderer: React.FC<ChatSessionRendererProps> = ({
                       <div className="chat-session-renderer__content prose">
                         <HtmlRenderer html={entry.content} />
                       </div>
+                    )}
+
+                    {/* Message actions - show when not actively streaming */}
+                    {!isStreaming && (
+                      <MessageActions
+                        content={entry.content}
+                        sessionId={activeSession?.id}
+                        onSave={onSaveMessage}
+                      />
                     )}
 
                     {showButtons && currentNode?.replyButtons && (

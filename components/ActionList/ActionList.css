@@ -1,0 +1,80 @@
+/* ============================================= */
+/*            ACTION LIST COMPONENT              */
+/* Vertical list section with title              */
+/* ============================================= */
+
+/* ===== COMPONENT TOKENS ===== */
+.action-list {
+  /* Sizing */
+  --action-list-gap: var(--space-1);
+  --action-list-padding: var(--space-2);
+  
+  /* Border */
+  --action-list-border-radius: var(--radius-lg);
+  --action-list-border-width: 0;
+  
+  /* Colors */
+  --action-list-bg: transparent;
+  --action-list-border-color: var(--color-ui-border);
+  
+  /* Title */
+  --action-list-title-font-size: var(--font-size-body-sm);
+  --action-list-title-font-weight: var(--font-weight-medium);
+  --action-list-title-color: var(--theme-text-secondary);
+  --action-list-title-letter-spacing: 0.05em;
+  --action-list-title-padding-x: var(--space-4);
+  --action-list-title-padding-top: var(--space-3);
+  
+  /* Show More */
+  --action-list-show-more-font-size: var(--font-size-body-sm);
+  --action-list-show-more-color: var(--color-primary-default);
+}
+
+/* ===== BASE STYLES ===== */
+.action-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--action-list-bg);
+  border: var(--action-list-border-width) solid var(--action-list-border-color);
+  border-radius: var(--action-list-border-radius);
+  overflow: hidden;
+}
+
+/* ===== TITLE ===== */
+.action-list__title {
+  font-size: var(--action-list-title-font-size);
+  font-weight: var(--action-list-title-font-weight);
+  color: var(--action-list-title-color);
+  text-transform: uppercase;
+  letter-spacing: var(--action-list-title-letter-spacing);
+  margin: 0;
+  padding: var(--action-list-title-padding-top) var(--action-list-title-padding-x) var(--space-2);
+}
+
+/* ===== ITEMS ===== */
+.action-list__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--action-list-gap);
+  padding: 0 var(--action-list-padding) var(--action-list-padding);
+}
+
+/* ===== SHOW MORE ===== */
+.action-list__show-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  background: none;
+  border: none;
+  border-top: 1px solid var(--action-list-border-color);
+  font-size: var(--action-list-show-more-font-size);
+  color: var(--action-list-show-more-color);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.action-list__show-more:hover {
+  background-color: var(--color-ui-hover);
+}

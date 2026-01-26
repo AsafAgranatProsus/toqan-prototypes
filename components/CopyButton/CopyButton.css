@@ -1,0 +1,63 @@
+/**
+ * CopyButton Styles
+ * 
+ * Floating balloon animation: "Copied!" pops up and floats away
+ */
+
+/* Component Token Layer */
+.copy-button {
+  /* Colors */
+  --copy-success: var(--color-btn-tertiary-text);
+  --copy-floating-bg: var(--color-tertiary-default);
+  --copy-floating-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  
+  /* Sizing */
+  --copy-floating-icon-size: 12px;
+  --copy-floating-gap: var(--space-1);
+  --copy-floating-padding: var(--space-1) var(--space-2);
+  --copy-floating-radius: var(--radius-full);
+  
+  /* Typography */
+  --copy-floating-font-size: var(--font-size-body-xs);
+  --copy-floating-font-weight: var(--font-weight-medium);
+}
+
+/* Base container - just positions the floating element */
+.copy-button {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Floating "Copied!" message */
+.copy-button__floating {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--copy-floating-gap);
+  padding: var(--copy-floating-padding);
+  background: var(--copy-floating-bg);
+  color: var(--copy-success);
+  border-radius: var(--copy-floating-radius);
+  box-shadow: var(--copy-floating-shadow);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 100;
+  /* Will be animated via GSAP */
+}
+
+.copy-button__floating-icon {
+  width: var(--copy-floating-icon-size);
+  height: var(--copy-floating-icon-size);
+  flex-shrink: 0;
+}
+
+.copy-button__floating-label {
+  font-size: var(--copy-floating-font-size);
+  font-weight: var(--copy-floating-font-weight);
+}

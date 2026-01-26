@@ -31,6 +31,7 @@ import {
   Monitor,
   Copy,
   Check,
+  CheckCheck,
   Settings,
   Settings2,
   Minimize2,
@@ -58,6 +59,9 @@ import {
   AlertTriangle,
   Info,
   Home,
+  ThumbsUp,
+  ThumbsDown,
+  Bookmark,
 } from 'lucide-react';
 import type { IconName } from '../../types';
 
@@ -109,6 +113,7 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   Monitor,
   Copy,
   Check,
+  CheckCheck,
   Settings,
   Settings2,
   Minimize2,
@@ -137,6 +142,9 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   AlertTriangle,
   Info,
   Home,
+  ThumbsUp,
+  ThumbsDown,
+  Bookmark,
 };
 
 export const Icons: React.FC<IconProps> = ({ name, ...props }) => {

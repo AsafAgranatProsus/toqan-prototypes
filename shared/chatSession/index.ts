@@ -47,3 +47,5 @@ export { ReplyButtons, InlineReplyButtons } from './ReplyButtons';
 export { ChatSessionRenderer, CompactChatRenderer } from './ChatSessionRenderer';
 export { StreamingMessage, useStreamingState } from './StreamingMessage';
 export { ThinkingIndicator, CompletedThinkingIndicator } from './ThinkingIndicator';
+export { MessageActions } from './MessageActions';
+export type { MessageAction } from './MessageActions';

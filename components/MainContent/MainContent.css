@@ -2,6 +2,79 @@
    Main Content Area
    ============================================ */
 
+/* ===== COMPONENT TOKENS ===== */
+.main-content {
+  /* Layout */
+  --main-content-padding: 1rem;
+  --main-content-wrapper-radius: 1rem;
+  --main-content-inner-radius: calc(var(--main-content-wrapper-radius) - 1px);
+  
+  /* Header */
+  --main-content-header-padding-y: var(--space-2);
+  --main-content-header-padding-x: var(--space-3);
+  
+  /* Body */
+  --main-content-body-padding-y: var(--space-8);
+  
+  /* Title */
+  --main-content-title-font-size: 2.5rem;
+  --main-content-title-font-weight: 500;
+  --main-content-title-margin-top: 30vh;
+  
+  /* Greeting */
+  --main-content-greeting-title-font-size: clamp(1.75rem, 4vw, 2.5rem);
+  --main-content-greeting-title-letter-spacing: -0.02em;
+  
+  /* Section Title */
+  --main-content-section-title-font-size: var(--font-size-body-sm);
+  --main-content-section-title-letter-spacing: 0.05em;
+  
+  /* Quick Actions */
+  --main-content-quick-actions-margin-top: var(--space-3);
+  --main-content-quick-actions-arrow-size: 28px;
+  --main-content-quick-actions-chip-bg: var(--color-secondary-light);
+  
+  /* At A Glance */
+  --main-content-glance-margin-top: var(--space-8);
+  --main-content-glance-card-bg: var(--color-primary-light);
+  
+  /* Action Lists (Jump Back In / Run Agents) */
+  --main-content-action-lists-margin-top: var(--space-8);
+  --main-content-action-lists-gap: var(--space-4);
+  
+  /* Chat Section */
+  --main-content-chat-gap: var(--space-4);
+  
+  /* Chat Input Wrapper */
+  --main-content-chat-input-max-width: 800px;
+  --main-content-chat-input-padding-x: var(--space-4);
+  --main-content-chat-input-padding-bottom: 3vh;
+  
+  /* Dropdown Button */
+  --main-content-dropdown-radius: 0.5rem;
+  --main-content-dropdown-padding-y: 0.5rem;
+  --main-content-dropdown-padding-x: 0.75rem;
+  --main-content-dropdown-font-size: 1rem;
+  
+  /* Agent Selector */
+  --main-content-agent-padding-y: 0.5rem;
+  --main-content-agent-padding-x: 0.75rem;
+  --main-content-agent-font-size: 0.875rem;
+  
+  /* Privacy Note */
+  --main-content-privacy-font-size: 0.75rem;
+  
+  /* Galleries */
+  --main-content-galleries-gap: 32px;
+  --main-content-galleries-margin-top: 32px;
+}
+
+.theme-dark .main-content {
+  --main-content-glance-card-bg: var(--color-surface-container-high);
+  --main-content-quick-actions-chip-bg: var(--color-btn-secondary-text)  
+}
+
+/* ===== BASE STYLES ===== */
 .main-content {
   flex-grow: 1;
   display: flex;
@@ -9,22 +82,22 @@
   height: 100vh;
   position: relative;
   overflow: hidden;
-  padding: 1rem 1rem 0px;
+  padding: var(--main-content-padding) var(--main-content-padding) 0;
 }
 
 /* Legacy wrapper styles */
 .main-content-wrapper {
-  padding: 1px 1px 0px;
-  border-radius: 1rem;
+  padding: 1px 1px 0;
+  border-radius: var(--main-content-wrapper-radius);
   height: 100%;
   position: relative;
   background-image: linear-gradient(var(--theme-border), var(--theme-bg-app));
 }
 
 .main-content-inner-wrapper {
-  border-radius: calc(-1px + 1rem);
+  border-radius: var(--main-content-inner-radius);
   height: 100%;
-  background-position: 0px 0px;
+  background-position: 0 0;
   background-repeat: no-repeat;
   transition: border-radius 0.4s cubic-bezier(0.05, 0.84, 0.31, 1), background-color var(--transition-fast);
   display: flex;
@@ -35,17 +108,17 @@
 /* Header */
 .main-content__header {
   border-bottom: none;
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    padding: var(--space-2) var(--space-3);
-    flex-shrink: 0;
-    justify-content: flex-start;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: var(--main-content-header-padding-y) var(--main-content-header-padding-x);
+  flex-shrink: 0;
+  justify-content: flex-start;
 
   .dropdown-container {
     position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
+    top: var(--main-content-dropdown-padding-x);
+    left: var(--main-content-dropdown-padding-x);
     z-index: 2;
   }
 
@@ -54,7 +127,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.5rem;
+    border-radius: var(--main-content-dropdown-radius);
     cursor: pointer;
     position: relative;
     transition: background-color 0.2s, color 0.2s;
@@ -62,10 +135,10 @@
     background-color: var(--theme-bg-input);
     color: var(--theme-text-main);
     border: 1px solid var(--theme-border);
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem 0.75rem;
-    gap: 0.5rem;
-    font-size: 1rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+    padding: var(--main-content-dropdown-padding-y) var(--main-content-dropdown-padding-x);
+    gap: var(--main-content-dropdown-padding-y);
+    font-size: var(--main-content-dropdown-font-size);
   }
 }
 
@@ -76,7 +149,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: var(--space-8) 0;
+  padding: var(--main-content-body-padding-y) 0;
   overflow-y: auto;
   position: relative;
   z-index: 1;
@@ -94,22 +167,130 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 5%
+  /* padding: 5% */
 }
 
 /* Title */
 .main-content__title {
   max-width: var(--max-width-main);
   margin: 0 auto;
-  font-size: 2.5rem;
-  font-weight: 500;
+  font-size: var(--main-content-title-font-size);
+  font-weight: var(--main-content-title-font-weight);
   color: var(--theme-text-main);
-  margin-top: 30vh;
+  margin-top: var(--main-content-title-margin-top);
   margin-bottom: var(--space-5);
 }
 
 .plays .main-content__title {
   margin-top: 20vh;
+}
+
+/* ============================================
+   Restaurant Home View - Greeting
+   ============================================ */
+
+.main-content__greeting {
+  max-width: var(--max-width-main);
+  margin: 0 auto;
+  margin-bottom: var(--space-5);
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.main-content__greeting-title {
+  font-size: var(--main-content-greeting-title-font-size);
+  font-weight: var(--font-weight-bold);
+  font-style: italic;
+  color: var(--theme-text-main);
+  margin: 0 0 var(--space-1);
+  letter-spacing: var(--main-content-greeting-title-letter-spacing);
+  display: inline;
+}
+
+.main-content__greeting-subtitle {
+  font-size: var(--font-size-body-lg);
+  color: var(--theme-text-secondary);
+  margin: 0;
+}
+
+/* Quick Actions Chips */
+.main-content__quick-actions {
+  width: 100%;
+  margin-top: var(--main-content-quick-actions-margin-top);
+  display: flex;
+  justify-content: center;
+
+  .chip {
+    --chip-bg: var(--main-content-quick-actions-chip-bg);
+  }
+}
+
+.main-content__quick-actions .carousel {
+  /* Let chips flow naturally without forcing edge-to-edge */
+}
+
+.main-content__quick-actions .carousel__arrow {
+  /* Position arrows at edges */
+}
+
+.main-content__quick-actions .carousel__arrow .btn {
+  /* Smaller arrows for chip carousel */
+  width: var(--main-content-quick-actions-arrow-size);
+  height: var(--main-content-quick-actions-arrow-size);
+  min-width: var(--main-content-quick-actions-arrow-size);
+  min-height: var(--main-content-quick-actions-arrow-size);
+}
+
+/* ============================================
+   At A Glance Section
+   ============================================ */
+
+.main-content__at-a-glance {
+  width: 100%;
+  margin-top: var(--main-content-glance-margin-top);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .main-content__section-title {
+    max-width: calc(var(--main-content-chat-input-max-width) - 2rem);
+    width: 100%;
+  }
+
+  .insight-card {
+      --insight-card-bg: var(--main-content-glance-card-bg);
+  }
+}
+
+.main-content__section-title {
+  font-size: var(--main-content-section-title-font-size);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--main-content-section-title-letter-spacing);
+  margin: 0 0 var(--space-3);
+  padding-left: var(--space-1);
+}
+
+/* ============================================
+   Action Lists (Jump Back In / Run Agents)
+   ============================================ */
+
+.main-content__action-lists {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--main-content-action-lists-gap);
+  width: 100%;
+  max-width: var(--main-content-chat-input-max-width);
+  margin: var(--main-content-action-lists-margin-top) auto 0;
+  padding: 0 var(--main-content-chat-input-padding-x);
+}
+
+@media (max-width: 768px) {
+  .main-content__action-lists {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Chat Section */
@@ -120,7 +301,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--main-content-chat-gap);
 }
 
 /* Agent Selector */
@@ -135,7 +316,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
+  border-radius: var(--main-content-dropdown-radius);
   border: none;
   cursor: pointer;
   position: relative;
@@ -143,16 +324,16 @@
   line-height: 1;
   background-color: transparent;
   color: var(--theme-text-main);
-  padding: 0.5rem 0.75rem;
-  gap: 0.25rem;
-  font-size: 0.875rem;
+  padding: var(--main-content-agent-padding-y) var(--main-content-agent-padding-x);
+  gap: var(--space-1);
+  font-size: var(--main-content-agent-font-size);
 
-  >span {
+  > span {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.25rem;
+    gap: var(--space-1);
     pointer-events: none;
     line-height: 1;
   }
@@ -168,45 +349,18 @@
   }
 }
 
-/* Chat Input */
-.chat-input-container {
-  background-color: var(--theme-bg-input);
-  box-shadow: 0px 0.125rem 0.25rem 0px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--theme-border);
-  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
-  max-width: 48rem;
-  width: 100%;
-  border-radius: 1rem;
-  gap: .5rem;
-}
+/* Chat Input - styles moved to components/ChatInput/ChatInput.css */
 
-.chat-input-prefix {
-  display: flex;
-  gap: .25rem;
-  margin-left: -0.25rem;
-}
-
-.chat-input-prefix button,
-.chat-input-suffix button {
-  height: 36px;
-  width: 36px;
-}
-
-/* Messages */
-.assistant-message {
-  display: flex;
-  flex-direction: column;
-  gap: .5rem;
-}
+/* Messages - .assistant-message moved to components/Conversation/Conversation.css */
 
 /* Privacy Note */
 .main-content__privacy-note {
-  font-size: 0.75rem;
+  font-size: var(--main-content-privacy-font-size);
   color: var(--theme-text-tertiary);
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem;
+  gap: var(--space-1);
+  padding: var(--main-content-agent-padding-y);
   text-align: center;
   font-weight: 400;
 }
@@ -216,8 +370,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  margin-top: 32px;
+  gap: var(--main-content-galleries-gap);
+  margin-top: var(--main-content-galleries-margin-top);
 }
 
 /* Gradient Effects */
@@ -316,9 +470,10 @@
 /* Chat input wrapper for active sessions */
 .main-content__chat-input-wrapper {
   flex-shrink: 0;
-  padding: 0 var(--space-4) var(--space-3) var(--space-4);
-  max-width: 800px;
-  width: 100%;
+  padding: 0 var(--main-content-chat-input-padding-x) var(--space-3) var(--main-content-chat-input-padding-x);
+  padding-bottom: var(--main-content-chat-input-padding-bottom);
+  max-width: var(--main-content-chat-input-max-width);  width: 100%;
   margin: 0 auto;
   z-index: 1;
 }
+

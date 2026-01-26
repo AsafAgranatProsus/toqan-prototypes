@@ -72,7 +72,7 @@ export const SecondaryPanel: React.FC<SecondaryPanelProps> = ({
   } : {};
 
   return (
-    <aside className="secondary-panel" style={panelStyle}>
+    <aside className="secondary-panel panel-with-shadow" style={panelStyle}>
       {/* Resize handle */}
       {isResizable && (
         <ResizeHandle

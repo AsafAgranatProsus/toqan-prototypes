@@ -2,58 +2,88 @@
 /*            CHAT INPUT COMPONENT               */
 /* ============================================= */
 
+/* Component Token Layer */
+.chat-input-container {
+  /* Colors */
+  --chat-input-bg: var(--color-surface-container-highest);
+  --chat-input-text: var(--theme-text-main);
+  --chat-input-placeholder: var(--theme-text-tertiary);
+  --chat-input-border: var(--theme-border);
+  
+  /* Sizing & Spacing */
+  --chat-input-padding: 0 0.5rem 0 0.75rem;
+  --chat-input-gap: 0.5rem;
+  --chat-input-max-width: 48rem;
+  --chat-input-border-radius: 1rem;
+  --chat-input-font-size: 1rem;
+  --chat-input-min-height: 52px;
+  
+  /* Button sizing */
+  --chat-input-button-size: 36px;
+  --chat-input-prefix-gap: 0.25rem;
+  --chat-input-prefix-margin: -0.25rem;
+  
+  /* Effects */
+  --chat-input-shadow: 0px 0.125rem 0.25rem 0px rgba(0, 0, 0, 0.1);
+
+}
+
+.theme-light .chat-input-container {
+  --chat-input-bg: var(--color-surface-container-high)
+}
+
+/* Base Styles */
 .chat-input-container {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--chat-input-gap);
   width: 100%;
-  background-color: var(--theme-bg-input);
-  border-radius: var(--border-radius-full);
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--theme-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: var(--chat-input-max-width);
+  background-color: var(--chat-input-bg);
+  border-radius: var(--chat-input-border-radius);
+  padding: var(--chat-input-padding);
+  /* border: 1px solid var(--chat-input-border); */
+  /* box-shadow: var(--chat-input-shadow); */
 }
 
 .chat-input-field {
   flex-grow: 1;
   border: none;
   outline: none;
-  font-size: 1rem;
+  font-size: var(--chat-input-font-size);
   background-color: transparent;
-  color: var(--theme-text-main);
+  color: var(--chat-input-text);
+  min-height: var(--chat-input-min-height);
 }
 
 .chat-input-field::placeholder {
-  color: var(--theme-text-tertiary);
+  color: var(--chat-input-placeholder);
 }
 
-/* Old Toqan Design Overrides */
-.chat-input-container {
-  background-color: var(--theme-bg-input);
-  box-shadow: 0px 0.125rem 0.25rem 0px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--theme-border);
-  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
-  max-width: 48rem;
-  width: 100%;
-  border-radius: 1rem;
-  gap: .5rem;
-}
-
+/* Prefix & Suffix */
 .chat-input-prefix {
   display: flex;
-  gap: .25rem;
-  margin-left: -0.25rem;
+  gap: var(--chat-input-prefix-gap);
+  margin-left: var(--chat-input-prefix-margin);
 }
 
 .chat-input-prefix button,
 .chat-input-suffix button {
-  height: 36px;
-  width: 36px;
+  height: var(--chat-input-button-size);
+  width: var(--chat-input-button-size);
 }
 
-/* New Chat Input Variant (feature flag: newChatInput) */
+/* ============================================= */
+/*          NEW VARIANT (newChatInput flag)      */
+/* ============================================= */
+
+.chat-input-container--new {
+  /* Override tokens for new variant */
+  --chat-input-prefix-margin: 0;
+}
+
 .chat-input-container--new .chat-input-prefix {
-  margin-left: 0;
+  margin-left: var(--chat-input-prefix-margin);
 }
 
 .chat-input-container--new .chat-input-prefix button,
@@ -65,6 +95,7 @@
   /* color: var(--color-text-inverse); */
 }
 
+/* Context-specific overrides */
 .main-content .chat-input-container--new {
   margin-top: calc(var(--space-2) * -1);
 }

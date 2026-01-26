@@ -42,6 +42,7 @@ export const StreamingMessage: React.FC<StreamingMessageProps> = ({
 }) => {
   const [state, setState] = useState<StreamState>(enableStreaming ? 'thinking' : 'complete');
   const [visibleContent, setVisibleContent] = useState(enableStreaming ? '' : content);
+  const [isThinkingExpanded, setIsThinkingExpanded] = useState(false);
   const streamIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   // Track if this component has ever been through streaming (for preserving thinking indicator)
@@ -159,7 +160,7 @@ export const StreamingMessage: React.FC<StreamingMessageProps> = ({
   const showThinking = state === 'thinking' || hasBeenStreamedRef.current;
   
   return (
-    <div className={`streaming-message streaming-message--${state}`}>
+    <div className={`streaming-message streaming-message--${state}${isThinkingExpanded ? ' streaming-message--expanded' : ''}`}>
       {/* Thinking indicator - stays visible throughout, transitions to completed state */}
       {showThinking && (
         <ThinkingIndicator
@@ -167,6 +168,7 @@ export const StreamingMessage: React.FC<StreamingMessageProps> = ({
           contextId={flowId}
           duration={thinkingDuration}
           onComplete={handleThinkingComplete}
+          onExpandChange={setIsThinkingExpanded}
         />
       )}
       

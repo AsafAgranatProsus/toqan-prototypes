@@ -1,0 +1,141 @@
+/* ============================================= */
+/*          ACTION LIST ITEM COMPONENT           */
+/* Clickable list item for Jump Back In / Agents */
+/* ============================================= */
+
+/* ===== COMPONENT TOKENS ===== */
+.action-list-item {
+  /* Sizing */
+  --action-list-item-padding-y: var(--space-3);
+  --action-list-item-padding-x: var(--space-4);
+  --action-list-item-gap: var(--space-3);
+  
+  /* Border */
+  --action-list-item-border-radius: var(--radius-md);
+  --action-list-item-border-width: 1px;
+  
+  /* Colors */
+  --action-list-item-bg: transparent;
+  --action-list-item-bg-hover: var(--color-ui-hover);
+  --action-list-item-border-color: var(--color-ui-border);
+  
+  /* Icon */
+  --action-list-item-icon-size: var(--icon-size-md);
+  --action-list-item-icon-color: var(--theme-text-secondary);
+  
+  /* Typography - Title */
+  --action-list-item-title-font-size: var(--font-size-body-md);
+  --action-list-item-title-font-weight: var(--font-weight-medium);
+  --action-list-item-title-color: var(--theme-text-main);
+  
+  /* Typography - Description */
+  --action-list-item-desc-font-size: var(--font-size-body-sm);
+  --action-list-item-desc-color: var(--theme-text-secondary);
+  
+  /* Typography - Meta */
+  --action-list-item-meta-font-size: var(--font-size-body-xs);
+  --action-list-item-meta-color: var(--theme-text-tertiary);
+  
+  /* Chevron */
+  --action-list-item-chevron-size: var(--icon-size-sm);
+  --action-list-item-chevron-color: var(--theme-text-tertiary);
+}
+
+/* ===== BASE STYLES ===== */
+.action-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--action-list-item-gap);
+  width: 100%;
+  padding: var(--action-list-item-padding-y) var(--action-list-item-padding-x);
+  border-radius: var(--action-list-item-border-radius);
+  background-color: var(--action-list-item-bg);
+  border: none;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+
+/* ===== ICON ===== */
+.action-list-item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--action-list-item-icon-size);
+  height: var(--action-list-item-icon-size);
+  color: var(--action-list-item-icon-color);
+}
+
+.action-list-item__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== CONTENT ===== */
+.action-list-item__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.action-list-item__title {
+  font-size: var(--action-list-item-title-font-size);
+  font-weight: var(--action-list-item-title-font-weight);
+  color: var(--action-list-item-title-color);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.action-list-item__description {
+  font-size: var(--action-list-item-desc-font-size);
+  color: var(--action-list-item-desc-color);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== META ===== */
+.action-list-item__meta {
+  flex-shrink: 0;
+  font-size: var(--action-list-item-meta-font-size);
+  color: var(--action-list-item-meta-color);
+}
+
+/* ===== CHEVRON ===== */
+.action-list-item__chevron {
+  flex-shrink: 0;
+  width: var(--action-list-item-chevron-size);
+  height: var(--action-list-item-chevron-size);
+  color: var(--action-list-item-chevron-color);
+  opacity: 0;
+  transition: var(--transition-fast);
+}
+
+/* ===== STATES ===== */
+
+.action-list-item--clickable {
+  cursor: pointer;
+}
+
+.action-list-item--clickable:hover {
+  --action-list-item-bg: var(--action-list-item-bg-hover);
+}
+
+.action-list-item--clickable:hover .action-list-item__chevron {
+  opacity: 1;
+}
+
+.action-list-item--clickable:active {
+  transform: scale(0.99);
+}
+
+/* ===== FOCUS ===== */
+.action-list-item:focus-visible {
+  outline: 2px solid var(--theme-focus-ring);
+  outline-offset: 2px;
+}

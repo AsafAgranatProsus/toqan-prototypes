@@ -92,3 +92,10 @@
     align-items: center;
     padding-bottom: var(--space-4);
 }
+
+/* Assistant Message */
+.assistant-message {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
