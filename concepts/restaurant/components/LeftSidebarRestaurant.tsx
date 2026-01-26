@@ -37,6 +37,7 @@ interface NavItem {
 }
 
 const RESTAURANT_NAV: NavItem[] = [
+  { id: 'home', label: 'Home', icon: 'Home' },
   { id: 'priorities', label: 'Priorities', icon: 'FileStack' },
   { id: 'Assets', label: 'Assets', icon: 'FileText' }
   // { id: 'dashboard', label: 'Dashboard', icon: 'Layout' },
@@ -238,6 +239,7 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
           )}
           <div className="flex items-center gap-2">
            
+              {/* New button - commented out, replaced by Home nav item
               <Button
                 size={width > 200 ? 'sm' : null}
                 shape="circle"
@@ -256,6 +258,7 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
               >
                 {width < 200 ? null : 'New'}
               </Button>
+              */}
             <Button
               variant="text"
               shape="circle"
@@ -271,11 +274,24 @@ export const LeftSidebarRestaurant: React.FC<AreaProps> = ({ isOpen, setOpen, is
         <nav className="left-sidebar-restaurant__nav">
           {RESTAURANT_NAV.map((item) => {
             const hasSidePanel = item.id === 'Assets' || item.id === 'priorities';
-            // Only show active if panel is open (for items with side panels)
-            const isActive = activeNavId === item.id && (!hasSidePanel || isSecondaryPanelOpen);
+            const isHome = item.id === 'home';
+            // Home is active when there's no active session and no secondary panel open
+            // Other items: show active if panel is open (for items with side panels)
+            const isActive = isHome 
+              ? activeNavId === 'home' || (!activeSession && !isSecondaryPanelOpen)
+              : activeNavId === item.id && (!hasSidePanel || isSecondaryPanelOpen);
 
             const handleClick = () => {
               setActiveNavId(item.id);
+              
+              // Home nav: same behavior as 'New' button
+              if (isHome) {
+                startNewChat();
+                closeSecondaryPanel();
+                selectAsset(null);
+                return;
+              }
+              
               // Toggle secondary panel when clicking items with side panels
               if (hasSidePanel) {
                 if (isActive) {

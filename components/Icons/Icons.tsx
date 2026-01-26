@@ -57,6 +57,7 @@ import {
   Utensils,
   AlertTriangle,
   Info,
+  Home,
 } from 'lucide-react';
 import type { IconName } from '../../types';
 
@@ -135,6 +136,7 @@ const iconComponents: Record<IconName, React.FC<LucideProps>> = {
   Utensils,
   AlertTriangle,
   Info,
+  Home,
 };
 
 export const Icons: React.FC<IconProps> = ({ name, ...props }) => {

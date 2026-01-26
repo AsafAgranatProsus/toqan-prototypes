@@ -17,6 +17,7 @@ export type IconName =
   | 'FilePenLine'
   | 'SquarePen'
   | 'MessageSquare'
+  | 'Home'
   | 'Bot'
   | 'BarChart2'
   | 'PlugZap'
