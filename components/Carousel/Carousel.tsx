@@ -39,6 +39,9 @@ export interface CarouselProps {
   
   /** Scroll amount per arrow click (default: container width * 0.8) */
   scrollAmount?: number | 'full' | 'half';
+  
+  /** Show fade-out gradient mask on the right edge to indicate more content (default: false) */
+  showEdgeMask?: boolean;
 }
 
 export const Carousel: React.FC<CarouselProps> = ({
@@ -54,6 +57,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   style,
   gap,
   scrollAmount = 'half',
+  showEdgeMask = false,
 }) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -211,6 +215,7 @@ export const Carousel: React.FC<CarouselProps> = ({
     disabled ? 'carousel--disabled' : '',
     showScrollbar ? 'carousel--show-scrollbar' : '',
     arrowVariant === 'outside' ? 'carousel--arrows-outside' : '',
+    showEdgeMask && canScrollRight ? 'carousel--edge-mask' : '',
     className,
   ].filter(Boolean).join(' ');
 
@@ -245,7 +250,7 @@ export const Carousel: React.FC<CarouselProps> = ({
           }`}
         >
           <Button
-            variant="icon"
+            variant="filled"
             shape="circle"
             icon="ChevronLeft"
             onClick={scrollLeft}
@@ -274,7 +279,7 @@ export const Carousel: React.FC<CarouselProps> = ({
           }`}
         >
           <Button
-            variant="icon"
+            variant="filled"
             shape="circle"
             icon="ChevronRight"
             onClick={scrollRight}

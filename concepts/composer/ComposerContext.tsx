@@ -11,6 +11,7 @@ import { useConcept } from '../../context/ConceptContext';
 import { ConceptComposer, ContentArea, ComponentConfig } from './types';
 import { getComposer, isDefaultComponent, isHiddenArea } from './composers';
 import { RestaurantProvider } from '../restaurant';
+import { ChatPanelProvider } from '../../shared/chatPanel';
 
 interface ComposerContextType {
   /** The active composer configuration */
@@ -94,7 +95,13 @@ export const ComposerProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const wrappedChildren = useMemo(() => {
     switch (conceptId) {
       case 'restaurant':
-        return <RestaurantProvider>{children}</RestaurantProvider>;
+        return (
+          <RestaurantProvider>
+            <ChatPanelProvider>
+              {children}
+            </ChatPanelProvider>
+          </RestaurantProvider>
+        );
       default:
         return children;
     }

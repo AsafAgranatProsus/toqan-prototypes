@@ -51,6 +51,11 @@ export interface ChatSession {
    * Auto-generated from first user message or flow name.
    */
   title?: string;
+  
+  /**
+   * Whether this session is pinned to the top of history.
+   */
+  pinned?: boolean;
 }
 
 /**
@@ -257,6 +262,18 @@ export interface ChatSessionActions {
   
   /** Clear all sessions */
   clearAllSessions: () => void;
+  
+  /** Delete a specific session */
+  deleteSession: (sessionId: string) => void;
+  
+  /** Pin a session to the top of history */
+  pinSession: (sessionId: string) => void;
+  
+  /** Unpin a session */
+  unpinSession: (sessionId: string) => void;
+  
+  /** Rename a session */
+  renameSession: (sessionId: string, newTitle: string) => void;
 }
 
 /**
@@ -271,6 +288,9 @@ export interface ChatSessionContextValue extends ChatSessionActions {
   
   /** Only sessions that have been persisted (user contributed) */
   persistedSessions: ChatSession[];
+  
+  /** Pinned sessions (sorted by pinned time) */
+  pinnedSessions: ChatSession[];
   
   /** Current flow (if activeSession has a flowId) */
   currentFlow: ChatFlow | null;

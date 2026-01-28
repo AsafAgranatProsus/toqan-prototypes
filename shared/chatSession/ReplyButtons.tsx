@@ -37,7 +37,7 @@ export const ReplyButtons: React.FC<ReplyButtonsProps> = ({
         <Button
           key={button.id}
           variant={button.variant === 'primary' ? 'outlined' : 'outlined'}
-          size="sm"
+          size="md"
           shape="circle"
           onClick={() => onButtonClick(button)}
           disabled={disabled}

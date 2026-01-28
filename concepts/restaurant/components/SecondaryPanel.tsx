@@ -5,12 +5,13 @@
  * Displays the list of restaurant assets. Clicking an asset opens the canvas.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Icons } from '../../../components/Icons/Icons';
 import Button from '../../../components/Button/Button';
 import { ResizeHandle } from '../../../components/ResizeHandle/ResizeHandle';
 import { useFeatureFlags } from '../../../context/FeatureFlagContext';
 import { useRestaurant } from '../context/RestaurantContext';
+import { useChatSession } from '../../../shared/chatSession';
 import { RESTAURANT_ASSETS, ASSET_CATEGORIES } from '../data/assets';
 import './SecondaryPanel.css';
 
@@ -28,11 +29,18 @@ interface SecondaryPanelProps {
 export const SecondaryPanel: React.FC<SecondaryPanelProps> = ({ 
   isOpen, 
   onClose,
-  title = 'Assets'
+  title = 'Library'
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const { selectedAssetId, selectAsset } = useRestaurant();
   const { isFeatureActive } = useFeatureFlags();
+  const { endSession } = useChatSession();
+  
+  // Handle asset selection - ends any active chat session
+  const handleAssetSelect = useCallback((assetId: string) => {
+    endSession();
+    selectAsset(assetId);
+  }, [endSession, selectAsset]);
   
   // Load width from localStorage
   const [width, setWidth] = useState(() => {
@@ -58,7 +66,7 @@ export const SecondaryPanel: React.FC<SecondaryPanelProps> = ({
   };
 
   // Filter assets based on search
-  const filteredAssets = RESTAURANT_ASSETS.filter(asset =>
+  const filteredLibrary = RESTAURANT_ASSETS.filter(asset =>
     asset.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -108,7 +116,7 @@ export const SecondaryPanel: React.FC<SecondaryPanelProps> = ({
 
       <div className="secondary-panel__content">
         <div className="secondary-panel__list">
-          {filteredAssets.map((asset) => {
+          {filteredLibrary.map((asset) => {
             const categoryMeta = ASSET_CATEGORIES[asset.category];
             return (
               <div
@@ -116,7 +124,7 @@ export const SecondaryPanel: React.FC<SecondaryPanelProps> = ({
                 className={`secondary-panel__item ${
                   selectedAssetId === asset.id ? 'secondary-panel__item--selected' : ''
                 }`}
-                onClick={() => selectAsset(asset.id)}
+                onClick={() => handleAssetSelect(asset.id)}
               >
                 <Icons name={categoryMeta.icon} />
                 <div className="secondary-panel__item-content">
@@ -130,7 +138,7 @@ export const SecondaryPanel: React.FC<SecondaryPanelProps> = ({
           })}
         </div>
 
-        {filteredAssets.length === 0 && (
+        {filteredLibrary.length === 0 && (
           <div className="secondary-panel__empty">
             <Icons name="FileText" />
             <p>No assets found</p>

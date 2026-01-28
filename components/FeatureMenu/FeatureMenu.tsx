@@ -739,6 +739,12 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                     checked={flags.restaurantRunAgents}
                     onChange={(checked) => setFlag('restaurantRunAgents', checked)}
                   />
+                  <hr style={{ margin: 'var(--space-2) 0', border: 'none', borderTop: '1px solid var(--color-ui-border)' }} />
+                  <Toggle
+                    label="Locations"
+                    checked={flags.restaurantLocations}
+                    onChange={(checked) => setFlag('restaurantLocations', checked)}
+                  />
                 </div>
               </Collapsible.Content>
             </Collapsible>
@@ -805,7 +811,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           </Collapsible> */}
 
           {Object.keys(flags).filter(flag => 
-            !['newBranding', 'newTypography', 'newBubble', 'newChatInput', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger', 'newGradientBackground', 'restaurantBreadcrumbs', 'restaurantTopNavButtons', 'restaurantTopNavSearchBar', 'restaurantSubtitle', 'restaurantAtAGlance', 'restaurantJumpBackIn', 'restaurantQuickActions', 'restaurantRunAgents'].includes(flag)
+            !['newBranding', 'newTypography', 'newBubble', 'newChatInput', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger', 'newGradientBackground', 'restaurantBreadcrumbs', 'restaurantTopNavButtons', 'restaurantTopNavSearchBar', 'restaurantSubtitle', 'restaurantAtAGlance', 'restaurantJumpBackIn', 'restaurantQuickActions', 'restaurantRunAgents', 'restaurantLocations'].includes(flag)
           ).map(flag => (
             <Toggle
               key={flag}

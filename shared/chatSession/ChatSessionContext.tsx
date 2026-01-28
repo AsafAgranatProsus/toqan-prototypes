@@ -368,13 +368,66 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
     setStorage({ sessions: [], activeSessionId: null });
   }, []);
   
+  /**
+   * Delete a specific session.
+   */
+  const deleteSession = useCallback((sessionId: string) => {
+    setStorage(prev => {
+      const newSessions = prev.sessions.filter(s => s.id !== sessionId);
+      const newActiveId = prev.activeSessionId === sessionId ? null : prev.activeSessionId;
+      return { sessions: newSessions, activeSessionId: newActiveId };
+    });
+  }, []);
+  
+  /**
+   * Pin a session to the top of history.
+   */
+  const pinSession = useCallback((sessionId: string) => {
+    setStorage(prev => ({
+      ...prev,
+      sessions: prev.sessions.map(s => 
+        s.id === sessionId ? { ...s, pinned: true } : s
+      ),
+    }));
+  }, []);
+  
+  /**
+   * Unpin a session.
+   */
+  const unpinSession = useCallback((sessionId: string) => {
+    setStorage(prev => ({
+      ...prev,
+      sessions: prev.sessions.map(s => 
+        s.id === sessionId ? { ...s, pinned: false } : s
+      ),
+    }));
+  }, []);
+  
+  /**
+   * Rename a session.
+   */
+  const renameSession = useCallback((sessionId: string, newTitle: string) => {
+    setStorage(prev => ({
+      ...prev,
+      sessions: prev.sessions.map(s => 
+        s.id === sessionId ? { ...s, title: newTitle } : s
+      ),
+    }));
+  }, []);
+  
   // ============================================
   // Context Value
   // ============================================
   
-  // Filter to only persisted sessions for history display
+  // Filter to only persisted sessions for history display (excluding pinned)
   const persistedSessions = useMemo(() => 
-    storage.sessions.filter(s => s.isPersisted),
+    storage.sessions.filter(s => s.isPersisted && !s.pinned),
+    [storage.sessions]
+  );
+  
+  // Filter to only pinned sessions
+  const pinnedSessions = useMemo(() => 
+    storage.sessions.filter(s => s.isPersisted && s.pinned),
     [storage.sessions]
   );
   
@@ -383,6 +436,7 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
     activeSession,
     sessions: storage.sessions,
     persistedSessions,
+    pinnedSessions,
     currentFlow,
     currentNode,
     isSessionActive: activeSession !== null,
@@ -395,10 +449,15 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
     endSession,
     startNewChat,
     clearAllSessions,
+    deleteSession,
+    pinSession,
+    unpinSession,
+    renameSession,
   }), [
     activeSession,
     storage.sessions,
     persistedSessions,
+    pinnedSessions,
     currentFlow,
     currentNode,
     startSession,
@@ -408,6 +467,10 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
     endSession,
     startNewChat,
     clearAllSessions,
+    deleteSession,
+    pinSession,
+    unpinSession,
+    renameSession,
   ]);
   
   return (

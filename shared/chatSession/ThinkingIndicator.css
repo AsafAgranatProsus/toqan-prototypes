@@ -15,7 +15,7 @@
   --thinking-bullet-color: var(--color-primary-default);
   
   /* Spacing */
-  --thinking-padding: var(--space-3);
+  --thinking-padding: var(--space-2) var(--space-3);
   --thinking-gap: var(--space-2);
   --thinking-content-gap: var(--space-1);
   --thinking-margin-bottom: var(--space-3);
@@ -45,6 +45,7 @@
 .thinking-indicator {
   margin-bottom: var(--thinking-margin-bottom);
   border-radius: var(--thinking-border-radius);
+  border-top-left-radius: 0;
   background: var(--thinking-bg);
   overflow: hidden;
   animation: fadeIn 0.2s ease-out;

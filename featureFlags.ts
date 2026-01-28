@@ -32,4 +32,6 @@ export const featureFlags = {
   restaurantJumpBackIn: true,
   restaurantQuickActions: true,
   restaurantRunAgents: true,
+  // Restaurant navigation
+  restaurantLocations: true,
 };

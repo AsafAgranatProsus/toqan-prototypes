@@ -119,8 +119,8 @@
 
 /* Filled Button - Highest emphasis (alias for primary) */
 .btn--filled {
-  background-color: var(--color-primary-default);
-  color: var(--color-primary-on-container);
+  background-color: var(--color-primary-light);
+    color: var(--color-primary-default);
 }
 
 .btn--filled:hover:not(:disabled) {

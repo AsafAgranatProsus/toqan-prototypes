@@ -1,11 +1,12 @@
 /**
- * Restaurant Assets Data
+ * Restaurant Library Data
  * 
  * Centralized asset definitions for the restaurant concept prototype.
  * Each asset includes metadata and content for display in the canvas.
  */
 
 import type { IconName } from '../../../types';
+import type { QuickAction } from '../../../shared/chatPanel/types';
 
 // Asset categories with metadata
 export type AssetCategory = 'labor' | 'inventory' | 'finance' | 'menu' | 'ops';
@@ -90,6 +91,8 @@ export interface Asset {
   statusDetail?: string;
   updatedAt: string;
   content: ContentBlock[];
+  /** Context-specific quick actions for this asset */
+  quickActions?: QuickAction[];
 }
 
 // All restaurant assets
@@ -101,6 +104,11 @@ export const RESTAURANT_ASSETS: Asset[] = [
     status: 'Active',
     statusDetail: 'Updated 2h ago',
     updatedAt: '2h ago',
+    quickActions: [
+      { id: 'adjust-shifts', label: 'Adjust shifts', icon: 'Clock', prompt: 'Help me adjust shifts for this week' },
+      { id: 'check-overtime', label: 'Check overtime risk', icon: 'AlertTriangle', prompt: 'Analyze overtime risk for this roster' },
+      { id: 'send-reminders', label: 'Send reminders', icon: 'Mail', prompt: 'Draft shift reminder messages for staff' },
+    ],
     content: [
       {
         type: 'chart',
@@ -159,6 +167,11 @@ export const RESTAURANT_ASSETS: Asset[] = [
     status: 'Draft',
     statusDetail: 'Value: $1,240.50',
     updatedAt: '1d ago',
+    quickActions: [
+      { id: 'finalize-order', label: 'Finalize order', icon: 'CheckCircle', prompt: 'Review and finalize this supplier order' },
+      { id: 'compare-prices', label: 'Compare prices', icon: 'DollarSign', prompt: 'Compare these prices with other suppliers' },
+      { id: 'adjust-quantities', label: 'Adjust quantities', icon: 'Package', prompt: 'Help me adjust order quantities based on forecast' },
+    ],
     content: [
       {
         type: 'table',
@@ -192,6 +205,11 @@ export const RESTAURANT_ASSETS: Asset[] = [
     status: 'Finalized',
     statusDetail: 'Net Profit: 8.2%',
     updatedAt: '3d ago',
+    quickActions: [
+      { id: 'explain-variance', label: 'Explain variances', icon: 'TrendingUp', prompt: 'Explain the key variances in this P&L report' },
+      { id: 'forecast-next', label: 'Forecast next month', icon: 'Activity', prompt: 'Create a forecast for next month based on this data' },
+      { id: 'export-report', label: 'Export report', icon: 'FileText', prompt: 'Generate a summary report for stakeholders' },
+    ],
     content: [
       {
         type: 'chart',
@@ -254,6 +272,11 @@ export const RESTAURANT_ASSETS: Asset[] = [
     status: 'Report',
     statusDetail: 'Recommendations Available',
     updatedAt: '1w ago',
+    quickActions: [
+      { id: 'optimize-menu', label: 'Optimize menu', icon: 'Utensils', prompt: 'Suggest menu optimizations based on this analysis' },
+      { id: 'pricing-strategy', label: 'Review pricing', icon: 'DollarSign', prompt: 'Review pricing strategy for underperforming items' },
+      { id: 'remove-dogs', label: 'Handle low performers', icon: 'AlertTriangle', prompt: 'What should I do with the low-performing menu items?' },
+    ],
     content: [
       {
         type: 'chart',
@@ -316,6 +339,11 @@ export const RESTAURANT_ASSETS: Asset[] = [
     status: 'Reference',
     statusDetail: 'Updated Jan 15',
     updatedAt: 'Jan 15',
+    quickActions: [
+      { id: 'find-coverage', label: 'Find coverage', icon: 'Users', prompt: 'Help me find coverage for an open shift' },
+      { id: 'update-availability', label: 'Update availability', icon: 'Clock', prompt: 'Update staff availability preferences' },
+      { id: 'schedule-training', label: 'Schedule training', icon: 'Activity', prompt: 'Schedule cross-training for staff flexibility' },
+    ],
     content: [
       {
         type: 'table',
@@ -344,5 +372,5 @@ export const getAssetById = (id: string): Asset | undefined =>
   RESTAURANT_ASSETS.find(asset => asset.id === id);
 
 // Helper to get assets by category
-export const getAssetsByCategory = (category: AssetCategory): Asset[] =>
+export const getLibraryByCategory = (category: AssetCategory): Asset[] =>
   RESTAURANT_ASSETS.filter(asset => asset.category === category);

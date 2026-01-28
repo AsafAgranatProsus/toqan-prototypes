@@ -1,0 +1,58 @@
+---
+description: Enforce Component Token Layer pattern for CSS files - aggregate CSS variables at top
+globs: **/*.css
+alwaysApply: false
+---
+
+# CSS Component Token Layer Pattern
+
+**BEFORE editing or creating any CSS file**, apply this pattern:
+
+## Rule: Aggregate All CSS Variables at Top
+
+All component-scoped CSS variables MUST be defined at the **top** of the main component selector:
+
+```css
+.component-name {
+  /* Component Token Layer - Color Palette */
+  --component-title-color: var(--color-text-secondary);
+  --component-item-hover-bg: var(--color-ui-active);
+  --component-border: var(--color-ui-border);
+  
+  /* Layout properties below */
+  display: flex;
+  ...
+}
+```
+
+## When Creating New CSS Files
+
+1. Start with the Component Token Layer comment
+2. Define all color/theme variables first
+3. Then add layout/styling properties
+
+## When Editing Existing CSS Files
+
+1. **Check** if tokens are scattered throughout the file
+2. **If yes**: Refactor to aggregate them at top of main selector FIRST
+3. **Then** make your edits
+
+## DON'T
+
+- ❌ Scatter token definitions throughout the file
+- ❌ Use `--theme-*` tokens (use `--color-*` instead)
+- ❌ Skip this pattern for "quick fixes"
+
+## Portaled Components (modals, dropdowns, tooltips)
+
+Define tokens in `:root` instead, since portals render outside DOM hierarchy:
+
+```css
+:root {
+  --component-menu-bg: var(--color-ui-background-elevated);
+}
+```
+
+## Reference
+
+Full documentation: `docs/COMPONENT_TOKEN_PATTERN.md`

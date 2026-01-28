@@ -133,7 +133,7 @@
   --shadow-default: 0 2px 4px var(--color-ui-shadow);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-modal: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 4px 18px rgba(0, 0, 0, 0.1);
   --shadow-input: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   /* ===== TYPOGRAPHY ===== */
@@ -350,7 +350,7 @@
   --shadow-default: 0 0.125rem 0.25rem 0 var(--color-ui-shadow);
   --shadow-md: 0 4px 12px hsl(212 45% 50% / 0.1);
   --shadow-lg: 0 10px 15px -3px hsl(212 45% 50% / 0.15);
-  --shadow-modal: 0 0.25rem 0.5rem 0 rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 0.25rem 1.5rem 0 rgba(0, 0, 0, 0.3);
   --shadow-input: 0 0.125rem 0.25rem 0 var(--color-ui-shadow);
 
   /* Typography remains same - can customize if needed */

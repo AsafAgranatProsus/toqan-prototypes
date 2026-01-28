@@ -16,7 +16,7 @@
   
   /* Colors */
   --insight-card-bg: var(--color-surface-container);
-  --insight-card-bg-hover: var(--color-ui-hover);
+  --insight-card-bg-hover: var(--color-ui-active);
   --insight-card-border-color: var(--color-ui-border);
   --insight-card-border-color-hover: var(--color-ui-border-hover, var(--color-ui-border));
   
@@ -108,7 +108,7 @@
 }
 
 .insight-card--clickable:hover {
-  --insight-card-bg: var(--insight-card-bg-hover);
+  background-color:  var(--insight-card-bg-hover);
   --insight-card-border-color: var(--insight-card-border-color-hover);
 }
 

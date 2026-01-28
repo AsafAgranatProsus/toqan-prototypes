@@ -17,12 +17,13 @@
   margin-top: var(--space-3);
 }
 
-.reply-buttons__button {
+.btn.reply-buttons__button {
   flex-shrink: 0;
   /* Staggered animation - set via inline style or nth-child */
   opacity: 0;
   transform: translateY(8px);
   animation: revealButton 0.3s ease-out forwards;
+  padding: var(--space-2) var(--space-3);
 }
 
 /* Staggered delays for buttons */

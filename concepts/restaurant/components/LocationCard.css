@@ -1,0 +1,192 @@
+/**
+ * Location Card Styles
+ * 
+ * Displays a single restaurant location with key metrics.
+ */
+
+/* ===== COMPONENT TOKENS ===== */
+.location-card {
+  --location-card-bg: var(--color-surface-container-low);
+  --location-card-bg-hover: var(--color-ui-active);
+  --location-card-border: var(--color-ui-border);
+  --location-card-radius: var(--radius-default);
+  --location-card-padding: var(--space-3);
+  --location-card-gap: var(--space-3);
+  
+  /* Text */
+  --location-card-text: var(--color-text-default);
+  --location-card-text-secondary: var(--color-text-secondary);
+  
+  /* Status colors */
+  --location-card-status-active: var(--color-success-default);
+  --location-card-status-warning: var(--color-warning-default);
+  --location-card-status-critical: var(--color-error-default);
+  
+  /* Metric colors */
+  --location-card-metric-win: var(--color-success-default);
+  --location-card-metric-fire: var(--color-error-default);
+  --location-card-metric-neutral: var(--color-text-secondary);
+  
+  /* Icon */
+  --location-card-icon-size: 20px;
+  --location-card-icon-bg: var(--color-primary-light);
+  --location-card-icon-color: var(--color-primary-default);
+}
+
+/* ===== BASE STYLES ===== */
+.location-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--location-card-gap);
+  padding: var(--location-card-padding);
+  background: var(--location-card-bg);
+  border: 1px solid var(--location-card-border);
+  border-radius: var(--location-card-radius);
+  transition: all 0.15s ease;
+}
+
+.location-card--clickable {
+  cursor: pointer;
+}
+
+.location-card--clickable:hover {
+  background: var(--location-card-bg-hover);
+  border-color: var(--color-primary-default);
+}
+
+.location-card--clickable:focus-visible {
+  outline: 2px solid var(--color-primary-default);
+  outline-offset: 2px;
+}
+
+.location-card--clickable:active {
+  transform: scale(0.98);
+}
+
+/* ===== HEADER ===== */
+.location-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.location-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--location-card-icon-size);
+  height: var(--location-card-icon-size);
+  /* background: var(--location-card-icon-bg); */
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.location-card__icon svg {
+  width: 18px;
+  height: 18px;
+  color: var(--location-card-icon-color);
+}
+
+.location-card--central-kitchen .location-card__icon {
+  --location-card-icon-bg: var(--color-secondary-light);
+  --location-card-icon-color: var(--color-secondary-default);
+}
+
+.location-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.location-card__name {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--location-card-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.location-card__address {
+  font-size: var(--font-size-body-xs);
+  color: var(--location-card-text-secondary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== STATUS ===== */
+.location-card__status {
+  flex-shrink: 0;
+}
+
+.location-card__status-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--location-card-status-active);
+}
+
+.location-card__status--warning .location-card__status-dot {
+  background: var(--location-card-status-warning);
+}
+
+.location-card__status--critical .location-card__status-dot {
+  background: var(--location-card-status-critical);
+}
+
+/* ===== METRICS ===== */
+.location-card__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.location-card__metric {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-body-xs);
+  color: var(--location-card-metric-neutral);
+}
+
+.location-card__metric svg {
+  width: 12px;
+  height: 12px;
+}
+
+.location-card__metric--win {
+  color: var(--location-card-metric-win);
+}
+
+.location-card__metric--fire {
+  color: var(--location-card-metric-fire);
+}
+
+.location-card__metric-value {
+  font-weight: var(--font-weight-medium);
+}
+
+.location-card__metric-label {
+  color: var(--location-card-text-secondary);
+}
+
+/* ===== COMPACT VARIANT ===== */
+.location-card--compact {
+  padding: var(--space-2);
+}
+
+.location-card--compact .location-card__icon {
+  --location-card-icon-size: 24px;
+}
+
+.location-card--compact .location-card__icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.location-card--compact .location-card__metrics {
+  display: none;
+}

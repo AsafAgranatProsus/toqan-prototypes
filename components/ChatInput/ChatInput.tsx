@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import './ChatInput.css';
@@ -16,9 +16,26 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, placeholder }) => {
   const [message, setMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const hasText = message.trim().length > 0;
   const { setActiveScenario, scenarios } = useScenarios();
   const { flags } = useFeatureFlags();
+
+  // Auto-resize textarea to fit content
+  const adjustTextareaHeight = useCallback(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      // Reset height to auto to get the correct scrollHeight
+      textarea.style.height = 'auto';
+      // Set height to scrollHeight to fit content
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, []);
+
+  // Adjust height when message changes
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [message, adjustTextareaHeight]);
 
   const handleSend = () => {
     if (hasText) {
@@ -28,16 +45,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, placeholder }) => {
         setActiveScenario(message);
       }
       setMessage('');
+      // Reset height after sending
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Submit on Enter (without Shift)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       handleSend();
+      return;
     }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    
+    // Alt+Number shortcuts for scenarios
     const isNumberKey = /^[1-9]$/.test(e.key);
     if (isNumberKey && e.altKey) {
       e.preventDefault();
@@ -56,14 +79,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, placeholder }) => {
           <div className="chat-input-prefix">
             <Button icon="Plus" variant="text" shape="rounded" aria-label="Add content" />
           </div>
-          <input
-            type="text"
+          <textarea
+            ref={textareaRef}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
             onKeyDown={handleKeyDown}
             placeholder={placeholder ?? "Message Toqan"}
             className="chat-input-field"
+            rows={1}
           />
           <div className="chat-input-suffix">
             {hasText ? (
@@ -109,14 +132,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, placeholder }) => {
             onClick={() => setShowModal(true)}
           />
         </div>
-        <input
-          type="text"
+        <textarea
+          ref={textareaRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
           onKeyDown={handleKeyDown}
           placeholder={placeholder ?? "Message Toqan"}
           className="chat-input-field"
+          rows={1}
         />
         <div className="chat-input-suffix">
           <Button

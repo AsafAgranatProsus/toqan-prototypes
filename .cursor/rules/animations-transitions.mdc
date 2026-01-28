@@ -1,0 +1,99 @@
+---
+description: Premium animation and transition patterns - GSAP timelines, shared-element transitions, steep curves
+globs: "**/*.{tsx,ts,css}"
+alwaysApply: false
+---
+
+# Animation & Transition Standards
+
+**Goal**: Every motion should feel smooth, sleek, and impressive. Prioritize shared-element transitions.
+
+## Core Principles
+
+1. **Use GSAP** - Don't rely on CSS transitions for complex motion
+2. **Use Timelines** - Sequence animations properly with `gsap.timeline()`
+3. **Steep curves, long tails** - Use `power4.out` or `expo.out` for that premium feel
+4. **Shared-element transitions** - Morph elements in-place rather than fade/slide
+
+## Easing Guidelines
+
+```typescript
+// ✅ Premium feel - fast start, long gentle slowdown
+ease: 'power4.out'    // Most common
+ease: 'expo.out'      // Even more dramatic tail
+
+// ❌ Avoid - feels cheap/robotic
+ease: 'linear'
+ease: 'ease'          // CSS default
+```
+
+## Shared-Element Transition Pattern (Container Transform)
+
+Morph one element into another at the same position. See `FeatureMenu.tsx` for reference.
+
+```typescript
+// FAB → Menu morph
+const tl = gsap.timeline({ onComplete: () => setIsAnimating(false) });
+
+// Set initial FAB state
+gsap.set(menuRef.current, {
+  width: fabBounds.width,
+  height: fabBounds.height,
+  borderRadius: '50%',
+});
+
+// Morph to menu
+tl.to(menuRef.current, {
+  width: 320,
+  height: contentHeight,
+  borderRadius: '2rem',
+  duration: 0.5,
+  ease: 'power4.out',
+}, 0.1);
+
+// Fade content after container starts morphing
+tl.to(contentRef.current, {
+  opacity: 1,
+  duration: 0.4,
+  ease: 'power4.out',
+}, 0.3);
+```
+
+## Staggered Entrance Pattern
+
+See `useHomeEntranceAnimation.ts` for reference.
+
+```typescript
+gsap.timeline().to(elements, {
+  opacity: 1,
+  y: 0,
+  duration: 0.5,
+  stagger: 0.06,
+  ease: 'power4.out',
+});
+```
+
+## CSS Performance
+
+Add `will-change` for animated properties:
+
+```css
+.animated-element {
+  will-change: width, height, border-radius, opacity, transform;
+}
+```
+
+## Checklist
+
+When implementing motion:
+- [ ] Use GSAP, not CSS transitions for complex sequences
+- [ ] Use `gsap.timeline()` for multi-step animations
+- [ ] Use `power4.out` or `expo.out` easing
+- [ ] Consider shared-element transition if two UI states share position
+- [ ] Add `will-change` in CSS for performance
+- [ ] Respect `prefers-reduced-motion`
+
+## Reference Files
+
+- **Container Transform**: `components/FeatureMenu/FeatureMenu.tsx`
+- **Staggered Entrance**: `shared/chatPanel/useHomeEntranceAnimation.ts`

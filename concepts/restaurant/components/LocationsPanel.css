@@ -1,0 +1,204 @@
+/**
+ * Locations Panel Styles (Restaurant Concept)
+ * 
+ * Shows locations grid and detail views.
+ * Wider by default than other panels (at least double).
+ */
+
+/* ===== COMPONENT TOKENS ===== */
+.locations-panel {
+  --locations-panel-bg: var(--color-surface-container-low);
+  --locations-panel-border: var(--color-ui-border);
+  --locations-panel-text: var(--color-text-default);
+  --locations-panel-text-secondary: var(--color-text-secondary);
+  --locations-panel-header-height: var(--header-height);
+  --locations-panel-width: 640px;
+  
+  /* View transition */
+  --locations-panel-transition-duration: 0.3s;
+  --locations-panel-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --locations-panel-slide-distance: 40px;
+}
+
+/* ===== BASE STYLES ===== */
+.locations-panel {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--locations-panel-width);
+  height: 100%;
+  background: var(--locations-panel-bg);
+  border-right: 1px solid var(--locations-panel-border);
+  animation: slideInLocations 0.25s cubic-bezier(0.05, 0.84, 0.31, 1);
+}
+
+@keyframes slideInLocations {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== HEADER ===== */
+.locations-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--locations-panel-border);
+  height: var(--locations-panel-header-height);
+  flex-shrink: 0;
+}
+
+.locations-panel__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--locations-panel-text);
+  margin: 0;
+}
+
+.locations-panel__title svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-primary-default);
+}
+
+.locations-panel__count {
+  font-size: var(--font-size-body-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--locations-panel-text-secondary);
+  background: var(--color-ui-background);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ===== CONTENT ===== */
+.locations-panel__content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  /* Contain layout to prevent reflows from propagating */
+  contain: layout style;
+}
+
+/* ===== VIEW TRANSITIONS ===== */
+.locations-panel__view {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Force GPU layer for performant animation */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  /* Block all inherited transitions during our animation */
+  backface-visibility: hidden;
+}
+
+/* List → Details: slide left and fade in */
+.locations-panel__view--slide-left {
+  animation: slideLeftFadeIn var(--locations-panel-transition-duration) var(--locations-panel-transition-easing) forwards;
+}
+
+/* Details → List: slide right and fade in */
+.locations-panel__view--slide-right {
+  animation: slideRightFadeIn var(--locations-panel-transition-duration) var(--locations-panel-transition-easing) forwards;
+}
+
+/* Disable ALL transitions on children during animation to prevent jank */
+.locations-panel__view--slide-left *,
+.locations-panel__view--slide-right * {
+  transition: none !important;
+}
+
+@keyframes slideLeftFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--locations-panel-slide-distance), 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideRightFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(calc(var(--locations-panel-slide-distance) * -1), 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .locations-panel__view--slide-left,
+  .locations-panel__view--slide-right {
+    animation: none;
+  }
+  
+  .locations-panel__view {
+    will-change: auto;
+  }
+}
+
+/* Override the embedded view styles to fit in panel */
+.locations-panel__view .locations-view {
+  height: 100%;
+}
+
+.locations-panel__view .locations-grid {
+  --locations-grid-padding: var(--space-4);
+  --locations-grid-gap: var(--space-4);
+  height: 100%;
+}
+
+.locations-panel__view .locations-grid__header {
+  padding: 0;
+}
+
+.locations-panel__view .locations-grid__title {
+  font-size: var(--font-size-body-lg);
+}
+
+.locations-panel__view .location-detail {
+  --location-detail-padding: var(--space-4);
+  --location-detail-gap: var(--space-4);
+  height: 100%;
+}
+
+/* Hide duplicate title in panel since we have panel header */
+.locations-panel__view .locations-grid__title {
+  display: none;
+}
+
+/* Adjust grid header in panel context */
+.locations-panel__view .locations-grid__header {
+  flex-direction: row;
+  align-items: center;
+}
+
+.locations-panel__view .locations-grid__title-row {
+  flex: 1;
+}
+
+/* Adjust detail view header in panel context */
+.locations-panel__view .location-detail__header {
+  padding: 0;
+}
+
+.locations-panel__view .location-detail__back-button {
+  margin-left: calc(var(--space-2) * -1);
+}

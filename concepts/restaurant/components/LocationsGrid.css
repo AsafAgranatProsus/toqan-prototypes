@@ -1,0 +1,105 @@
+/**
+ * Locations Grid Styles
+ * 
+ * Grid layout for displaying restaurant locations grouped by city.
+ */
+
+/* ===== COMPONENT TOKENS ===== */
+.locations-grid {
+  --locations-grid-padding: var(--space-4);
+  --locations-grid-gap: var(--space-4);
+  --locations-grid-section-gap: var(--space-6);
+  --locations-grid-card-min-width: 240px;
+  
+  /* Text */
+  --locations-grid-text: var(--color-text-default);
+  --locations-grid-text-secondary: var(--color-text-secondary);
+  
+  /* Section */
+  --locations-grid-section-title-size: var(--font-size-body-sm);
+  --locations-grid-section-title-weight: var(--font-weight-medium);
+}
+
+/* ===== BASE STYLES ===== */
+.locations-grid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.locations-grid__header {
+  padding: var(--locations-grid-padding);
+  padding-bottom: 0;
+  flex-shrink: 0;
+}
+
+.locations-grid__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.locations-grid__title {
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--locations-grid-text);
+  margin: 0;
+}
+
+/* ===== CONTENT ===== */
+.locations-grid__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--locations-grid-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--locations-grid-section-gap);
+}
+
+/* ===== SECTIONS ===== */
+.locations-grid__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.locations-grid__section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--locations-grid-section-title-size);
+  font-weight: var(--locations-grid-section-title-weight);
+  color: var(--locations-grid-text);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.locations-grid__section-count {
+  font-size: var(--font-size-body-xs);
+  font-weight: var(--font-weight-regular);
+  color: var(--locations-grid-text-secondary);
+  background: var(--color-ui-background);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ===== CARDS GRID ===== */
+.locations-grid__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--locations-grid-card-min-width), 1fr));
+  gap: var(--locations-grid-gap);
+}
+
+/* ===== KITCHEN (single card) ===== */
+.locations-grid__kitchen {
+  /* max-width: 400px; */
+}
+
+.locations-grid__section--kitchen {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-ui-border);
+}

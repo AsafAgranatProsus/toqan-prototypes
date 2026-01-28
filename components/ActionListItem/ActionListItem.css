@@ -16,7 +16,7 @@
   
   /* Colors */
   --action-list-item-bg: transparent;
-  --action-list-item-bg-hover: var(--color-ui-hover);
+  --action-list-item-bg-hover: var(--color-ui-active);
   --action-list-item-border-color: var(--color-ui-border);
   
   /* Icon */
@@ -124,7 +124,7 @@
 }
 
 .action-list-item--clickable:hover {
-  --action-list-item-bg: var(--action-list-item-bg-hover);
+  background-color: var(--action-list-item-bg-hover);
 }
 
 .action-list-item--clickable:hover .action-list-item__chevron {

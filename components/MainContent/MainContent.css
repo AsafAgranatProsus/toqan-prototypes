@@ -51,6 +51,7 @@
   --main-content-chat-input-max-width: 800px;
   --main-content-chat-input-padding-x: var(--space-4);
   --main-content-chat-input-padding-bottom: 3vh;
+  --main-content-chat-input-bg-gradient: var(--color-surface-container-lowest);
   
   /* Dropdown Button */
   --main-content-dropdown-radius: 0.5rem;
@@ -85,6 +86,8 @@
   position: relative;
   overflow: hidden;
   padding: var(--main-content-padding) var(--main-content-padding) 0;
+  container-type: inline-size;
+  container-name: main-content;
 }
 
 /* Legacy wrapper styles */
@@ -199,12 +202,24 @@
   display: flex;
     align-items: center;
     flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+
+}
+
+.main-content__greeting-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
 .main-content__greeting-title {
   font-size: var(--main-content-greeting-title-font-size);
-  font-weight: var(--font-weight-bold);
-  font-style: italic;
+  font-weight: var(--font-weight-medium);
+  /* font-style: italic; */
   color: var(--theme-text-main);
   margin: 0;
   letter-spacing: var(--main-content-greeting-title-letter-spacing);
@@ -212,7 +227,7 @@
 }
 
 .main-content__greeting-subtitle {
-  font-size: var(--font-size-body-lg);
+  font-size: var(--font-size-heading-lg);
   color: var(--theme-text-secondary);
   margin: 0;
 }
@@ -222,6 +237,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  z-index: 1;
 
   /* .chip {
     --chip-bg: var(--main-content-quick-actions-chip-bg);
@@ -250,7 +266,7 @@
 
 .main-content__at-a-glance {
   width: 100%;
-  margin-top: var(--main-content-glance-margin-top);
+  /* margin-top: var(--main-content-glance-margin-top); */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -258,6 +274,7 @@
   .main-content__section-title {
     max-width: calc(var(--main-content-chat-input-max-width) - 2rem);
     width: 100%;
+    padding-left: var(--space-4);
   }
 
   .insight-card {
@@ -299,9 +316,10 @@
   }
 }
 
-@media (max-width: 768px) {
+@container main-content (max-width: 768px) {
   .main-content__action-lists {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
@@ -493,6 +511,121 @@
   }
   &.main-content__chat-input-wrapper--home {
     padding-bottom: 0;
+
+    .chat-input-container {
+      &:after {
+        content: '';
+        width: 50%;
+        height: 200px;
+        position: absolute;
+        background: var(--main-content-chat-input-bg-gradient);
+        margin: auto;
+        left: 0;
+        right: 0;
+        filter: blur(50px);
+        z-index: -1;
+      }
+    }
+  }
+}
+
+/* ============================================
+   Home View Animation Support
+   ============================================ */
+
+/* Animated home view elements - will-change during animation */
+.main-content__greeting-content,
+.main-content__chat-section,
+.main-content__quick-actions,
+.main-content__at-a-glance,
+.main-content__action-lists {
+  /* Allow GSAP to animate these smoothly */
+  will-change: opacity, transform;
+}
+
+/* 
+ * Initial hidden state for entrance animation.
+ * Elements start hidden to prevent flash before GSAP takes over.
+ * GSAP will animate opacity: 0 -> 1 and y: 12 -> 0.
+ */
+.main-content__inner--animate-entrance .main-content__greeting-content,
+.main-content__inner--animate-entrance .main-content__chat-section,
+.main-content__inner--animate-entrance .main-content__quick-actions,
+.main-content__inner--animate-entrance .main-content__at-a-glance,
+.main-content__inner--animate-entrance .main-content__action-lists {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* ============================================
+   Conversation State Layouts
+   ============================================ */
+
+/* Contextual Start: Nav selected, centered chat + quick buttons */
+.main-content__body--contextual-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  flex: 1;
+}
+
+/* Chatting: Asset/location selected, chat input at bottom */
+.main-content__body--chatting {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+  flex: 1;
+}
+
+/* Legacy alias for contextual mode */
+.main-content__body--contextual {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+  flex: 1;
+}
+
+/* Exit animation grid wrapper - for height collapse animation */
+.main-content__home-exit-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+}
+
+.main-content__home-exit-wrapper--collapsed {
+  grid-template-rows: 0fr;
+}
+
+.main-content__home-exit-content {
+  min-height: 0;
+}
+
+/* Reduced motion: disable will-change and show immediately */
+@media (prefers-reduced-motion: reduce) {
+  .main-content__greeting-content,
+  .main-content__chat-section,
+  .main-content__quick-actions,
+  .main-content__at-a-glance,
+  .main-content__action-lists {
+    will-change: auto;
+  }
+  
+  /* Override hidden state - show immediately for reduced motion */
+  .main-content__inner--animate-entrance .main-content__greeting-content,
+  .main-content__inner--animate-entrance .main-content__chat-section,
+  .main-content__inner--animate-entrance .main-content__quick-actions,
+  .main-content__inner--animate-entrance .main-content__at-a-glance,
+  .main-content__inner--animate-entrance .main-content__action-lists {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .main-content__home-exit-wrapper {
+    /* Instant transitions */
+    transition: none !important;
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import './ResizeHandle.css';
 
 interface ResizeHandleProps {
@@ -25,37 +25,68 @@ export const ResizeHandle: React.FC<ResizeHandleProps> = ({
   const handleRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef<number>(0);
   const startWidthRef = useRef<number>(0);
-  const hasDragStartedRef = useRef<boolean>(false);
   const lastClickTimeRef = useRef<number>(0);
-  const mouseDownRef = useRef<boolean>(false);
-  const doubleClickCooldownRef = useRef<boolean>(false);
 
-  useEffect(() => {
-    if (!mouseDownRef.current || doubleClickCooldownRef.current) return;
+  // Use refs for values needed in event handlers to avoid stale closures
+  const positionRef = useRef(position);
+  const minWidthRef = useRef(minWidth);
+  const maxWidthRef = useRef(maxWidth);
+  const onResizeRef = useRef(onResize);
+  
+  // Keep refs in sync with props
+  positionRef.current = position;
+  minWidthRef.current = minWidth;
+  maxWidthRef.current = maxWidth;
+  onResizeRef.current = onResize;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      // Only start dragging after mouse has moved
-      if (!hasDragStartedRef.current) {
-        const deltaX = Math.abs(e.clientX - startXRef.current);
-        if (deltaX > 3) { // 3px threshold to start drag
-          hasDragStartedRef.current = true;
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    const now = Date.now();
+    const timeSinceLastClick = now - lastClickTimeRef.current;
+    
+    // Detect double-click (clicks within 300ms)
+    if (timeSinceLastClick < 300 && timeSinceLastClick > 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      onResizeRef.current(defaultWidth);
+      lastClickTimeRef.current = 0;
+      return;
+    }
+    
+    lastClickTimeRef.current = now;
+    e.preventDefault();
+    
+    // Capture initial state
+    startXRef.current = e.clientX;
+    startWidthRef.current = currentWidth;
+    
+    let hasDragStarted = false;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      // Only start dragging after mouse has moved beyond threshold
+      if (!hasDragStarted) {
+        const deltaX = Math.abs(moveEvent.clientX - startXRef.current);
+        if (deltaX > 3) {
+          hasDragStarted = true;
           setIsDragging(true);
           document.body.style.cursor = 'ew-resize';
           document.body.style.userSelect = 'none';
         } else {
-          return; // Don't resize until drag threshold is met
+          return;
         }
       }
 
-      const delta = e.clientX - startXRef.current;
-      const newWidth = startWidthRef.current + (position === 'right' ? delta : -delta);
-      const constrainedWidth = Math.min(Math.max(newWidth, minWidth), maxWidth);
-      onResize(constrainedWidth);
+      const delta = moveEvent.clientX - startXRef.current;
+      const newWidth = startWidthRef.current + (positionRef.current === 'right' ? delta : -delta);
+      const constrainedWidth = Math.min(Math.max(newWidth, minWidthRef.current), maxWidthRef.current);
+      onResizeRef.current(constrainedWidth);
     };
 
-    const handleMouseUp = (e: MouseEvent) => {
-      mouseDownRef.current = false;
-      hasDragStartedRef.current = false;
+    const handleMouseUp = (upEvent: MouseEvent) => {
+      // Clean up event listeners immediately
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      
+      // Reset state
       setIsDragging(false);
       document.body.style.cursor = '';
       document.body.style.userSelect = '';
@@ -64,10 +95,10 @@ export const ResizeHandle: React.FC<ResizeHandleProps> = ({
       if (handleRef.current) {
         const rect = handleRef.current.getBoundingClientRect();
         const isStillNearEdge = 
-          e.clientX >= rect.left && 
-          e.clientX <= rect.right && 
-          e.clientY >= rect.top && 
-          e.clientY <= rect.bottom;
+          upEvent.clientX >= rect.left && 
+          upEvent.clientX <= rect.right && 
+          upEvent.clientY >= rect.top && 
+          upEvent.clientY <= rect.bottom;
         
         if (!isStillNearEdge) {
           setIsNearEdge(false);
@@ -75,67 +106,26 @@ export const ResizeHandle: React.FC<ResizeHandleProps> = ({
       }
     };
 
+    // Attach listeners to document for drag tracking
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
+  }, [currentWidth, defaultWidth]);
 
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [mouseDownRef.current, onResize, minWidth, maxWidth, position]);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    const now = Date.now();
-    const timeSinceLastClick = now - lastClickTimeRef.current;
-    
-    // Detect double-click (clicks within 300ms)
-    if (timeSinceLastClick < 300 && timeSinceLastClick > 0) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Clean up any drag state
-      mouseDownRef.current = false;
-      hasDragStartedRef.current = false;
-      setIsDragging(false);
-      
-      // Set cooldown to prevent immediate drag
-      doubleClickCooldownRef.current = true;
-      setTimeout(() => {
-        doubleClickCooldownRef.current = false;
-      }, 200);
-      
-      onResize(defaultWidth);
-      lastClickTimeRef.current = 0;
-      return; // Don't start dragging
-    }
-    
-    // Record click time for double-click detection
-    lastClickTimeRef.current = now;
-    
-    // Store initial state but don't start dragging yet
-    e.preventDefault();
-    startXRef.current = e.clientX;
-    startWidthRef.current = currentWidth;
-    mouseDownRef.current = true;
-    hasDragStartedRef.current = false;
-  };
-
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setIsNearEdge(true);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (!isDragging) {
       setIsNearEdge(false);
     }
-  };
+  }, [isDragging]);
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    // Backup handler in case timing-based detection fails
+  const handleDoubleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     onResize(defaultWidth);
-  };
+  }, [onResize, defaultWidth]);
 
   return (
     <div

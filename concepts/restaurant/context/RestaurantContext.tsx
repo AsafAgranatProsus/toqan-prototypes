@@ -27,6 +27,8 @@ interface RestaurantContextType {
   // Active navigation
   activeNavId: string;
   setActiveNavId: (id: string) => void;
+  /** Navigate to a nav item, clearing any active selections */
+  navigateToNav: (navId: string) => void;
   
   // Selected asset (for canvas display)
   selectedAssetId: string | null;
@@ -37,6 +39,10 @@ interface RestaurantContextType {
   savedMessages: SavedMessageAsset[];
   saveMessage: (content: string, title?: string, sessionId?: string) => void;
   removeSavedMessage: (id: string) => void;
+  
+  // Locations view state
+  selectedLocationId: string | null;
+  selectLocation: (id: string | null) => void;
 }
 
 const RestaurantContext = createContext<RestaurantContextType | undefined>(undefined);
@@ -45,8 +51,9 @@ const SAVED_MESSAGES_STORAGE_KEY = 'toqan-saved-messages';
 
 export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isSecondaryPanelOpen, setIsSecondaryPanelOpen] = useState(false);
-  const [activeNavId, setActiveNavId] = useState('priorities');
+  const [activeNavId, setActiveNavId] = useState('home');
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
+  const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
   
   // Load saved messages from localStorage
   const [savedMessages, setSavedMessages] = useState<SavedMessageAsset[]>(() => {
@@ -73,6 +80,18 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const selectAsset = useCallback((id: string | null) => {
     setSelectedAssetId(id);
+  }, []);
+
+  const selectLocation = useCallback((id: string | null) => {
+    setSelectedLocationId(id);
+  }, []);
+
+  // Navigate to a nav item - clears any active selections to reset conversation state
+  const navigateToNav = useCallback((navId: string) => {
+    // Clear selections when switching nav items to reset to contextual-start
+    setSelectedAssetId(null);
+    setSelectedLocationId(null);
+    setActiveNavId(navId);
   }, []);
 
   // Save a message to assets
@@ -120,12 +139,15 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       closeSecondaryPanel,
       activeNavId,
       setActiveNavId,
+      navigateToNav,
       selectedAssetId,
       selectAsset,
       isCanvasOpen,
       savedMessages,
       saveMessage,
       removeSavedMessage,
+      selectedLocationId,
+      selectLocation,
     }}>
       {children}
     </RestaurantContext.Provider>
@@ -141,14 +163,17 @@ export const useRestaurant = (): RestaurantContextType => {
       toggleSecondaryPanel: () => {},
       openSecondaryPanel: () => {},
       closeSecondaryPanel: () => {},
-      activeNavId: 'priorities',
+      activeNavId: 'home',
       setActiveNavId: () => {},
+      navigateToNav: () => {},
       selectedAssetId: null,
       selectAsset: () => {},
       isCanvasOpen: false,
       savedMessages: [],
       saveMessage: () => {},
       removeSavedMessage: () => {},
+      selectedLocationId: null,
+      selectLocation: () => {},
     };
   }
   return context;

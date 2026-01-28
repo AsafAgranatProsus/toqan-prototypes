@@ -13,6 +13,7 @@ import './MainContent.css';
 import { useScenarios } from '../../context/ScenarioContext';
 import { useChatSessionOptional, ChatSessionRenderer } from '../../shared/chatSession';
 import { useRestaurant } from '../../concepts/restaurant/context/RestaurantContext';
+import { useChatPanel, ContextualChatPanel, useHomeEntranceAnimation } from '../../shared/chatPanel';
 import BuiltByOthers from '../BuiltByOthers/BuiltByOthers';
 import Plays from '../Plays/Plays';
 import { Carousel } from '../Carousel';
@@ -235,11 +236,23 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
     const { composer } = useComposer();
     const chatSession = useChatSessionOptional();
     const { saveMessage } = useRestaurant();
+    const { conversationState, previousState } = useChatPanel();
     const [showGradient, setShowGradient] = useState(true);
     const gradientRef = useRef<HTMLDivElement>(null);
 
     // Check if we have an active conversation (either old scenario system or new chat session)
     const hasActiveConversation = activeScenario || chatSession?.isSessionActive;
+    
+    // Determine what to render based on conversation state
+    // Priority: active session > legacy scenario > conversation state
+    const showColdStart = !hasActiveConversation && conversationState === 'cold-start';
+    const showContextualStart = !hasActiveConversation && conversationState === 'contextual-start';
+    const showChatting = !hasActiveConversation && conversationState === 'chatting';
+    
+    // Home entrance animation - only for cold-start in restaurant concept
+    const { refs: homeAnimRefs } = useHomeEntranceAnimation({
+        enabled: showColdStart && composer.id === 'restaurant',
+    });
 
     // Fade out and remove gradient when entering conversation view
     useEffect(() => {
@@ -300,7 +313,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                         </header>
                     )}
 
-                    {/* Priority 1: New chat session system */}
+                    {/* Priority 1: New chat session system (chatting with messages) */}
                     {chatSession?.isSessionActive ? (
                         <>
                             <ChatSessionRenderer
@@ -317,27 +330,92 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                     ) : activeScenario ? (
                         /* Priority 2: Legacy scenario system */
                         <Conversation activeScenario={activeScenario} scenarioView={scenarioView} />
+                    ) : showContextualStart && composer.id === 'restaurant' ? (
+                        /* Priority 3: Contextual start - nav selected, centered chat + quick buttons */
+                        <div className="main-content__body main-content__body--contextual-start">
+                            <ContextualChatPanel 
+                                onSend={(message) => chatSession?.handleUserInput?.(message)}
+                                showQuickActions={true}
+                            />
+                        </div>
+                    ) : showChatting && composer.id === 'restaurant' ? (
+                        /* Priority 4: Chatting state - asset/location selected, chat input at bottom */
+                        <div className="main-content__body main-content__body--chatting">
+                            <ContextualChatPanel 
+                                onSend={(message) => chatSession?.handleUserInput?.(message)}
+                                showQuickActions={false}
+                            />
+                        </div>
                     ) : (
                         /* Default: Home view */
                         <div className="main-content__body">
-                            <div className="main-content__inner">
+                            <div className={`main-content__inner ${composer.id === 'restaurant' ? 'main-content__inner--animate-entrance' : ''}`}>
                                 {composer.id === 'restaurant' ? (
                                     /* Restaurant Home View */
                                     <>
                                         <header className="main-content__greeting">
-                                            <h1 className="main-content__greeting-title">
-                                                {getGreeting()}
-                                            </h1>
-                                            {flags.restaurantSubtitle && (
-                                                <p className="main-content__greeting-subtitle">
-                                                    Everything looks stable. <a href="#"><u>Cash flow is tight</u></a> next week.
-                                                </p>
+                                            <div 
+                                                className="main-content__greeting-content"
+                                                ref={homeAnimRefs.greeting as React.RefObject<HTMLDivElement>}
+                                            >
+                                                <h1 className="main-content__greeting-title">
+                                                    {getGreeting()}
+                                                </h1>
+                                                {flags.restaurantSubtitle && (
+                                                    <p className="main-content__greeting-subtitle">
+                                                        Everything looks stable. <a href="#"><u>Cash flow is tight</u></a> next week.
+                                                    </p>
+                                                )}
+
+                                            </div>
+
+                                            <div 
+                                                className="main-content__chat-section"
+                                                ref={homeAnimRefs.chatInput as React.RefObject<HTMLDivElement>}
+                                            >
+                                                <div className="main-content__chat-input-wrapper main-content__chat-input-wrapper--home">
+                                                    <ChatInput />
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Quick Actions - separate element for staggered animation */}
+                                            {flags.restaurantQuickActions && (
+                                                <div 
+                                                    className="main-content__quick-actions"
+                                                    ref={homeAnimRefs.quickActions as React.RefObject<HTMLDivElement>}
+                                                >
+                                                    <Carousel
+                                                        showArrows={true}
+                                                        gap="var(--space-2)"
+                                                        captureVerticalWheel={true}
+                                                        showEdgeMask
+                                                    >
+                                                        {quickActions.map((action) => (
+                                                            <Chip
+                                                                weight="regular"
+                                                                color="secondary"
+                                                                key={action.id}
+                                                                variant="filled"
+                                                                hoverBg="subtle"
+                                                                onClick={() => {
+                                                                    // TODO: Handle quick action click
+                                                                    console.log('Quick action:', action.label);
+                                                                }}
+                                                            >
+                                                                {action.label}
+                                                            </Chip>
+                                                        ))}
+                                                    </Carousel>
+                                                </div>
                                             )}
                                         </header>
-                                        
+
                                         {/* At A Glance Section */}
                                         {flags.restaurantAtAGlance && (
-                                            <section className="main-content__at-a-glance">
+                                            <section 
+                                                className="main-content__at-a-glance"
+                                                ref={homeAnimRefs.atAGlance as React.RefObject<HTMLElement>}
+                                            >
                                                 {/* <h2 className="main-content__section-title">At A Glance</h2> */}
                                                 <Carousel
                                                     showArrows={true}
@@ -361,42 +439,14 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                             </section>
                                         )}
 
-                                        <div className="main-content__chat-section">
-                                            <div className="main-content__chat-input-wrapper main-content__chat-input-wrapper--home">
-                                                <ChatInput />
-                                            </div>
-                                            
-                                        {/* Quick Actions */}
-                                        {flags.restaurantQuickActions && (
-                                            <div className="main-content__quick-actions">
-                                                <Carousel
-                                                    showArrows={true}
-                                                    gap="var(--space-2)"
-                                                    captureVerticalWheel={true}
-                                                >
-                                                    {quickActions.map((action) => (
-                                                        <Chip
-                                                            weight="regular"
-                                                            color="secondary"
-                                                            key={action.id}
-                                                            variant="filled"
-                                                            hoverBg="subtle"
-                                                            onClick={() => {
-                                                                // TODO: Handle quick action click
-                                                                console.log('Quick action:', action.label);
-                                                            }}
-                                                        >
-                                                            {action.label}
-                                                        </Chip>
-                                                    ))}
-                                                </Carousel>
-                                            </div>
-                                        )}
-                                        </div>
+
 
                                         {/* Jump Back In & Run Agents */}
                                         {(flags.restaurantJumpBackIn || flags.restaurantRunAgents) && (
-                                            <div className="main-content__action-lists">
+                                            <div 
+                                                className="main-content__action-lists"
+                                                ref={homeAnimRefs.actionLists as React.RefObject<HTMLDivElement>}
+                                            >
                                                 {flags.restaurantJumpBackIn && (
                                                     <ActionList title="Jump Back In" maxItems={3}>
                                                         {recentItems.map((item) => (

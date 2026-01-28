@@ -103,7 +103,8 @@
 
 /* Restaurant: Secondary panel */
 .app-layout[data-concept="restaurant"] .secondary-panel,
-.app-layout[data-concept="restaurant"] .priorities-panel {
+.app-layout[data-concept="restaurant"] .priorities-panel,
+.app-layout[data-concept="restaurant"] .locations-panel {
   grid-area: secondary;
   /* Height is controlled by grid row sizing */
 }

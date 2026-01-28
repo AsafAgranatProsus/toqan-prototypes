@@ -53,7 +53,9 @@ export type IconName =
   | 'Layout'
   | 'Robot'
   | 'MoreVertical'
+  | 'MoreHorizontal'
   | 'Pin'
+  | 'PinOff'
   | 'Edit2'
   | 'Clock'
   | 'History'
@@ -75,7 +77,18 @@ export type IconName =
   | 'Info'
   | 'ThumbsUp'
   | 'ThumbsDown'
-  | 'Bookmark';
+  | 'Bookmark'
+  | 'MapPin'
+  | 'Store'
+  | 'ChefHat'
+  | 'Building'
+  | 'Phone'
+  | 'Star'
+  | 'Activity'
+  | 'ArrowLeft'
+  | 'Navigation'
+  | 'Award'
+  | 'CheckCircle';
 
 export interface Model {
   id: string;

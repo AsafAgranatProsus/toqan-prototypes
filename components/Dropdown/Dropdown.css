@@ -166,8 +166,8 @@ button:hover {
   border: 1px solid var(--dropdown-menu-border);
   border-radius: var(--radius-default);
   box-shadow: var(--shadow-lg);
-  padding: var(--space-2);
-  min-width: 320px;
+  padding: var(--space-1);
+  min-width: max-content;
   max-height: 300px;
   overflow-y: auto;
   transition: opacity 0.2s cubic-bezier(0.05, 0.84, 0.31, 1),
@@ -188,19 +188,35 @@ button:hover {
 }
 
 .dropdown-menu__item {
-  padding: var(--dropdown-menu-item-padding, var(--space-1));
-  font-size: var(--dropdown-menu-item-font-size);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-body-sm);
   color: var(--dropdown-menu-item-text);
-  border-radius: var(--radius-default);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   outline: none;
   border: 1px solid transparent;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.dropdown-menu__item svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
 }
 
 .dropdown-menu__item:hover,
 .dropdown-menu__item:focus {
   background-color: var(--dropdown-menu-item-hover-bg);
+}
+
+.dropdown-menu__item:hover svg,
+.dropdown-menu__item:focus svg {
+  opacity: 1;
 }
 
 .dropdown-menu__item--selected {

@@ -56,7 +56,7 @@ export const ComposedLayout: React.FC<ComposedLayoutProps> = ({ children }) => {
   const { composer, isAreaDefault, isAreaHidden, layoutMode, getAreaConfig } = useComposer();
   
   // Restaurant-specific state (gracefully handles when not in restaurant context)
-  const { isSecondaryPanelOpen, isCanvasOpen } = useRestaurant();
+  const { isSecondaryPanelOpen, isCanvasOpen, activeNavId } = useRestaurant();
   
   /**
    * Render a content area based on composer config.
@@ -208,10 +208,12 @@ export const ComposedLayout: React.FC<ComposedLayoutProps> = ({ children }) => {
   };
   
   // Layout class based on mode and state
+  // For locations, we show the panel even when isSecondaryPanelOpen is false
+  const hasSecondaryPanel = isSecondaryPanelOpen || activeNavId === 'locations';
   const layoutClasses = [
     'app-layout',
     `app-layout--${layoutMode}`,
-    composer.id === 'restaurant' && isSecondaryPanelOpen ? 'has-secondary-panel' : '',
+    composer.id === 'restaurant' && hasSecondaryPanel ? 'has-secondary-panel' : '',
     composer.id === 'restaurant' && isCanvasOpen ? 'has-canvas' : '',
   ].filter(Boolean).join(' ');
   

@@ -364,8 +364,8 @@
 }
 
 .asset-canvas__chart-title {
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
   color: var(--canvas-text);
   margin-bottom: var(--space-3);
 }

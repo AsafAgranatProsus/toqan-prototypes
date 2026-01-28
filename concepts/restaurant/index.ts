@@ -19,12 +19,14 @@ export { RestaurantProvider, useRestaurant } from './context/RestaurantContext';
 export { LeftSidebarRestaurant } from './components/LeftSidebarRestaurant';
 export { SecondaryPanel } from './components/SecondaryPanel';
 export { PrioritiesPanel } from './components/PrioritiesPanel';
+export { LocationsPanel } from './components/LocationsPanel';
 export { TopNavbarRestaurant } from './components/TopNavbarRestaurant';
 export { RestaurantLeftPanelWrapper } from './components/RestaurantLeftPanelWrapper';
 export { AssetCanvas } from './components/AssetCanvas';
 
 // Data
 export { RESTAURANT_ASSETS, ASSET_CATEGORIES, getAssetById } from './data/assets';
+export { LOCATIONS, CENTRAL_KITCHEN, getLocationById, getAllLocations, groupLocationsByCity } from './data/locations';
 
 // Flows
 export { registerRestaurantFlows, restaurantFlows, getFlowIdForPriority } from './flows';

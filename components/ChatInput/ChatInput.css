@@ -35,7 +35,7 @@
 /* Base Styles */
 .chat-input-container {
   display: flex;
-  align-items: center;
+  align-items: flex-end; /* Align to bottom for multi-line support */
   gap: var(--chat-input-gap);
   width: 100%;
   max-width: var(--chat-input-max-width);
@@ -51,18 +51,49 @@
   border: none;
   outline: none;
   font-size: var(--chat-input-font-size);
+  font-family: inherit;
+  line-height: 1.5;
   background-color: transparent;
   color: var(--chat-input-text);
   min-height: var(--chat-input-min-height);
+  max-height: 200px; /* Limit max height */
+  overflow-y: auto;
+  resize: none; /* Disable manual resize */
+  padding: 0.875rem 0; /* Vertical padding for proper alignment */
+  /* Text wrapping */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .chat-input-field::placeholder {
   color: var(--chat-input-placeholder);
 }
 
+/* Hide scrollbar but keep functionality */
+.chat-input-field::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-input-field::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-input-field::-webkit-scrollbar-thumb {
+  background: var(--theme-border);
+  border-radius: 2px;
+}
+
 /* Prefix & Suffix */
-.chat-input-prefix {
+.chat-input-prefix,
+.chat-input-suffix {
   display: flex;
+  align-items: center;
+  padding-bottom: 0.5rem; /* Align with first line of text */
+  flex-shrink: 0;
+}
+
+.chat-input-prefix {
   gap: var(--chat-input-prefix-gap);
   margin-left: var(--chat-input-prefix-margin);
 }

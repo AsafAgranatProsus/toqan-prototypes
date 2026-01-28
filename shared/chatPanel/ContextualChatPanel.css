@@ -1,0 +1,91 @@
+/**
+ * Contextual Chat Panel Styles
+ * 
+ * Minimal chat panel for contextual views.
+ * - contextual-start: Centered vertically with quick buttons
+ * - chatting: Bottom-aligned, no quick buttons
+ */
+
+.contextual-chat-panel {
+  /* Component Token Layer */
+  --contextual-panel-bg: transparent;
+  --contextual-panel-action-gap: var(--space-2);
+  --contextual-panel-content-gap: var(--space-4);
+  
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Default: bottom-aligned (for chatting state) */
+.contextual-chat-panel__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-6) var(--space-4);
+  gap: var(--contextual-panel-content-gap);
+  margin-top: auto; /* Push to bottom */
+}
+
+/* Centered layout for contextual-start state */
+.contextual-chat-panel--centered {
+  justify-content: center;
+}
+
+.contextual-chat-panel--centered .contextual-chat-panel__content {
+  margin-top: 0; /* Remove bottom push */
+  /* Slight upward offset for visual balance */
+  transform: translateY(-5%);
+}
+
+.contextual-chat-panel__input-wrapper {
+  width: 100%;
+  max-width: var(--main-content-chat-input-max-width, 800px);
+  /* Will be animated in via GSAP */
+  will-change: opacity, transform;
+}
+
+.contextual-chat-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--contextual-panel-action-gap);
+  width: 100%;
+  max-width: var(--main-content-chat-input-max-width, 800px);
+}
+
+.contextual-chat-panel__action {
+  /* Will be animated in via GSAP */
+  will-change: opacity, transform;
+}
+
+/* 
+ * Initial hidden state for entrance animation.
+ * Elements start hidden to prevent flash before GSAP takes over.
+ */
+.contextual-chat-panel--centered .contextual-chat-panel__input-wrapper,
+.contextual-chat-panel--centered .contextual-chat-panel__action {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* Reduced motion: show immediately */
+@media (prefers-reduced-motion: reduce) {
+  .contextual-chat-panel__input-wrapper,
+  .contextual-chat-panel__action {
+    will-change: auto;
+  }
+  
+  .contextual-chat-panel--centered .contextual-chat-panel__input-wrapper,
+  .contextual-chat-panel--centered .contextual-chat-panel__action {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .contextual-chat-panel--centered .contextual-chat-panel__content {
+    transform: none;
+  }
+}
