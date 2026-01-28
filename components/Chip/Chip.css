@@ -23,11 +23,20 @@
   
   /* Colors - Base (applied via CSS custom properties) */
   --chip-bg: transparent;
+  --chip-bg-static: transparent; /* Preserved bg for hover-none */
   --chip-bg-hover: var(--color-ui-hover);
+  --chip-bg-hover-subtle: var(--color-ui-background);
   --chip-bg-active: var(--color-ui-active);
   --chip-border-color: var(--color-ui-border);
   --chip-border-color-hover: var(--color-ui-border-hover, var(--color-ui-border));
   --chip-text-color: var(--theme-text-main);
+  
+  /* Colors - Text overrides (for color prop) */
+  --chip-color-primary: var(--color-primary-default);
+  --chip-color-secondary: var(--color-secondary-default);
+  --chip-color-tertiary: var(--color-tertiary-default);
+  --chip-color-neutral: var(--theme-text-main);
+  --chip-color-muted: var(--theme-text-secondary);
   
   /* Colors - Outlined variant */
   --chip-outlined-bg: transparent;
@@ -40,7 +49,7 @@
   --chip-filled-text-color: var(--theme-text-main);
   
   /* Colors - Default/Subtle variant */
-  --chip-default-bg: var(--color-ui-background);
+  --chip-default-bg: var(--color-ui-background-elevated);
   --chip-default-border-color: var(--color-ui-border);
   --chip-default-text-color: var(--theme-text-secondary);
   
@@ -50,6 +59,26 @@
   --chip-selected-text-color: var(--color-primary-default);
   --chip-selected-filled-bg: var(--color-primary-default);
   --chip-selected-filled-text-color: var(--color-primary-on-container);
+  
+  /* Colors - Priority: Primary */
+  --chip-primary-bg: var(--color-primary-light);
+  --chip-primary-text-color: var(--color-primary-default);
+  --chip-primary-border-color: var(--color-primary-light);
+  
+  /* Colors - Priority: Secondary */
+  --chip-secondary-bg: var(--color-secondary-light);
+  --chip-secondary-text-color: var(--color-secondary-default);
+  --chip-secondary-border-color: var(--color-secondary-light);
+  
+  /* Colors - Priority: Tertiary */
+  --chip-tertiary-bg: var(--color-tertiary-light);
+  --chip-tertiary-text-color: var(--color-tertiary-default);
+  --chip-tertiary-border-color: var(--color-tertiary-light);
+  
+  /* Colors - Priority: Neutral */
+  --chip-neutral-bg: var(--color-surface-container);
+  --chip-neutral-text-color: var(--theme-text-secondary);
+  --chip-neutral-border-color: var(--color-ui-border);
 }
 
 /* ===== BASE STYLES ===== */
@@ -78,6 +107,7 @@
 /* Outlined (default) */
 .chip--outlined {
   --chip-bg: var(--chip-outlined-bg);
+  --chip-bg-static: var(--chip-outlined-bg);
   --chip-border-color: var(--chip-outlined-border-color);
   --chip-text-color: var(--chip-outlined-text-color);
 }
@@ -100,6 +130,7 @@
 /* Filled */
 .chip--filled {
   --chip-bg: var(--chip-filled-bg);
+  --chip-bg-static: var(--chip-filled-bg);
   --chip-border-color: var(--chip-filled-border-color);
   --chip-text-color: var(--chip-filled-text-color);
 }
@@ -120,6 +151,7 @@
 /* Default (subtle) */
 .chip--default {
   --chip-bg: var(--chip-default-bg);
+  --chip-bg-static: var(--chip-default-bg);
   --chip-border-color: var(--chip-default-border-color);
   --chip-text-color: var(--chip-default-text-color);
 }
@@ -145,10 +177,114 @@
   --chip-icon-size: var(--icon-size-md);
 }
 
+/* ===== PRIORITY (bg + text + border together) ===== */
+
+.chip--priority-primary {
+  --chip-bg: var(--chip-primary-bg);
+  --chip-bg-static: var(--chip-primary-bg);
+  --chip-text-color: var(--chip-primary-text-color);
+  --chip-border-color: var(--chip-primary-border-color);
+}
+
+.chip--priority-secondary {
+  --chip-bg: var(--chip-secondary-bg);
+  --chip-bg-static: var(--chip-secondary-bg);
+  --chip-text-color: var(--chip-secondary-text-color);
+  --chip-border-color: var(--chip-secondary-border-color);
+}
+
+.chip--priority-tertiary {
+  --chip-bg: var(--chip-tertiary-bg);
+  --chip-bg-static: var(--chip-tertiary-bg);
+  --chip-text-color: var(--chip-tertiary-text-color);
+  --chip-border-color: var(--chip-tertiary-border-color);
+}
+
+.chip--priority-neutral {
+  --chip-bg: var(--chip-neutral-bg);
+  --chip-bg-static: var(--chip-neutral-bg);
+  --chip-text-color: var(--chip-neutral-text-color);
+  --chip-border-color: var(--chip-neutral-border-color);
+}
+
+/* ===== COLOR (text/icon only) ===== */
+
+.chip--color-primary {
+  --chip-text-color: var(--chip-color-primary);
+}
+
+.chip--color-secondary {
+  --chip-text-color: var(--chip-color-secondary);
+}
+
+.chip--color-tertiary {
+  --chip-text-color: var(--chip-color-tertiary);
+}
+
+.chip--color-neutral {
+  --chip-text-color: var(--chip-color-neutral);
+}
+
+.chip--color-muted {
+  --chip-text-color: var(--chip-color-muted);
+}
+
+/* ===== TRANSPARENT ===== */
+
+.chip--transparent {
+  --chip-bg: transparent;
+}
+
+/* ===== BORDER CONTROL ===== */
+
+.chip--bordered {
+  --chip-border-color: var(--chip-outlined-border-color);
+}
+
+.chip--no-border {
+  --chip-border-color: transparent;
+}
+
+/* ===== FONT WEIGHT ===== */
+
+.chip--weight-regular {
+  --chip-font-weight: var(--font-weight-regular);
+}
+
+.chip--weight-medium {
+  --chip-font-weight: var(--font-weight-medium);
+}
+
+.chip--weight-semibold {
+  --chip-font-weight: var(--font-weight-semibold);
+}
+
+.chip--weight-bold {
+  --chip-font-weight: var(--font-weight-bold);
+}
+
+/* ===== HOVER BACKGROUND ===== */
+/* Higher specificity to override variant hover rules */
+
+.chip.chip--hover-default.chip--clickable:hover {
+  --chip-bg: var(--chip-bg-hover);
+}
+
+.chip.chip--hover-subtle.chip--clickable:hover {
+  --chip-bg: var(--chip-bg-hover-subtle);
+}
+
+.chip.chip--hover-none.chip--clickable:hover {
+  --chip-bg: var(--chip-bg-static);
+}
+
 /* ===== STATES ===== */
 
 .chip--clickable {
   cursor: pointer;
+  &:hover {
+    background-color: var(--chip-bg);
+  }
 }
 
 .chip--disabled {

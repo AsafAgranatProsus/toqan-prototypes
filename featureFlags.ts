@@ -26,4 +26,10 @@ export const featureFlags = {
   restaurantBreadcrumbs: false,
   restaurantTopNavButtons: false,
   restaurantTopNavSearchBar: true,
+  // Restaurant home view sections
+  restaurantSubtitle: true,
+  restaurantAtAGlance: true,
+  restaurantJumpBackIn: true,
+  restaurantQuickActions: true,
+  restaurantRunAgents: true,
 };

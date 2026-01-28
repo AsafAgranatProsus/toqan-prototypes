@@ -74,13 +74,6 @@ const glanceInsights: GlanceInsight[] = [
         secondary: 'Next 7 days',
         trend: 'neutral'
     },
-    {
-        id: 'reservations',
-        value: '24',
-        label: 'Reservations Tonight',
-        sourceIcon: 'Utensils',
-        secondary: '+6 walk-ins avg',
-    },
 ];
 
 // "Jump Back In" recent items for restaurant home view
@@ -292,17 +285,20 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                             )}
                         </div>
                     )}
-                    <header className="main-content__header">
-                        {isMobile && (
-                            <Button variant="tertiary" icon="Menu" onClick={onMenuClick} aria-label="Open menu" />
-                        )}
-                        {!hasActiveConversation && composer.id !== 'restaurant' && <ModelSelector />}
-                        {chatSession?.isSessionActive && (
-                            <h2 className="conversation-title">
-                                {chatSession.currentFlow?.name ?? 'Conversation'}
-                            </h2>
-                        )}
-                    </header>
+                    {/* Header - only show if it has content */}
+                    {(isMobile || (!hasActiveConversation && composer.id !== 'restaurant') || chatSession?.isSessionActive) && (
+                        <header className="main-content__header">
+                            {isMobile && (
+                                <Button variant="tertiary" icon="Menu" onClick={onMenuClick} aria-label="Open menu" />
+                            )}
+                            {!hasActiveConversation && composer.id !== 'restaurant' && <ModelSelector />}
+                            {chatSession?.isSessionActive && (
+                                <h2 className="conversation-title">
+                                    {chatSession.currentFlow?.name ?? 'Conversation'}
+                                </h2>
+                            )}
+                        </header>
+                    )}
 
                     {/* Priority 1: New chat session system */}
                     {chatSession?.isSessionActive ? (
@@ -311,7 +307,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                 className="main-content__chat-session"
                                 onSaveMessage={saveMessage}
                             />
-                            <div className="main-content__chat-input-wrapper">
+                            <div className="main-content__chat-input-wrapper main-content__chat-input-wrapper--chat">
                                 <ChatInput
                                     onSend={(message) => chatSession.handleUserInput(message)}
                                     placeholder="Type a message or click a button above..."
@@ -332,92 +328,109 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                             <h1 className="main-content__greeting-title">
                                                 {getGreeting()}
                                             </h1>
-                                            <p className="main-content__greeting-subtitle">
-                                                Everything looks stable. <a href="#"><u>Cash flow is tight</u></a> next week.
-                                            </p>
+                                            {flags.restaurantSubtitle && (
+                                                <p className="main-content__greeting-subtitle">
+                                                    Everything looks stable. <a href="#"><u>Cash flow is tight</u></a> next week.
+                                                </p>
+                                            )}
                                         </header>
-                                        <div className="main-content__chat-section">
-                                            <div className="main-content__chat-input-wrapper">
-
-                                            <ChatInput />
-                                            </div>
-                                        </div>
-                                        <div className="main-content__quick-actions">
-                                            <Carousel
-                                                showArrows={true}
-                                                gap="var(--space-2)"
-                                                captureVerticalWheel={true}
-                                            >
-                                                {quickActions.map((action) => (
-                                                    <Chip
-                                                        key={action.id}
-                                                        variant="filled"
-                                                        onClick={() => {
-                                                            // TODO: Handle quick action click
-                                                            console.log('Quick action:', action.label);
-                                                        }}
-                                                    >
-                                                        {action.label}
-                                                    </Chip>
-                                                ))}
-                                            </Carousel>
-                                        </div>
-
+                                        
                                         {/* At A Glance Section */}
-                                        <section className="main-content__at-a-glance">
-                                            <h2 className="main-content__section-title">At A Glance</h2>
-                                            <Carousel
-                                                showArrows={true}
-                                                gap="var(--space-3)"
-                                                captureVerticalWheel={true}
-                                            >
-                                                {glanceInsights.map((insight) => (
-                                                    <InsightCard
-                                                        key={insight.id}
-                                                        value={insight.value}
-                                                        label={insight.label}
-                                                        sourceIcon={insight.sourceIcon}
-                                                        secondary={insight.secondary}
-                                                        trend={insight.trend}
-                                                        onClick={() => {
-                                                            console.log('Insight clicked:', insight.label);
-                                                        }}
-                                                    />
-                                                ))}
-                                            </Carousel>
-                                        </section>
+                                        {flags.restaurantAtAGlance && (
+                                            <section className="main-content__at-a-glance">
+                                                {/* <h2 className="main-content__section-title">At A Glance</h2> */}
+                                                <Carousel
+                                                    showArrows={true}
+                                                    gap="var(--space-3)"
+                                                    captureVerticalWheel={true}
+                                                >
+                                                    {glanceInsights.map((insight) => (
+                                                        <InsightCard
+                                                            key={insight.id}
+                                                            value={insight.value}
+                                                            label={insight.label}
+                                                            sourceIcon={insight.sourceIcon}
+                                                            secondary={insight.secondary}
+                                                            trend={insight.trend}
+                                                            onClick={() => {
+                                                                console.log('Insight clicked:', insight.label);
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </Carousel>
+                                            </section>
+                                        )}
+
+                                        <div className="main-content__chat-section">
+                                            <div className="main-content__chat-input-wrapper main-content__chat-input-wrapper--home">
+                                                <ChatInput />
+                                            </div>
+                                            
+                                        {/* Quick Actions */}
+                                        {flags.restaurantQuickActions && (
+                                            <div className="main-content__quick-actions">
+                                                <Carousel
+                                                    showArrows={true}
+                                                    gap="var(--space-2)"
+                                                    captureVerticalWheel={true}
+                                                >
+                                                    {quickActions.map((action) => (
+                                                        <Chip
+                                                            weight="regular"
+                                                            color="secondary"
+                                                            key={action.id}
+                                                            variant="filled"
+                                                            hoverBg="subtle"
+                                                            onClick={() => {
+                                                                // TODO: Handle quick action click
+                                                                console.log('Quick action:', action.label);
+                                                            }}
+                                                        >
+                                                            {action.label}
+                                                        </Chip>
+                                                    ))}
+                                                </Carousel>
+                                            </div>
+                                        )}
+                                        </div>
 
                                         {/* Jump Back In & Run Agents */}
-                                        <div className="main-content__action-lists">
-                                            <ActionList title="Jump Back In" maxItems={3}>
-                                                {recentItems.map((item) => (
-                                                    <ActionListItem
-                                                        key={item.id}
-                                                        title={item.title}
-                                                        description={item.description}
-                                                        icon={item.icon}
-                                                        meta={item.meta}
-                                                        onClick={() => {
-                                                            console.log('Recent item clicked:', item.title);
-                                                        }}
-                                                    />
-                                                ))}
-                                            </ActionList>
+                                        {(flags.restaurantJumpBackIn || flags.restaurantRunAgents) && (
+                                            <div className="main-content__action-lists">
+                                                {flags.restaurantJumpBackIn && (
+                                                    <ActionList title="Jump Back In" maxItems={3}>
+                                                        {recentItems.map((item) => (
+                                                            <ActionListItem
+                                                                key={item.id}
+                                                                title={item.title}
+                                                                description={item.description}
+                                                                icon={item.icon}
+                                                                meta={item.meta}
+                                                                onClick={() => {
+                                                                    console.log('Recent item clicked:', item.title);
+                                                                }}
+                                                            />
+                                                        ))}
+                                                    </ActionList>
+                                                )}
 
-                                            <ActionList title="Run Agents">
-                                                {agentActions.map((agent) => (
-                                                    <ActionListItem
-                                                        key={agent.id}
-                                                        title={agent.title}
-                                                        description={agent.description}
-                                                        icon={agent.icon}
-                                                        onClick={() => {
-                                                            console.log('Agent clicked:', agent.title);
-                                                        }}
-                                                    />
-                                                ))}
-                                            </ActionList>
-                                        </div>
+                                                {flags.restaurantRunAgents && (
+                                                    <ActionList title="Run Agents">
+                                                        {agentActions.map((agent) => (
+                                                            <ActionListItem
+                                                                key={agent.id}
+                                                                title={agent.title}
+                                                                description={agent.description}
+                                                                icon={agent.icon}
+                                                                onClick={() => {
+                                                                    console.log('Agent clicked:', agent.title);
+                                                                }}
+                                                            />
+                                                        ))}
+                                                    </ActionList>
+                                                )}
+                                            </div>
+                                        )}
                                     </>
                                 ) : (
                                     /* Core Home View */
@@ -432,7 +445,9 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                                 </div>
                                             )}
 
-                                            <ChatInput />
+                                            <div className="main-content__chat-input-wrapper main-content__chat-input-wrapper--home">
+                                                <ChatInput />
+                                            </div>
 
                                             <p className="main-content__privacy-note">
                                                 Toqan ensures your data stays secure and private.

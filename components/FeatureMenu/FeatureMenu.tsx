@@ -713,6 +713,32 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                     checked={flags.restaurantTopNavSearchBar}
                     onChange={(checked) => setFlag('restaurantTopNavSearchBar', checked)}
                   />
+                  <hr style={{ margin: 'var(--space-2) 0', border: 'none', borderTop: '1px solid var(--color-ui-border)' }} />
+                  <Toggle
+                    label="Subtitle"
+                    checked={flags.restaurantSubtitle}
+                    onChange={(checked) => setFlag('restaurantSubtitle', checked)}
+                  />
+                  <Toggle
+                    label="Quick Actions"
+                    checked={flags.restaurantQuickActions}
+                    onChange={(checked) => setFlag('restaurantQuickActions', checked)}
+                  />
+                  <Toggle
+                    label="At A Glance"
+                    checked={flags.restaurantAtAGlance}
+                    onChange={(checked) => setFlag('restaurantAtAGlance', checked)}
+                  />
+                  <Toggle
+                    label="Jump Back In"
+                    checked={flags.restaurantJumpBackIn}
+                    onChange={(checked) => setFlag('restaurantJumpBackIn', checked)}
+                  />
+                  <Toggle
+                    label="Run Agents"
+                    checked={flags.restaurantRunAgents}
+                    onChange={(checked) => setFlag('restaurantRunAgents', checked)}
+                  />
                 </div>
               </Collapsible.Content>
             </Collapsible>
@@ -779,7 +805,7 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           </Collapsible> */}
 
           {Object.keys(flags).filter(flag => 
-            !['newBranding', 'newTypography', 'newBubble', 'newChatInput', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger', 'newGradientBackground', 'restaurantBreadcrumbs', 'restaurantTopNavButtons', 'restaurantTopNavSearchBar'].includes(flag)
+            !['newBranding', 'newTypography', 'newBubble', 'newChatInput', 'newTables', 'newTopNavbar', 'newLeftSidebar', 'newRightPanel', 'newMainStage', 'newResizeablePanels', 'workspaces', 'conversationPin', 'conversationRename', 'conversationWrap', 'conversationCollapsible', 'conversationTimestamps', 'conversationMenu', 'plays', 'builtByOther', 'themes', 'themeSelector', 'showThemeDebugger', 'newGradientBackground', 'restaurantBreadcrumbs', 'restaurantTopNavButtons', 'restaurantTopNavSearchBar', 'restaurantSubtitle', 'restaurantAtAGlance', 'restaurantJumpBackIn', 'restaurantQuickActions', 'restaurantRunAgents'].includes(flag)
           ).map(flag => (
             <Toggle
               key={flag}

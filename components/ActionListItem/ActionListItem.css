@@ -64,6 +64,7 @@
   width: var(--action-list-item-icon-size);
   height: var(--action-list-item-icon-size);
   color: var(--action-list-item-icon-color);
+  align-self: flex-start;
 }
 
 .action-list-item__icon svg {

@@ -97,5 +97,5 @@
 
 /* Context-specific overrides */
 .main-content .chat-input-container--new {
-  margin-top: calc(var(--space-2) * -1);
+  /* margin-top: calc(var(--space-2) * -1); */
 }

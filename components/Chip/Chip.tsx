@@ -15,6 +15,24 @@ export interface ChipProps {
   /** Chip style variant */
   variant?: 'default' | 'outlined' | 'filled';
   
+  /** Color priority/emphasis (affects bg, text, border together) */
+  priority?: 'primary' | 'secondary' | 'tertiary' | 'neutral';
+  
+  /** Text/icon color - overrides priority for text only */
+  color?: 'primary' | 'secondary' | 'tertiary' | 'neutral' | 'muted';
+  
+  /** Transparent background */
+  transparent?: boolean;
+  
+  /** Show border (default: true for outlined, false for filled) */
+  bordered?: boolean;
+  
+  /** Font weight override */
+  weight?: 'regular' | 'medium' | 'semibold' | 'bold';
+  
+  /** Hover background style */
+  hoverBg?: 'default' | 'subtle' | 'none';
+  
   /** Size variant */
   size?: 'sm' | 'md' | 'lg';
   
@@ -33,6 +51,12 @@ export const Chip: React.FC<ChipProps> = ({
   onClick,
   icon,
   variant = 'outlined',
+  priority,
+  color,
+  transparent = false,
+  bordered,
+  weight,
+  hoverBg,
   size = 'md',
   disabled = false,
   selected = false,
@@ -44,6 +68,13 @@ export const Chip: React.FC<ChipProps> = ({
     'chip',
     `chip--${variant}`,
     `chip--${size}`,
+    priority ? `chip--priority-${priority}` : '',
+    color ? `chip--color-${color}` : '',
+    transparent ? 'chip--transparent' : '',
+    bordered === true ? 'chip--bordered' : '',
+    bordered === false ? 'chip--no-border' : '',
+    weight ? `chip--weight-${weight}` : '',
+    hoverBg ? `chip--hover-${hoverBg}` : '',
     isClickable ? 'chip--clickable' : '',
     disabled ? 'chip--disabled' : '',
     selected ? 'chip--selected' : '',
