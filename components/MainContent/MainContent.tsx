@@ -150,6 +150,25 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
         enabled: showColdStart && composer.id === 'restaurant',
     });
 
+    // Fix visibility when feature flags are toggled after entrance animation has played
+    // Elements toggled on via meta menu need their opacity set to 1 manually
+    useEffect(() => {
+        if (showColdStart && composer.id === 'restaurant') {
+            // When quick actions is toggled on, ensure it's visible
+            if (flags.restaurantQuickActions && homeAnimRefs.quickActions.current) {
+                gsap.set(homeAnimRefs.quickActions.current, { opacity: 1, y: 0 });
+            }
+            // Same for At a Glance
+            if (flags.restaurantAtAGlance && homeAnimRefs.atAGlance.current) {
+                gsap.set(homeAnimRefs.atAGlance.current, { opacity: 1, y: 0 });
+            }
+            // Same for action lists (Jump Back In / Run Agents)
+            if ((flags.restaurantJumpBackIn || flags.restaurantRunAgents) && homeAnimRefs.actionLists.current) {
+                gsap.set(homeAnimRefs.actionLists.current, { opacity: 1, y: 0 });
+            }
+        }
+    }, [flags.restaurantQuickActions, flags.restaurantAtAGlance, flags.restaurantJumpBackIn, flags.restaurantRunAgents, showColdStart, composer.id, homeAnimRefs]);
+
     // Fade out and remove gradient when entering conversation view
     useEffect(() => {
         if (hasActiveConversation && gradientRef.current) {

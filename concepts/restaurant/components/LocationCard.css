@@ -79,6 +79,7 @@
   /* background: var(--location-card-icon-bg); */
   border-radius: var(--radius-sm);
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .location-card__icon svg {
