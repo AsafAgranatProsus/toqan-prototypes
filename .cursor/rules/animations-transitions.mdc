@@ -83,6 +83,68 @@ Add `will-change` for animated properties:
 }
 ```
 
+## Preventing Content Flash (FOUC)
+
+Animated elements often "flash" their end-state before the animation starts. This happens because:
+1. React renders the full content before JavaScript runs
+2. The browser needs to calculate dimensions before animating
+3. Conditional rendering with falsy checks can unexpectedly show content
+
+### Solutions by Scenario
+
+**1. Entrance Animations (CSS-first approach)**
+Set initial hidden state in CSS, not JavaScript:
+
+```css
+/* ✅ Elements start hidden, GSAP animates to visible */
+.animate-entrance .animated-child {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-entrance .animated-child {
+    opacity: 1;
+    transform: none;
+  }
+}
+```
+
+**2. Streaming/Write-on Effects**
+Avoid falsy OR operators with strings that can be empty:
+
+```typescript
+// ❌ Empty string is falsy - shows fullContent on first render!
+<Content html={visibleContent || fullContent} />
+
+// ✅ Explicit state check
+<Content html={state === 'complete' ? fullContent : visibleContent} />
+```
+
+**3. Dimension Calculations**
+If you need end-state dimensions before animating, use `visibility: hidden`:
+
+```typescript
+// ✅ Measure without showing
+gsap.set(element, { visibility: 'hidden', opacity: 1 });
+const { height } = element.getBoundingClientRect();
+gsap.set(element, { visibility: 'visible', opacity: 0, height: 0 });
+// Now animate to measured height
+gsap.to(element, { opacity: 1, height, duration: 0.5 });
+```
+
+**4. Conditional Rendering with Animations**
+Don't render content until animation is ready:
+
+```typescript
+// ✅ Only render when animation state allows
+{state !== 'hidden' && <AnimatedContent />}
+```
+
+### Reference Files
+- **Write-on Effect**: `shared/chatSession/StreamingMessage.tsx`
+- **Entrance Animation**: `shared/chatPanel/useHomeEntranceAnimation.ts`
+
 ## Checklist
 
 When implementing motion:
@@ -92,8 +154,10 @@ When implementing motion:
 - [ ] Consider shared-element transition if two UI states share position
 - [ ] Add `will-change` in CSS for performance
 - [ ] Respect `prefers-reduced-motion`
+- [ ] Prevent content flash (set initial hidden state in CSS, avoid falsy OR operators)
 
 ## Reference Files
 
 - **Container Transform**: `components/FeatureMenu/FeatureMenu.tsx`
 - **Staggered Entrance**: `shared/chatPanel/useHomeEntranceAnimation.ts`
+- **Write-on Effect**: `shared/chatSession/StreamingMessage.tsx`

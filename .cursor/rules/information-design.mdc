@@ -1,0 +1,348 @@
+---
+description: Swiss/Helvetica-inspired information design system for high-density data displays
+globs: ["**/*.css", "**/*.tsx"]
+alwaysApply: false
+---
+
+# Information Design System
+
+Swiss/Helvetica-inspired approach for high-density information displays. Based on principles from Müller-Brockmann and Vignelli. Use this when creating dashboards, detail views, data tables, or any interface requiring clear data hierarchy.
+
+## Core Principles
+
+1. **Grid-based structure** - Use CSS Grid with consistent column/gutter system
+2. **Clear typographic hierarchy** - Distinct levels for labels, values, and supporting text
+3. **Tight internal grouping** - Reduce gaps within blocks to create visual cohesion
+4. **Section separation via padding** - Use section padding (not gaps) for vertical rhythm
+5. **Vertical dividers for columns** - Create clear column separation in multi-column layouts
+6. **Minimal decoration** - Let typography and whitespace do the work
+
+## Grid System
+
+```css
+.info-container {
+  /* 12-column grid base */
+  --grid-columns: 12;
+  --grid-gutter: var(--space-4);
+  --grid-margin: var(--space-5);
+  
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  /* No row gap - section padding handles vertical rhythm */
+  padding: var(--grid-margin);
+}
+
+/* All direct children span full width by default */
+.info-container > * {
+  grid-column: 1 / -1;
+}
+```
+
+## Typography Scale
+
+Use semantic naming that maps to design tokens:
+
+```css
+.info-container {
+  /* Display - Large primary values */
+  --type-display: var(--font-size-heading-xl);
+  
+  /* Title - Section headings */
+  --type-title: var(--font-size-heading-md);
+  
+  /* Body - Primary content text */
+  --type-body: var(--font-size-body-md);
+  
+  /* Caption - Secondary/supporting text */
+  --type-caption: var(--font-size-body-sm);
+  
+  /* Label - Small uppercase labels */
+  --type-label: var(--font-size-body-xs);
+}
+```
+
+## Color System
+
+High contrast for density and clarity:
+
+```css
+.info-container {
+  /* Ink hierarchy */
+  --ink-primary: var(--color-text-default);
+  --ink-secondary: var(--color-text-secondary);
+  --ink-tertiary: var(--color-text-tertiary);
+  --ink-accent: var(--color-primary-default);
+  
+  /* Status colors */
+  --status-positive: var(--color-success-default);
+  --status-negative: var(--color-error-default);
+  --status-warning: var(--color-warning-default);
+  
+  /* Structure */
+  --divider: var(--color-ui-border);
+}
+```
+
+## Section Pattern
+
+Sections use padding for vertical rhythm, not parent gaps:
+
+```css
+.info-section {
+  grid-column: 1 / -1;
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+/* Last section has no border */
+.info-section:last-child {
+  border-bottom: none;
+}
+```
+
+## Metric Card Pattern
+
+For displaying key metrics with value, comparison, and insight:
+
+```css
+/* 3-column grid with vertical dividers */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gutter);
+}
+
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1); /* Tight internal grouping */
+  padding-right: var(--grid-gutter);
+  border-right: 1px solid var(--divider);
+}
+
+.metric-card:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+/* Label - uppercase, tertiary color */
+.metric-card__label {
+  font-size: var(--type-label);
+  font-weight: var(--font-weight-medium);
+  color: var(--ink-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Value - large, primary color */
+.metric-card__value {
+  font-size: var(--type-display);
+  font-weight: var(--font-weight-medium);
+  color: var(--ink-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Comparison - colored by status */
+.metric-card__comparison {
+  font-size: var(--type-caption);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Insight - supporting context */
+.metric-card__insight {
+  font-size: var(--type-caption);
+  color: var(--ink-secondary);
+  margin-top: var(--space-1);
+}
+```
+
+## Two-Column Layout Pattern
+
+For side-by-side information blocks:
+
+```css
+.two-column {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gutter);
+}
+
+.two-column__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2); /* Tight internal grouping */
+}
+
+/* First column gets right border */
+.two-column__col:first-child {
+  padding-right: var(--grid-gutter);
+  border-right: 1px solid var(--divider);
+}
+```
+
+## Log/Timeline Pattern
+
+For timestamped entries:
+
+```css
+.log-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* No gap - use padding */
+}
+
+.log-entry {
+  display: grid;
+  grid-template-columns: 70px 1fr; /* Fixed time column */
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.log-entry:first-child {
+  padding-top: 0;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.log-entry__time {
+  font-size: var(--type-caption);
+  font-variant-numeric: tabular-nums; /* Aligned numbers */
+  color: var(--ink-tertiary);
+}
+
+.log-entry__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Very tight grouping */
+}
+```
+
+## Status Badge Pattern
+
+Solid colors for high visibility:
+
+```css
+.status-badge {
+  display: inline-flex;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--type-label);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+}
+
+.status-badge--high {
+  background: var(--status-negative);
+  color: white;
+}
+
+.status-badge--normal {
+  background: var(--status-positive);
+  color: white;
+}
+
+.status-badge--warning {
+  background: var(--status-warning);
+  color: white;
+}
+```
+
+## Alert/Insight Pattern
+
+Subtle background with rounded corners (matches app design language):
+
+```css
+.insight-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-default);
+  font-size: var(--type-caption);
+}
+
+.insight-alert--warning {
+  background: color-mix(in srgb, var(--status-warning) 10%, transparent);
+  color: var(--status-warning);
+}
+
+.insight-alert--info {
+  background: color-mix(in srgb, var(--ink-accent) 10%, transparent);
+  color: var(--ink-accent);
+}
+```
+
+## Key Spacing Rules
+
+1. **Within blocks**: Use `var(--space-1)` or `2px` for very tight grouping
+2. **Between related items**: Use `var(--space-2)` 
+3. **Section padding**: Use `var(--space-5)` top/bottom
+4. **Column gutters**: Use `var(--space-4)`
+5. **Container margin**: Use `var(--space-5)`
+
+## Responsive Behavior
+
+Stack columns on narrow screens while maintaining grid integrity:
+
+```css
+@media (max-width: 600px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metric-card {
+    padding-right: 0;
+    padding-bottom: var(--space-4);
+    border-right: none;
+    border-bottom: 1px solid var(--divider);
+  }
+  
+  .metric-card:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+  
+  .two-column__col:first-child {
+    padding-right: 0;
+    padding-bottom: var(--space-4);
+    border-right: none;
+    border-bottom: 1px solid var(--divider);
+  }
+}
+```
+
+## Reference Implementation
+
+See `concepts/restaurant/components/LocationDetailView.css` for a complete implementation of this design system.
+
+## When to Use
+
+- Dashboard views with multiple metrics
+- Detail/profile views
+- Data tables and lists
+- Activity logs and timelines
+- Status overviews
+- Any high-density information display
+
+## Design Principles Summary
+
+| Principle | Implementation |
+|-----------|----------------|
+| Grid structure | 12-column CSS Grid with column-gap only |
+| Vertical rhythm | Section padding, not row gaps |
+| Tight grouping | 2px-4px gaps within blocks |
+| Column separation | 1px vertical dividers + padding |
+| Typography | 5-level scale: display → label |
+| Status colors | Solid badges, tinted alerts |
+| Minimal decoration | No icons in data cells, clean dividers |

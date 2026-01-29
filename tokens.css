@@ -563,6 +563,12 @@
   --border-radius-full: var(--radius-full);
 }
 
+/* ===== ICON STROKE WIDTH ===== */
+/* Thinner strokes for new branding - cleaner look */
+.new-branding .lucide {
+  stroke-width: 1.4;
+}
+
 /* 
   NOTE: Legacy tokens automatically adapt to dark mode
   because they reference color-* tokens which change

@@ -1,15 +1,16 @@
 /**
  * Location Detail View Component
  * 
- * Full detail view for a single location.
- * Shows comprehensive information including metrics, staff, and activity.
+ * AI-driven dashboard view for a single location.
+ * Two layouts: Restaurant (hospitality) and Central Kitchen (manufacturing/logistics).
+ * Shows contextual metrics with comparisons, insights, and activity logs.
  */
 
 import React from 'react';
 import { Icons } from '../../../components/Icons/Icons';
 import Button from '../../../components/Button/Button';
-import { LOCATIONS, CENTRAL_KITCHEN } from './LocationsGrid';
-import type { LocationData } from './LocationCard';
+import { getLocationById } from '../data/locations';
+import type { LocationData, DetailMetric, ActivityLogEntry } from '../data/locations';
 import './LocationDetailView.css';
 
 interface LocationDetailViewProps {
@@ -22,10 +23,7 @@ export const LocationDetailView: React.FC<LocationDetailViewProps> = ({
   onBack,
 }) => {
   // Find the location
-  const location: LocationData | undefined = 
-    locationId === 'central-kitchen' 
-      ? CENTRAL_KITCHEN 
-      : LOCATIONS.find(loc => loc.id === locationId);
+  const location: LocationData | undefined = getLocationById(locationId);
 
   if (!location) {
     return (
@@ -42,16 +40,12 @@ export const LocationDetailView: React.FC<LocationDetailViewProps> = ({
     );
   }
 
-  const statusLabels = {
-    active: 'Operational',
-    warning: 'Needs Attention',
-    critical: 'Critical Issues',
-  };
+  const isCentralKitchen = location.type === 'central-kitchen';
 
   return (
     <div className="location-detail">
       {/* Back button */}
-      <div className="location-detail__header">
+      <div className="location-detail__nav">
         <Button
           variant="text"
           icon="ArrowLeft"
@@ -62,103 +56,195 @@ export const LocationDetailView: React.FC<LocationDetailViewProps> = ({
         </Button>
       </div>
 
-      {/* Location header */}
-      <div className="location-detail__hero">
-        <div className="location-detail__icon">
-          <Icons name={location.type === 'central-kitchen' ? 'ChefHat' : 'Store'} />
+      {/* Header: Name + Vibe + Quick Actions */}
+      <header className="location-detail__header">
+        <div className="location-detail__header-main">
+          <h1 className="location-detail__title">
+            {location.name}
+            {location.vibe && (
+              <span className={`location-detail__vibe location-detail__vibe--${location.vibe.type}`}>
+                {location.vibe.label}
+              </span>
+            )}
+          </h1>
+          <div className="location-detail__quick-links">
+            {isCentralKitchen ? (
+              <>
+                <button className="location-detail__quick-link">Call</button>
+                <span className="location-detail__quick-link-sep">|</span>
+                <button className="location-detail__quick-link">Message</button>
+                <span className="location-detail__quick-link-sep">|</span>
+                <button className="location-detail__quick-link">Logistics</button>
+              </>
+            ) : (
+              <>
+                <button className="location-detail__quick-link">Call</button>
+                <span className="location-detail__quick-link-sep">|</span>
+                <button className="location-detail__quick-link">Message</button>
+                <span className="location-detail__quick-link-sep">|</span>
+                <button className="location-detail__quick-link">Map</button>
+              </>
+            )}
+          </div>
         </div>
-        <div className="location-detail__info">
-          <h1 className="location-detail__name">{location.name}</h1>
-          <p className="location-detail__address">
-            <Icons name="MapPin" />
-            {location.address}, {location.city}
-          </p>
-        </div>
-        <div className={`location-detail__status location-detail__status--${location.status}`}>
-          <span className="location-detail__status-dot" />
-          <span className="location-detail__status-label">{statusLabels[location.status]}</span>
-        </div>
-      </div>
+        <p className="location-detail__subtitle">
+          {location.address}
+          {isCentralKitchen && location.centralKitchenDetails && (
+            <> &bull; Hub ID: {location.centralKitchenDetails.hubId}</>
+          )}
+          {!isCentralKitchen && location.openHours && (
+            <> &bull; {location.openHours}</>
+          )}
+        </p>
+      </header>
 
-      {/* Quick actions */}
-      <div className="location-detail__actions">
-        <Button variant="outlined" icon="Phone" size="sm">Call</Button>
-        <Button variant="outlined" icon="MessageSquare" size="sm">Message</Button>
-        <Button variant="outlined" icon="Navigation" size="sm">Directions</Button>
-      </div>
-
-      {/* Metrics section */}
-      <div className="location-detail__section">
-        <h2 className="location-detail__section-title">Key Metrics</h2>
-        <div className="location-detail__metrics">
-          {location.metrics.map((metric) => (
-            <div
-              key={metric.id}
-              className={`location-detail__metric location-detail__metric--${metric.type}`}
-            >
-              <div className="location-detail__metric-icon">
-                {metric.icon && <Icons name={metric.icon} />}
-              </div>
-              <div className="location-detail__metric-content">
-                <span className="location-detail__metric-value">{metric.value}</span>
-                <span className="location-detail__metric-label">{metric.label}</span>
-              </div>
-            </div>
+      {/* Key Metrics Grid */}
+      {location.detailMetrics && location.detailMetrics.length > 0 && (
+        <section className="location-detail__metrics-grid">
+          {location.detailMetrics.map((metric) => (
+            <MetricCard key={metric.id} metric={metric} />
           ))}
-        </div>
-      </div>
+        </section>
+      )}
 
-      {/* Staff section */}
-      <div className="location-detail__section">
-        <h2 className="location-detail__section-title">Staff Today</h2>
-        <div className="location-detail__staff">
-          <div className="location-detail__staff-item">
-            <Icons name="User" />
-            <span>Manager: Sarah K.</span>
+      {/* Staffing & Efficiency Section */}
+      {isCentralKitchen && location.centralKitchenDetails ? (
+        <section className="location-detail__operations">
+          <div className="location-detail__ops-row">
+            <div className="location-detail__ops-col">
+              <h3 className="location-detail__ops-label">SHIFT & RESOURCES</h3>
+              <div className="location-detail__ops-items">
+                <div className="location-detail__ops-item">
+                  <span className="location-detail__ops-item-label">Production Line:</span>
+                  <span className="location-detail__ops-item-value location-detail__ops-item-value--positive">
+                    {location.centralKitchenDetails.shiftResources.line}
+                  </span>
+                </div>
+                <div className="location-detail__ops-item">
+                  <span className="location-detail__ops-item-label">Logistics:</span>
+                  <span className="location-detail__ops-item-value location-detail__ops-item-value--positive">
+                    {location.centralKitchenDetails.shiftResources.logistics}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="location-detail__ops-col">
+              <h3 className="location-detail__ops-label">KITCHEN MANAGER</h3>
+              <div className="location-detail__manager">
+                <span className="location-detail__manager-name">
+                  {location.centralKitchenDetails.kitchenManager.name}
+                </span>
+                <span className="location-detail__manager-next">
+                  Next Shift: {location.centralKitchenDetails.kitchenManager.nextShift}
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="location-detail__staff-item">
-            <Icons name="Users" />
-            <span>Team: 6 on shift</span>
+        </section>
+      ) : location.staffing ? (
+        <section className="location-detail__operations">
+          <div className="location-detail__ops-row">
+            <div className="location-detail__ops-col">
+              <h3 className="location-detail__ops-label">STAFFING & EFFICIENCY</h3>
+              <div className="location-detail__efficiency">
+                <div className="location-detail__efficiency-bar">
+                  <div 
+                    className="location-detail__efficiency-fill"
+                    style={{ width: `${location.staffing.efficiencyPercent}%` }}
+                  />
+                </div>
+                <span className="location-detail__efficiency-text">
+                  {location.staffing.efficiency}
+                </span>
+              </div>
+            </div>
+            <div className="location-detail__ops-col">
+              <h3 className="location-detail__ops-label">MANAGER ON DUTY</h3>
+              <div className="location-detail__manager">
+                <span className="location-detail__manager-name">
+                  {location.staffing.manager.name}
+                </span>
+                {location.staffing.manager.nextShift && (
+                  <span className="location-detail__manager-next">
+                    Next Shift: {location.staffing.manager.nextShift}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="location-detail__staff-item">
-            <Icons name="Clock" />
-            <span>Next shift: 2:00 PM</span>
-          </div>
-        </div>
-      </div>
+          {location.staffing.insight && (
+            <div className={`location-detail__insight location-detail__insight--${location.staffing.insightType || 'info'}`}>
+              <Icons name="AlertTriangle" />
+              <span>{location.staffing.insight}</span>
+            </div>
+          )}
+        </section>
+      ) : null}
 
-      {/* Recent activity */}
-      <div className="location-detail__section">
-        <h2 className="location-detail__section-title">Recent Activity</h2>
-        <div className="location-detail__activity">
-          <div className="location-detail__activity-item">
-            <div className="location-detail__activity-icon">
-              <Icons name="CheckCircle" />
-            </div>
-            <div className="location-detail__activity-content">
-              <span className="location-detail__activity-title">Inventory check completed</span>
-              <span className="location-detail__activity-time">2 hours ago</span>
-            </div>
+      {/* Intelligent Activity Log */}
+      {location.activityLog && location.activityLog.length > 0 && (
+        <section className="location-detail__log">
+          <h3 className="location-detail__log-title">
+            {isCentralKitchen ? 'SUPPLY CHAIN LOG' : 'INTELLIGENT LOG'}
+          </h3>
+          <div className="location-detail__log-entries">
+            {location.activityLog.map((entry) => (
+              <LogEntry key={entry.id} entry={entry} />
+            ))}
           </div>
-          <div className="location-detail__activity-item">
-            <div className="location-detail__activity-icon">
-              <Icons name="Truck" />
-            </div>
-            <div className="location-detail__activity-content">
-              <span className="location-detail__activity-title">Delivery received from Sysco</span>
-              <span className="location-detail__activity-time">4 hours ago</span>
-            </div>
-          </div>
-          <div className="location-detail__activity-item">
-            <div className="location-detail__activity-icon">
-              <Icons name="Star" />
-            </div>
-            <div className="location-detail__activity-content">
-              <span className="location-detail__activity-title">New 5-star review</span>
-              <span className="location-detail__activity-time">Yesterday</span>
-            </div>
-          </div>
-        </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+/**
+ * Metric Card Component
+ * Displays a single metric with value, comparison, and insight.
+ */
+const MetricCard: React.FC<{ metric: DetailMetric }> = ({ metric }) => {
+  return (
+    <div className="metric-card">
+      <h4 className="metric-card__label">{metric.label}</h4>
+      <div className="metric-card__value-row">
+        <span className={`metric-card__value metric-card__value--${metric.comparisonType || 'neutral'}`}>
+          {metric.value}
+        </span>
+        {metric.icon && (
+          <span className="metric-card__icon">
+            <Icons name={metric.icon} />
+          </span>
+        )}
+      </div>
+      {metric.comparison && (
+        <p className={`metric-card__comparison metric-card__comparison--${metric.comparisonType || 'neutral'}`}>
+          {metric.comparison}
+        </p>
+      )}
+      {metric.insight && (
+        <p className={`metric-card__insight metric-card__insight--${metric.insightType || 'info'}`}>
+          {metric.insight}
+        </p>
+      )}
+    </div>
+  );
+};
+
+/**
+ * Log Entry Component
+ * Displays a timestamped activity log entry.
+ */
+const LogEntry: React.FC<{ entry: ActivityLogEntry }> = ({ entry }) => {
+  return (
+    <div className="log-entry">
+      <span className="log-entry__time">{entry.time}</span>
+      <div className="log-entry__content">
+        <span className="log-entry__title">{entry.title}</span>
+        {entry.detail && (
+          <span className={`log-entry__detail log-entry__detail--${entry.detailType || 'info'}`}>
+            {entry.detail}
+          </span>
+        )}
       </div>
     </div>
   );

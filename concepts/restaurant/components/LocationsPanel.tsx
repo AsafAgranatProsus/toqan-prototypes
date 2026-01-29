@@ -10,7 +10,7 @@
  * - Details → List: slide right and fade
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Icons } from '../../../components/Icons/Icons';
 import Button from '../../../components/Button/Button';
 import { ResizeHandle } from '../../../components/ResizeHandle/ResizeHandle';
@@ -38,32 +38,37 @@ export const LocationsPanel: React.FC<LocationsPanelProps> = ({ isOpen, onClose 
   const { selectedLocationId, selectLocation, navigateToNav } = useRestaurant();
   const { endSession } = useChatSession();
   
-  // Track transition direction for animations
-  const [transitionDirection, setTransitionDirection] = useState<TransitionDirection>(null);
+  // Track animation state
+  const [animationDirection, setAnimationDirection] = useState<TransitionDirection>(null);
   const prevLocationIdRef = useRef<string | null>(null);
 
-  // Detect navigation direction when selectedLocationId changes
-  useEffect(() => {
+  // Use useLayoutEffect to set animation direction synchronously BEFORE browser paint
+  // This prevents the flash by ensuring the animation class is applied before content is visible
+  useLayoutEffect(() => {
     const prevId = prevLocationIdRef.current;
     const currentId = selectedLocationId;
     
     if (prevId === null && currentId !== null) {
       // Going from list to details - slide left
-      setTransitionDirection('forward');
+      setAnimationDirection('forward');
     } else if (prevId !== null && currentId === null) {
       // Going from details to list - slide right
-      setTransitionDirection('backward');
+      setAnimationDirection('backward');
     }
     
+    // Update ref for next comparison
     prevLocationIdRef.current = currentId;
-    
-    // Clear transition direction after animation completes
-    const timer = setTimeout(() => {
-      setTransitionDirection(null);
-    }, 300); // Match animation duration
-    
-    return () => clearTimeout(timer);
   }, [selectedLocationId]);
+
+  // Clear animation direction after animation completes
+  useEffect(() => {
+    if (animationDirection) {
+      const timer = setTimeout(() => {
+        setAnimationDirection(null);
+      }, 300); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [animationDirection]);
 
   const handleClose = () => {
     selectLocation(null);
@@ -116,11 +121,12 @@ export const LocationsPanel: React.FC<LocationsPanelProps> = ({ isOpen, onClose 
     minWidth: `${DEFAULT_WIDTH}px`,
   };
 
-  // Determine animation class based on transition direction
+  // Determine animation class based on animation direction state
   const getViewClass = () => {
-    if (transitionDirection === 'forward') {
+    if (animationDirection === 'forward') {
       return 'locations-panel__view--slide-left';
-    } else if (transitionDirection === 'backward') {
+    }
+    if (animationDirection === 'backward') {
       return 'locations-panel__view--slide-right';
     }
     return '';

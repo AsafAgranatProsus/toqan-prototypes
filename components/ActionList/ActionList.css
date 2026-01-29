@@ -5,25 +5,25 @@
 
 /* ===== COMPONENT TOKENS ===== */
 .action-list {
-  /* Sizing */
-  --action-list-gap: var(--space-1);
-  --action-list-padding: var(--space-2);
+  /* Sizing - tight internal grouping (information design) */
+  --action-list-gap: 0;
+  --action-list-padding: 0;
   
   /* Border */
-  --action-list-border-radius: var(--radius-lg);
+  --action-list-border-radius: 0;
   --action-list-border-width: 0;
   
   /* Colors */
   --action-list-bg: transparent;
   --action-list-border-color: var(--color-ui-border);
   
-  /* Title */
+  /* Title - label style (information design) */
   --action-list-title-font-size: var(--font-size-body-sm);
   --action-list-title-font-weight: var(--font-weight-medium);
-  --action-list-title-color: var(--theme-text-secondary);
+  --action-list-title-color: var(--color-text-tertiary);
   --action-list-title-letter-spacing: 0.05em;
-  --action-list-title-padding-x: var(--space-4);
-  --action-list-title-padding-top: var(--space-3);
+  --action-list-title-padding-x: var(--space-2);
+  --action-list-title-padding-top: 0;
   
   /* Show More */
   --action-list-show-more-font-size: var(--font-size-body-sm);

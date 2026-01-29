@@ -175,7 +175,7 @@ export const StreamingMessage: React.FC<StreamingMessageProps> = ({
       {/* Content - shown during streaming and after complete */}
       {(state === 'streaming' || state === 'complete') && (
         <div className="streaming-message__content prose" ref={contentRef}>
-          <HtmlRenderer html={visibleContent || content} />
+          <HtmlRenderer html={state === 'complete' ? content : visibleContent} />
           {state === 'streaming' && (
             <span className="streaming-message__cursor" />
           )}

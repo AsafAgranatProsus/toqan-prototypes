@@ -53,7 +53,7 @@
 
 .priorities-panel__title {
   font-size: var(--font-size-body-md);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-medium);
   color: var(--priorities-panel-text);
   margin: 0;
 }

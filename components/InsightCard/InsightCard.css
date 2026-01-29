@@ -26,7 +26,7 @@
   
   /* Typography - Value */
   --insight-card-value-font-size: var(--font-size-heading-sm);
-  --insight-card-value-font-weight: var(--font-weight-semibold);
+  --insight-card-value-font-weight: var(--font-weight-medium);
   --insight-card-value-color: var(--theme-text-main);
   
   /* Typography - Label */
@@ -78,7 +78,7 @@
 .insight-card__content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 2px; /* Tight internal grouping (information design) */
   min-width: 0;
 }
 

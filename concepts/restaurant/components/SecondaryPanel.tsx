@@ -107,7 +107,7 @@ export const SecondaryPanel: React.FC<SecondaryPanelProps> = ({
       <div className="secondary-panel__search">
         <input
           type="text"
-          placeholder="Search assets..."
+          placeholder="Search library..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="secondary-panel__search-input"
