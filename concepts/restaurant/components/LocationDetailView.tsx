@@ -70,19 +70,27 @@ export const LocationDetailView: React.FC<LocationDetailViewProps> = ({
           <div className="location-detail__quick-links">
             {isCentralKitchen ? (
               <>
-                <button className="location-detail__quick-link">Call</button>
-                <span className="location-detail__quick-link-sep">|</span>
-                <button className="location-detail__quick-link">Message</button>
-                <span className="location-detail__quick-link-sep">|</span>
-                <button className="location-detail__quick-link">Logistics</button>
+                <button className="location-detail__quick-link" aria-label="Call">
+                  <Icons name="Phone" />
+                </button>
+                <button className="location-detail__quick-link" aria-label="Message">
+                  <Icons name="MessageSquare" />
+                </button>
+                <button className="location-detail__quick-link" aria-label="Logistics">
+                  <Icons name="Truck" />
+                </button>
               </>
             ) : (
               <>
-                <button className="location-detail__quick-link">Call</button>
-                <span className="location-detail__quick-link-sep">|</span>
-                <button className="location-detail__quick-link">Message</button>
-                <span className="location-detail__quick-link-sep">|</span>
-                <button className="location-detail__quick-link">Map</button>
+                <button className="location-detail__quick-link" aria-label="Call">
+                  <Icons name="Phone" />
+                </button>
+                <button className="location-detail__quick-link" aria-label="Message">
+                  <Icons name="MessageSquare" />
+                </button>
+                <button className="location-detail__quick-link" aria-label="Map">
+                  <Icons name="MapPin" />
+                </button>
               </>
             )}
           </div>

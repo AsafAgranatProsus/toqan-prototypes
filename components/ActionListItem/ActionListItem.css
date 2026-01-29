@@ -8,7 +8,7 @@
   /* Sizing - tighter for information density */
   --action-list-item-padding-y: var(--space-2);
   --action-list-item-padding-x: var(--space-2);
-  --action-list-item-gap: var(--space-2);
+  --action-list-item-gap: var(--space-3);
   
   /* Border */
   --action-list-item-border-radius: var(--radius-default);
@@ -20,8 +20,8 @@
   --action-list-item-border-color: var(--color-ui-border);
   
   /* Icon */
-  --action-list-item-icon-size: 16px;
-  --action-list-item-icon-color: var(--theme-text-tertiary);
+  --action-list-item-icon-size: 20px;
+  --action-list-item-icon-color: var(--theme-text-secondary);
   
   /* Typography - Title (caption size for density) */
   --action-list-item-title-font-size: var(--font-size-body-md);
@@ -65,6 +65,7 @@
   height: var(--action-list-item-icon-size);
   color: var(--action-list-item-icon-color);
   align-self: flex-start;
+  margin-top: var(--space-1);
 }
 
 .action-list-item__icon svg {

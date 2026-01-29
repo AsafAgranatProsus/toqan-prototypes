@@ -32,13 +32,16 @@
   --ink-accent: var(--color-primary-default);
   
   /* Status */
-  --status-positive: var(--color-success-default);
-  --status-negative: var(--color-error-default);
-  --status-warning: var(--color-warning-default);
+  --status-positive: var(--color-success-background);
+  --status-positive-text: var(--color-success-default);
+  --status-negative: var(--color-error-background);
+  --status-negative-text: var(--color-error-default);
+  --status-warning: var(--color-warning-background);
+  --status-warning-text: var(--color-warning-default);
   
   /* Structure */
   --divider: var(--color-ui-border);
-  --section-spacing: var(--space-5);
+  --section-spacing: var(--space-8);
 }
 
 /* ===== BASE LAYOUT ===== */
@@ -122,48 +125,53 @@
 
 .location-detail__vibe--high {
   background: var(--status-negative);
-  color: white;
+  color: var(--status-negative-text);
 }
 
 .location-detail__vibe--normal {
   background: var(--status-positive);
-  color: white;
+  color: var(--status-positive-text);
 }
 
 .location-detail__vibe--low {
   background: var(--ink-tertiary);
-  color: white;
+  color: var(--status-negative-text);
 }
 
 .location-detail__vibe--warning {
   background: var(--status-warning);
-  color: white;
+  color: var(--status-warning-text);
 }
 
 .location-detail__quick-links {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-1);
   flex-shrink: 0;
 }
 
 .location-detail__quick-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   background: none;
   border: none;
-  padding: 0;
-  font-size: var(--type-caption);
-  color: var(--ink-accent);
+  border-radius: var(--radius-default);
+  color: var(--ink-secondary);
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.location-detail__quick-link svg {
+  width: 18px;
+  height: 18px;
 }
 
 .location-detail__quick-link:hover {
-  opacity: 0.7;
-}
-
-.location-detail__quick-link-sep {
-  color: var(--ink-tertiary);
-  font-size: var(--type-caption);
+  background-color: var(--color-ui-active);
+  color: var(--ink-primary);
 }
 
 .location-detail__subtitle {
@@ -223,11 +231,11 @@
 }
 
 .metric-card__value--positive {
-  color: var(--status-positive);
+  color: var(--status-positive-text);
 }
 
 .metric-card__value--negative {
-  color: var(--status-negative);
+  color: var(--status-negative-text);
 }
 
 .metric-card__value--neutral {
@@ -246,11 +254,11 @@
 }
 
 .metric-card__comparison--positive {
-  color: var(--status-positive);
+  color: var(--status-positive-text);
 }
 
 .metric-card__comparison--negative {
-  color: var(--status-negative);
+  color: var(--status-negative-text);
 }
 
 .metric-card__comparison--neutral {
@@ -271,11 +279,11 @@
 }
 
 .metric-card__insight--warning {
-  color: var(--status-warning);
+  color: var(--status-warning-text);
 }
 
 .metric-card__insight--success {
-  color: var(--status-positive);
+  color: var(--status-positive-text);
 }
 
 /* ===== OPERATIONS - 2 COLUMN LAYOUT ===== */
@@ -336,7 +344,7 @@
 }
 
 .location-detail__ops-item-value--positive {
-  color: var(--status-positive);
+  color: var(--status-positive-text);
 }
 
 /* Efficiency Bar */
@@ -355,7 +363,7 @@
 
 .location-detail__efficiency-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--status-positive) 0%, var(--status-warning) 100%);
+  background: linear-gradient(90deg, var(--status-positive-text) 0%, var(--status-warning-text) 100%);
   border-radius: var(--radius-full);
   transition: width 0.3s ease;
 }
@@ -408,8 +416,9 @@
 }
 
 .location-detail__insight--warning {
-  background: color-mix(in srgb, var(--status-warning) 10%, transparent);
-  color: var(--status-warning);
+  /* background: color-mix(in srgb, var(--status-warning-background) 10%, transparent); */
+  background: var(--status-warning);
+  color: var(--status-warning-text);
 }
 
 .location-detail__insight--info {
@@ -491,11 +500,11 @@
 }
 
 .log-entry__detail--warning {
-  color: var(--status-warning);
+  color: var(--status-warning-text);
 }
 
 .log-entry__detail--success {
-  color: var(--status-positive);
+  color: var(--status-positive-text);
 }
 
 /* ===== RESPONSIVE - MAINTAIN GRID INTEGRITY ===== */

@@ -148,7 +148,7 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
       console.warn('Chat session not available');
       return;
     }
-    
+
     const flowId = getFlowIdForPriority(ticket.id);
     if (flowId) {
       chatSession.startSession({
@@ -174,7 +174,7 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
       });
     }
   };
-  
+
   // Load width from localStorage
   const [width, setWidth] = useState(() => {
     try {
@@ -257,7 +257,7 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
                 aria-expanded={isExpanded}
               >
                 <div className="priorities-panel__group-label">
-                  <span 
+                  <span
                     className="priorities-panel__group-indicator"
                     style={{ backgroundColor: levelMeta.color }}
                   />
@@ -270,8 +270,8 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
               {isExpanded && tickets.length > 0 && (
                 <div className="priorities-panel__tickets">
                   {tickets.map(ticket => (
-                    <div 
-                      key={ticket.id} 
+                    <div
+                      key={ticket.id}
                       className={`priorities-panel__ticket priorities-panel__ticket--${level} priorities-panel__ticket--clickable`}
                       onClick={() => handleTicketClick(ticket)}
                       role="button"
@@ -283,14 +283,16 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
                         }
                       }}
                     >
+                      <Icons name={ticket.icon || levelMeta.icon} />
                       <div className="priorities-panel__ticket-header">
-                        <Icons name={ticket.icon || levelMeta.icon} />
+
+
                         <span className="priorities-panel__ticket-title">{ticket.title}</span>
                         {ticket.timestamp && (
                           <span className="priorities-panel__ticket-time">{ticket.timestamp}</span>
                         )}
+                        <p className="priorities-panel__ticket-summary">{ticket.summary}</p>
                       </div>
-                      <p className="priorities-panel__ticket-summary">{ticket.summary}</p>
                     </div>
                   ))}
                 </div>

@@ -134,7 +134,7 @@
 }
 
 .secondary-panel__item-title {
-  font-size: var(--font-size-body-sm);
+  font-size: var(--font-size-body-md);
   font-weight: var(--font-weight-medium);
   color: var(--secondary-panel-text);
   line-height: 1.3;

@@ -75,14 +75,35 @@ export function getCurrentThemeFilename(): string | null {
 
 /**
  * Initialize theme from localStorage on app start
+ * If no theme is saved, loads the default theme from manifest
  */
-export function initializeTheme(): void {
+export async function initializeTheme(): Promise<void> {
   const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  
+  // If we have a saved theme, load it
   if (savedTheme) {
-    loadThemeCSS(savedTheme).catch(err => {
+    try {
+      await loadThemeCSS(savedTheme);
+    } catch (err) {
       console.warn('[ThemeLoader] Failed to restore saved theme:', err);
       localStorage.removeItem(THEME_STORAGE_KEY);
-    });
+    }
+    return;
+  }
+  
+  // No saved theme - load the default theme from manifest
+  try {
+    const response = await fetch('/themes/themes.json');
+    if (response.ok) {
+      const manifest = await response.json();
+      const defaultTheme = manifest.themes?.find((t: any) => t.isDefault);
+      if (defaultTheme?.filename) {
+        await loadThemeCSS(defaultTheme.filename);
+        console.log('[ThemeLoader] Loaded default theme:', defaultTheme.name);
+      }
+    }
+  } catch (err) {
+    console.warn('[ThemeLoader] Failed to load default theme:', err);
   }
 }
 

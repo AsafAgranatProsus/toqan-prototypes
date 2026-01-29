@@ -12,10 +12,12 @@
   --priorities-panel-text-secondary: var(--color-text-secondary);
   --priorities-panel-hover-bg: var(--color-ui-active);
   --priorities-panel-header-height: var(--header-height);
+  --priorities-panel-item-icon-size: 20px;
+  --priorities-panel-item-icon-gap: var(--space-4);
   
   /* Priority level colors - mapped to semantic palette */
   --priority-urgent: var(--color-error-default);
-  --priority-high: var(--palette-secondary-90); /* var(--color-warning-default);*/
+  --priority-high: var(--palette-error-70); /* var(--color-warning-default);*/
   --priority-routine: var(--color-info-default);
   --priority-completed: var(--palette-tertiary-60); /*var(--color-success-default);*/
 
@@ -107,12 +109,13 @@
 }
 
 .priorities-panel__group-title {
-  font-size: var(--font-size-body-sm);
+  font-size: var(--font-size-body-md);
   font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
 }
 
 .priorities-panel__group-count {
-  font-size: var(--font-size-body-xs);
+  font-size: var(--font-size-body-sm);
   color: var(--priorities-panel-text-secondary);
   background: var(--priorities-panel-hover-bg);
   padding: 2px 6px;
@@ -161,55 +164,53 @@
   background: var(--color-ui-background-elevated-light);
   /* border-left: 3px solid transparent; */
   transition: all 0.15s ease;
+  display: flex;
+    gap: var(--priorities-panel-item-icon-gap);
 }
 
 .priorities-panel__ticket:hover {
   background: var(--priorities-panel-hover-bg);
 }
 
-.priorities-panel__ticket--urgent {
-  border-left-color: var(--priority-urgent);
-}
-
-.priorities-panel__ticket--high {
-  border-left-color: var(--priority-high);
-}
-
-.priorities-panel__ticket--routine {
-  border-left-color: var(--priority-routine);
-}
-
 .priorities-panel__ticket--completed {
-  border-left-color: var(--priority-completed);
   opacity: 0.7;
 }
 
 .priorities-panel__ticket-header {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-2);
   /* margin-bottom: var(--space-2); */
+  gap: var(--space-1);
+  flex-direction: column;
 }
 
 .priorities-panel__ticket-header > svg {
-  width: 16px;
-  height: 16px;
+  width: var(--priorities-panel-item-icon-size);
+  height: var(--priorities-panel-item-icon-size);
   flex-shrink: 0;
   margin-top: 2px;
   color: var(--priorities-panel-text-secondary);
 }
 
-.priorities-panel__ticket--urgent .priorities-panel__ticket-header > svg {
+.priorities-panel__ticket--urgent > svg {
   color: var(--priority-urgent);
 }
 
-.priorities-panel__ticket--high .priorities-panel__ticket-header > svg {
+.priorities-panel__ticket--high > svg {
   color: var(--priority-high);
+}
+
+.priorities-panel__ticket--routine > svg {
+  color: var(--priority-routine);
+}
+
+.priorities-panel__ticket--completed > svg {
+  color: var(--priority-completed);
 }
 
 .priorities-panel__ticket-title {
   flex: 1;
-  font-size: var(--font-size-body-sm);
+  font-size: var(--font-size-body-md);
   font-weight: var(--font-weight-medium);
   color: var(--priorities-panel-text);
   line-height: 1.3;
@@ -226,7 +227,7 @@
   color: var(--priorities-panel-text-secondary);
   line-height: 1.4;
   margin: 0 ;
-  padding-left: calc(16px + var(--space-2));
+  /* padding-left: calc(16px + var(--space-2)); */
 }
 
 .priorities-panel__ticket-actions {

@@ -4,7 +4,8 @@
       "id": "default",
       "name": "Default",
       "description": "The default Toqan theme",
-      "filename": ""
+      "filename": "",
+      "isDefault": false
     },
     {
       "id": "blah",
@@ -34,6 +35,7 @@
       "displayFont": "Soehne",
       "bodyFont": "Soehne",
       "colorMatch": true,
+      "isDefault": true,
       "coreColors": {
         "primary": "#feb0be",
         "secondary": "#f3e9bf",

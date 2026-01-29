@@ -96,7 +96,9 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
           const currentTheme = themes.find(t => t.filename === currentFilename);
           setSelectedTheme(currentTheme?.id || 'default');
         } else {
-          setSelectedTheme('default');
+          // No saved theme - find the default theme from manifest
+          const defaultTheme = themes.find(t => t.isDefault);
+          setSelectedTheme(defaultTheme?.id || 'default');
         }
       } catch (error) {
         console.error('Failed to load theme manifest:', error);
@@ -461,6 +463,25 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                 >
                   Tokens
                 </Link>
+                <button
+                  className="design-system-action-btn design-system-action-btn--reset"
+                  onClick={() => {
+                    // Clear all prototype-related localStorage keys
+                    const keysToRemove = [
+                      'toqan-feature-flags',
+                      'toqan-theme-mode',
+                      'toqan-selected-theme',
+                      'testFont-sansSerif',
+                      'testFont-serif',
+                    ];
+                    keysToRemove.forEach(key => localStorage.removeItem(key));
+                    // Reload to apply defaults
+                    window.location.reload();
+                  }}
+                  title="Reset all settings to defaults"
+                >
+                  Reset
+                </button>
               </div>
             </div>
           </div>
@@ -543,6 +564,68 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
         <div className="feature-menu-section">
           <h3>Feature Flags</h3>
           
+          {/* Restaurant concept flags - first when in restaurant concept */}
+          {conceptId === 'restaurant' && (
+            <Collapsible closeOnOutsideClick={false} storageKey="restaurant" defaultOpen={true}>
+              <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+                <span>Restaurant</span>
+                <Icons name="ChevronDown" className="chevron-icon" />
+              </Collapsible.Trigger>
+              <Collapsible.Content>
+                <div className="feature-menu-collapsible-content">
+                  <span className="feature-menu-subsection-label">Top Nav</span>
+                  <Toggle
+                    label="Breadcrumbs"
+                    checked={flags.restaurantBreadcrumbs}
+                    onChange={(checked) => setFlag('restaurantBreadcrumbs', checked)}
+                  />
+                  <Toggle
+                    label="Top Nav Buttons"
+                    checked={flags.restaurantTopNavButtons}
+                    onChange={(checked) => setFlag('restaurantTopNavButtons', checked)}
+                  />
+                  <Toggle
+                    label="Top Nav Search Bar"
+                    checked={flags.restaurantTopNavSearchBar}
+                    onChange={(checked) => setFlag('restaurantTopNavSearchBar', checked)}
+                  />
+                  <span className="feature-menu-subsection-label">Home</span>
+                  <Toggle
+                    label="Subtitle"
+                    checked={flags.restaurantSubtitle}
+                    onChange={(checked) => setFlag('restaurantSubtitle', checked)}
+                  />
+                  <Toggle
+                    label="Quick Actions"
+                    checked={flags.restaurantQuickActions}
+                    onChange={(checked) => setFlag('restaurantQuickActions', checked)}
+                  />
+                  <Toggle
+                    label="At A Glance"
+                    checked={flags.restaurantAtAGlance}
+                    onChange={(checked) => setFlag('restaurantAtAGlance', checked)}
+                  />
+                  <Toggle
+                    label="Jump Back In"
+                    checked={flags.restaurantJumpBackIn}
+                    onChange={(checked) => setFlag('restaurantJumpBackIn', checked)}
+                  />
+                  <Toggle
+                    label="Run Agents"
+                    checked={flags.restaurantRunAgents}
+                    onChange={(checked) => setFlag('restaurantRunAgents', checked)}
+                  />
+                  <span className="feature-menu-subsection-label">Locations</span>
+                  <Toggle
+                    label="Locations"
+                    checked={flags.restaurantLocations}
+                    onChange={(checked) => setFlag('restaurantLocations', checked)}
+                  />
+                </div>
+              </Collapsible.Content>
+            </Collapsible>
+          )}
+
           <Collapsible closeOnOutsideClick={false} storageKey="new-branding">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
               <span>New branding</span>
@@ -574,19 +657,9 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   onChange={(checked) => setFlag('newLeftSidebar', checked)}
                 />
                 <Toggle
-                  label="Right Panel"
-                  checked={flags.newRightPanel}
-                  onChange={(checked) => setFlag('newRightPanel', checked)}
-                />
-                <Toggle
                   label="Main Stage"
                   checked={flags.newMainStage}
                   onChange={(checked) => setFlag('newMainStage', checked)}
-                />
-                <Toggle
-                  label="Gradient Background"
-                  checked={flags.newGradientBackground}
-                  onChange={(checked) => setFlag('newGradientBackground', checked)}
                 />
                 <Toggle
                   label="Resizable Panels"
@@ -594,34 +667,30 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                   onChange={(checked) => setFlag('newResizeablePanels', checked)}
                 />
                 <Toggle
-                  label="Workspaces"
-                  checked={flags.workspaces}
-                  onChange={(checked) => setFlag('workspaces', checked)}
-                />
-                 <Toggle
-                  label="Typography"
-                  checked={flags.newTypography}
-                  onChange={(checked) => setFlag('newTypography', checked)}
-                />
-                <Toggle
-                  label="Chat Bubbles"
-                  checked={flags.newBubble}
-                  onChange={(checked) => setFlag('newBubble', checked)}
-                />
-                <Toggle
                   label="Chat Input"
                   checked={flags.newChatInput}
                   onChange={(checked) => setFlag('newChatInput', checked)}
                 />
+              </div>
+            </Collapsible.Content>
+          </Collapsible>
+
+          <Collapsible closeOnOutsideClick={false} storageKey="discovery">
+            <Collapsible.Trigger className="feature-menu-collapsible-trigger">
+              <span>Discovery</span>
+              <Icons name="ChevronDown" className="chevron-icon" />
+            </Collapsible.Trigger>
+            <Collapsible.Content>
+              <div className="feature-menu-collapsible-content">
                 <Toggle
-                  label="Tables"
-                  checked={flags.newTables}
-                  onChange={(checked) => setFlag('newTables', checked)}
+                  label="Plays"
+                  checked={flags.plays}
+                  onChange={(checked) => setFlag('plays', checked)}
                 />
                 <Toggle
-                  label="Top bar"
-                  checked={flags.newTopNavbar}
-                  onChange={(checked) => setFlag('newTopNavbar', checked)}
+                  label="Built By Others"
+                  checked={flags.builtByOther}
+                  onChange={(checked) => setFlag('builtByOther', checked)}
                 />
               </div>
             </Collapsible.Content>
@@ -668,87 +737,52 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
             </Collapsible.Content>
           </Collapsible>
 
-          <Collapsible closeOnOutsideClick={false} storageKey="discovery">
+          {/* Unused features - hidden for stakeholder demos */}
+          <Collapsible closeOnOutsideClick={false} storageKey="unused">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">
-              <span>Discovery</span>
+              <span>Unused</span>
               <Icons name="ChevronDown" className="chevron-icon" />
             </Collapsible.Trigger>
             <Collapsible.Content>
               <div className="feature-menu-collapsible-content">
                 <Toggle
-                  label="Plays"
-                  checked={flags.plays}
-                  onChange={(checked) => setFlag('plays', checked)}
+                  label="Right Panel"
+                  checked={flags.newRightPanel}
+                  onChange={(checked) => setFlag('newRightPanel', checked)}
                 />
                 <Toggle
-                  label="Built By Others"
-                  checked={flags.builtByOther}
-                  onChange={(checked) => setFlag('builtByOther', checked)}
+                  label="Gradient Background"
+                  checked={flags.newGradientBackground}
+                  onChange={(checked) => setFlag('newGradientBackground', checked)}
+                />
+                <Toggle
+                  label="Workspaces"
+                  checked={flags.workspaces}
+                  onChange={(checked) => setFlag('workspaces', checked)}
+                />
+                <Toggle
+                  label="Typography"
+                  checked={flags.newTypography}
+                  onChange={(checked) => setFlag('newTypography', checked)}
+                />
+                <Toggle
+                  label="Chat Bubbles"
+                  checked={flags.newBubble}
+                  onChange={(checked) => setFlag('newBubble', checked)}
+                />
+                <Toggle
+                  label="Tables"
+                  checked={flags.newTables}
+                  onChange={(checked) => setFlag('newTables', checked)}
+                />
+                <Toggle
+                  label="Top bar"
+                  checked={flags.newTopNavbar}
+                  onChange={(checked) => setFlag('newTopNavbar', checked)}
                 />
               </div>
             </Collapsible.Content>
           </Collapsible>
-
-          {/* Restaurant concept flags - only visible when in restaurant concept */}
-          {conceptId === 'restaurant' && (
-            <Collapsible closeOnOutsideClick={false} storageKey="restaurant" defaultOpen={true}>
-              <Collapsible.Trigger className="feature-menu-collapsible-trigger">
-                <span>Restaurant</span>
-                <Icons name="ChevronDown" className="chevron-icon" />
-              </Collapsible.Trigger>
-              <Collapsible.Content>
-                <div className="feature-menu-collapsible-content">
-                  <Toggle
-                    label="Breadcrumbs"
-                    checked={flags.restaurantBreadcrumbs}
-                    onChange={(checked) => setFlag('restaurantBreadcrumbs', checked)}
-                  />
-                  <Toggle
-                    label="Top Nav Buttons"
-                    checked={flags.restaurantTopNavButtons}
-                    onChange={(checked) => setFlag('restaurantTopNavButtons', checked)}
-                  />
-                  <Toggle
-                    label="Top Nav Search Bar"
-                    checked={flags.restaurantTopNavSearchBar}
-                    onChange={(checked) => setFlag('restaurantTopNavSearchBar', checked)}
-                  />
-                  <hr style={{ margin: 'var(--space-2) 0', border: 'none', borderTop: '1px solid var(--color-ui-border)' }} />
-                  <Toggle
-                    label="Subtitle"
-                    checked={flags.restaurantSubtitle}
-                    onChange={(checked) => setFlag('restaurantSubtitle', checked)}
-                  />
-                  <Toggle
-                    label="Quick Actions"
-                    checked={flags.restaurantQuickActions}
-                    onChange={(checked) => setFlag('restaurantQuickActions', checked)}
-                  />
-                  <Toggle
-                    label="At A Glance"
-                    checked={flags.restaurantAtAGlance}
-                    onChange={(checked) => setFlag('restaurantAtAGlance', checked)}
-                  />
-                  <Toggle
-                    label="Jump Back In"
-                    checked={flags.restaurantJumpBackIn}
-                    onChange={(checked) => setFlag('restaurantJumpBackIn', checked)}
-                  />
-                  <Toggle
-                    label="Run Agents"
-                    checked={flags.restaurantRunAgents}
-                    onChange={(checked) => setFlag('restaurantRunAgents', checked)}
-                  />
-                  <hr style={{ margin: 'var(--space-2) 0', border: 'none', borderTop: '1px solid var(--color-ui-border)' }} />
-                  <Toggle
-                    label="Locations"
-                    checked={flags.restaurantLocations}
-                    onChange={(checked) => setFlag('restaurantLocations', checked)}
-                  />
-                </div>
-              </Collapsible.Content>
-            </Collapsible>
-          )}
 
           {/* <Collapsible closeOnOutsideClick={false} storageKey="personalization">
             <Collapsible.Trigger className="feature-menu-collapsible-trigger">

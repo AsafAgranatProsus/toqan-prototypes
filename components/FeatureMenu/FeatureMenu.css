@@ -368,6 +368,18 @@
   transform: translateY(-1px);
 }
 
+.design-system-action-btn--reset {
+  color: var(--fm-text-muted);
+  border-style: dashed;
+}
+
+.design-system-action-btn--reset:hover {
+  background: var(--fm-hover-error-bg);
+  color: var(--fm-text-error);
+  border-color: var(--fm-text-error);
+  border-style: solid;
+}
+
 .info-text {
   font-size: 0.875rem;
   margin: 0;
@@ -616,4 +628,22 @@
   /* margin-right: -.5rem; */
   background-color: var(--fm-active-bg);
   border-radius: .5rem
+}
+
+/* Subsection labels within collapsible content */
+.feature-menu-subsection-label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fm-text-muted);
+  margin-top: 0.5rem;
+  margin-bottom: 0.125rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--fm-divider);
+}
+
+.feature-menu-subsection-label:first-child {
+  margin-top: 0;
 }

@@ -1,18 +1,19 @@
 export const featureFlags = {
-  newBranding: false,
+  // New branding - all on for stakeholder demo
+  newBranding: true,
   newTypography: false,
   newTables: false,
   newBubble: false,
   newTopNavbar: false,
-  newLeftSidebar: false,
+  newLeftSidebar: true,
   newRightPanel: false,
-  newMainStage: false,
+  newMainStage: true,
   newGradientBackground: false,
-  newResizeablePanels: false,
-  newChatInput: false,
+  newResizeablePanels: true,
+  newChatInput: true,
   plays: false,
   builtByOther: false,
-  themes: false,
+  themes: true,
   themeSelector: false,
   showThemeDebugger: false,
   conversationPin: false,
@@ -22,16 +23,16 @@ export const featureFlags = {
   conversationTimestamps: false,
   conversationMenu: false,
   workspaces: false,
-  // Restaurant concept flags
+  // Restaurant concept flags - Top Nav: all off
   restaurantBreadcrumbs: false,
   restaurantTopNavButtons: false,
-  restaurantTopNavSearchBar: true,
-  // Restaurant home view sections
+  restaurantTopNavSearchBar: false,
+  // Restaurant home view sections - all on except Quick Actions
   restaurantSubtitle: true,
   restaurantAtAGlance: true,
   restaurantJumpBackIn: true,
-  restaurantQuickActions: true,
+  restaurantQuickActions: false,
   restaurantRunAgents: true,
-  // Restaurant navigation
+  // Restaurant navigation - on
   restaurantLocations: true,
 };
