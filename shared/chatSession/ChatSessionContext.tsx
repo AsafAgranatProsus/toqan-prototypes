@@ -185,6 +185,13 @@ export const ChatSessionProvider: React.FC<ChatSessionProviderProps> = ({
         trigger.userMessage ?? '',
         { ...fallbackContext, ...trigger.context }
       );
+      
+      // Check if fallback redirected to a real flow (for restaurant context)
+      // This allows button navigation to work properly
+      const redirectedFlowId = initialNode.metadata?.redirectedFlowId as string | undefined;
+      if (redirectedFlowId) {
+        flow = FlowRegistry.getFlow(redirectedFlowId);
+      }
     }
     
     // Build initial history

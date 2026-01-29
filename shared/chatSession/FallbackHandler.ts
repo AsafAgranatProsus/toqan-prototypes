@@ -2,55 +2,35 @@
  * Fallback Handler
  * 
  * Generates fallback responses when user input doesn't match any flow.
- * Analyzes current context to suggest relevant conversation starters.
+ * For restaurant context, shows a playful message and immediately continues
+ * into a real scenario flow, providing full interactivity.
  */
 
 import type { ChatFlowNode, FallbackContext, ReplyButton } from './types';
+import { FlowRegistry } from './FlowRegistry';
 
 /**
  * Fun redirect topics for restaurant context.
  * Each one provides a humorous segue into an actual flow.
+ * The `pretendQuestion` is what we'll claim the user "really" asked.
  */
 const RESTAURANT_REDIRECTS = [
   {
-    topic: 'whether salmon prices are trying to bankrupt you',
-    label: "What's happening with salmon prices?",
-    nextNodeId: null,
-    flowHint: 'priority-cash-flow',
-    matchKeywords: ['salmon', 'price', 'expensive'],
+    pretendQuestion: '"Hey, what\'s going on with my cash flow next week?"',
+    flowId: 'priority-cash-flow',
   },
   {
-    topic: 'if Mike is about to hit overtime again',
-    label: 'Show me overtime risks',
-    nextNodeId: null,
-    flowHint: 'priority-overtime',
-    matchKeywords: ['overtime', 'mike', 'hours'],
+    pretendQuestion: '"Is anyone on my team about to hit overtime?"',
+    flowId: 'priority-overtime',
   },
   {
-    topic: 'where on earth that Sysco delivery is',
-    label: "Where's my Sysco delivery?",
-    nextNodeId: null,
-    flowHint: 'priority-delivery',
-    matchKeywords: ['sysco', 'delivery', 'late'],
-  },
-  {
-    topic: 'why your cash flow looks like a rollercoaster',
-    label: 'Review my cash flow',
-    nextNodeId: null,
-    flowHint: 'priority-cash-flow',
-    matchKeywords: ['cash', 'flow', 'money', 'balance'],
-  },
-  {
-    topic: 'how the weekly schedule is shaping up',
-    label: 'Show me the schedule',
-    nextNodeId: null,
-    flowHint: null, // Free text handled
-    matchKeywords: ['schedule', 'shifts', 'staff'],
+    pretendQuestion: '"Where is that Sysco delivery? It\'s running late!"',
+    flowId: 'priority-delivery',
   },
 ];
 
 /**
- * Pick a random redirect topic for the funny fallback.
+ * Pick a random redirect for the funny fallback.
  */
 function getRandomRedirect(): typeof RESTAURANT_REDIRECTS[0] {
   const index = Math.floor(Math.random() * RESTAURANT_REDIRECTS.length);
@@ -59,23 +39,53 @@ function getRandomRedirect(): typeof RESTAURANT_REDIRECTS[0] {
 
 /**
  * Generate a fallback node based on the current context.
- * Shows a playful prototype message and redirects to a real scenario.
+ * For restaurant context, shows a playful intro and immediately continues
+ * with the actual flow content, making the fallback fully interactive.
  */
 export function generateFallbackNode(
   userInput: string,
   context: FallbackContext
 ): ChatFlowNode {
-  // For restaurant context, use the fun redirect
+  // For restaurant context, use the fun redirect with actual flow content
   if (context.conceptId === 'restaurant') {
     const redirect = getRandomRedirect();
-    const starters = getContextualStarters(context, redirect);
+    const flow = FlowRegistry.getFlow(redirect.flowId);
     
+    if (flow) {
+      const initialNode = flow.nodes[flow.initialNodeId];
+      
+      if (initialNode) {
+        // Combine the funny intro with the actual flow content
+        const funnyIntro = `
+          <div class="fallback-intro" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--theme-border-subtle, rgba(128,128,128,0.2));">
+            <p><em>Ha!</em> Don't let my glorious appearance fool you into thinking this prototype can do <em>anything</em>!</p>
+            <p>While I'm busy training my muscles to become omniscient, let's assume you asked me ${redirect.pretendQuestion}</p>
+          </div>
+        `;
+        
+        return {
+          id: initialNode.id,
+          content: funnyIntro + initialNode.content,
+          replyButtons: initialNode.replyButtons,
+          metadata: {
+            isFallback: true,
+            originalInput: userInput,
+            context,
+            redirectedFlowId: redirect.flowId,
+            redirectedQuestion: redirect.pretendQuestion,
+          },
+        };
+      }
+    }
+    
+    // Flow not found - fall back to showing starters
+    const starters = getContextualStarters(context);
     return {
       id: 'fallback',
       content: `
         <div class="fallback-response">
           <p><em>Ha!</em> Don't let my glorious appearance fool you into thinking this prototype can do <em>anything</em>!</p>
-          <p>While I'm busy training my muscles to become omniscient, let's assume you asked me <strong>${redirect.topic}</strong>.</p>
+          <p>I'm still learning, but here are some things I <em>can</em> help with:</p>
         </div>
       `,
       replyButtons: starters,
@@ -83,7 +93,6 @@ export function generateFallbackNode(
         isFallback: true,
         originalInput: userInput,
         context,
-        redirectedTopic: redirect.topic,
       },
     };
   }
@@ -113,38 +122,14 @@ export function generateFallbackNode(
 
 /**
  * Get contextual starter suggestions based on current state.
- * @param context - The fallback context
- * @param priorityRedirect - Optional redirect to show as the primary option
+ * Used as a fallback when flows aren't available.
  */
-function getContextualStarters(
-  context: FallbackContext,
-  priorityRedirect?: typeof RESTAURANT_REDIRECTS[0]
-): ReplyButton[] {
+function getContextualStarters(context: FallbackContext): ReplyButton[] {
   const starters: ReplyButton[] = [];
-  
-  // If we have a priority redirect, add it first
-  if (priorityRedirect) {
-    starters.push({
-      id: 'redirect-primary',
-      label: priorityRedirect.label,
-      nextNodeId: priorityRedirect.nextNodeId,
-      variant: 'primary',
-      matchKeywords: priorityRedirect.matchKeywords,
-    });
-  }
   
   // Add concept-specific starters
   if (context.conceptId === 'restaurant') {
-    const restaurantStarters = getRestaurantStarters(context);
-    // Filter out duplicates if redirect matches an existing starter
-    const filteredStarters = priorityRedirect 
-      ? restaurantStarters.filter(s => 
-          !priorityRedirect.matchKeywords?.some(kw => 
-            s.matchKeywords?.includes(kw)
-          )
-        )
-      : restaurantStarters;
-    starters.push(...filteredStarters);
+    starters.push(...getRestaurantStarters(context));
   } else {
     // Default starters for core Toqan
     starters.push(...getDefaultStarters());
@@ -239,28 +224,42 @@ function getDefaultStarters(): ReplyButton[] {
 /**
  * Create a simple "no flow found" fallback node.
  * Used when there's minimal context.
- * @param isRestaurant - If true, use the fun restaurant version
+ * @param isRestaurant - If true, use the fun restaurant version with flow content
  */
 export function createMinimalFallback(isRestaurant = false): ChatFlowNode {
   if (isRestaurant) {
     const redirect = getRandomRedirect();
+    const flow = FlowRegistry.getFlow(redirect.flowId);
+    
+    if (flow) {
+      const initialNode = flow.nodes[flow.initialNodeId];
+      
+      if (initialNode) {
+        const funnyIntro = `
+          <div class="fallback-intro" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--theme-border-subtle, rgba(128,128,128,0.2));">
+            <p><em>Ha!</em> Don't let my glorious appearance fool you into thinking this prototype can do <em>anything</em>!</p>
+            <p>While I'm busy training my muscles to become omniscient, let's assume you asked me ${redirect.pretendQuestion}</p>
+          </div>
+        `;
+        
+        return {
+          id: initialNode.id,
+          content: funnyIntro + initialNode.content,
+          replyButtons: initialNode.replyButtons,
+        };
+      }
+    }
+    
+    // Fallback if flow not found
     return {
       id: 'minimal-fallback',
       content: `
         <div class="fallback-response">
           <p><em>Ha!</em> Don't let my glorious appearance fool you into thinking this prototype can do <em>anything</em>!</p>
-          <p>While I'm busy training my muscles to become omniscient, let's assume you asked me <strong>${redirect.topic}</strong>.</p>
+          <p>Try clicking on a priority in the sidebar to get started.</p>
         </div>
       `,
-      replyButtons: [
-        {
-          id: 'redirect-primary',
-          label: redirect.label,
-          nextNodeId: redirect.nextNodeId,
-          variant: 'primary',
-          matchKeywords: redirect.matchKeywords,
-        },
-      ],
+      replyButtons: [],
     };
   }
 
