@@ -14,6 +14,8 @@
   --priorities-panel-header-height: var(--header-height);
   --priorities-panel-item-icon-size: 20px;
   --priorities-panel-item-icon-gap: var(--space-4);
+  --priorities-panel-item-active: var(--color-primary-light);
+
   
   /* Priority level colors - mapped to semantic palette */
   --priority-urgent: var(--color-error-default);
@@ -249,4 +251,22 @@
 
 .priorities-panel__ticket--clickable:active {
   transform: scale(0.98);
+}
+
+/* Active ticket (currently being discussed in chat) */
+.priorities-panel__ticket--active {
+  background: var( --priorities-panel-item-active);
+}
+
+.priorities-panel__ticket--active:hover {
+  background: var( --priorities-panel-item-active);
+}
+
+.priorities-panel__ticket--active .priorities-panel__ticket-title {
+  color: var(--color-on-primary-container);
+}
+
+.priorities-panel__ticket--active .priorities-panel__ticket-summary {
+  color: var(--color-on-primary-container);
+  opacity: 0.8;
 }

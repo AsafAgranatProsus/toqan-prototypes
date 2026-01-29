@@ -14,12 +14,16 @@ import { ComposerProvider } from './concepts/composer';
 import { ChatSessionProvider } from './shared/chatSession';
 import { initializeTheme } from './themes/colors/loadTheme';
 import { registerRestaurantFlows } from './concepts/restaurant';
+import { seedConversationsIfNeeded } from './concepts/restaurant/homeViewData';
 
 // Initialize saved theme from localStorage
 initializeTheme();
 
 // Register concept-specific chat flows
 registerRestaurantFlows();
+
+// Seed pre-baked conversations for Jump Back In (must happen BEFORE ChatSessionProvider loads)
+seedConversationsIfNeeded();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

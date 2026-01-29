@@ -43,6 +43,10 @@ interface RestaurantContextType {
   // Locations view state
   selectedLocationId: string | null;
   selectLocation: (id: string | null) => void;
+  
+  // Priority selection (for At a Glance → Priorities navigation)
+  selectedPriorityId: string | null;
+  selectPriority: (id: string | null) => void;
 }
 
 const RestaurantContext = createContext<RestaurantContextType | undefined>(undefined);
@@ -54,6 +58,7 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [activeNavId, setActiveNavId] = useState('home');
   const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
   const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
+  const [selectedPriorityId, setSelectedPriorityId] = useState<string | null>(null);
   
   // Load saved messages from localStorage
   const [savedMessages, setSavedMessages] = useState<SavedMessageAsset[]>(() => {
@@ -86,11 +91,16 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     setSelectedLocationId(id);
   }, []);
 
+  const selectPriority = useCallback((id: string | null) => {
+    setSelectedPriorityId(id);
+  }, []);
+
   // Navigate to a nav item - clears any active selections to reset conversation state
   const navigateToNav = useCallback((navId: string) => {
     // Clear selections when switching nav items to reset to contextual-start
     setSelectedAssetId(null);
     setSelectedLocationId(null);
+    setSelectedPriorityId(null);
     setActiveNavId(navId);
   }, []);
 
@@ -148,6 +158,8 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       removeSavedMessage,
       selectedLocationId,
       selectLocation,
+      selectedPriorityId,
+      selectPriority,
     }}>
       {children}
     </RestaurantContext.Provider>
@@ -174,6 +186,8 @@ export const useRestaurant = (): RestaurantContextType => {
       removeSavedMessage: () => {},
       selectedLocationId: null,
       selectLocation: () => {},
+      selectedPriorityId: null,
+      selectPriority: () => {},
     };
   }
   return context;

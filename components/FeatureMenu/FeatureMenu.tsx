@@ -471,6 +471,8 @@ const FeatureMenu: React.FC<{ onOpenCustomization?: () => void }> = ({ onOpenCus
                       'toqan-feature-flags',
                       'toqan-theme-mode',
                       'toqan-selected-theme',
+                      'toqan-chat-sessions',
+                      'toqan-sessions-seeded',
                       'testFont-sansSerif',
                       'testFont-serif',
                     ];

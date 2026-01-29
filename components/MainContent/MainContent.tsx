@@ -3,6 +3,7 @@ import ChatInput from '../ChatInput/ChatInput';
 import { Icons } from '../Icons/Icons';
 import Button from '../Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
+import Modal from '../Modal/Modal';
 import type { Model, ScenarioView } from '../../types';
 import { useFeatureFlags } from '../../context/FeatureFlagContext';
 import { useComposer } from '../../concepts/composer';
@@ -21,6 +22,11 @@ import { Chip } from '../Chip';
 import { InsightCard } from '../InsightCard';
 import { ActionList } from '../ActionList';
 import { ActionListItem } from '../ActionListItem';
+import { 
+    glanceInsights, 
+    jumpBackInItems, 
+    agentActions,
+} from '../../concepts/restaurant/homeViewData';
 import gsap from 'gsap';
 
 // Quick action suggestions for restaurant home view
@@ -30,119 +36,6 @@ const quickActions = [
     { id: 'update-menu', label: 'Update Menu Price' },
     { id: 'review-schedule', label: 'Review Schedule' },
     { id: 'inventory-check', label: 'Inventory Check' },
-];
-
-// "At A Glance" insights for restaurant home view
-import type { IconName } from '../../types';
-
-interface GlanceInsight {
-    id: string;
-    value: string;
-    label: string;
-    sourceIcon: IconName;
-    secondary?: string;
-    trend?: 'up' | 'down' | 'neutral';
-}
-
-const glanceInsights: GlanceInsight[] = [
-    {
-        id: 'labor-cost',
-        value: '$2,340',
-        label: 'Labor This Week',
-        sourceIcon: 'Users',
-        secondary: '+12% vs last week',
-        trend: 'up'
-    },
-    {
-        id: 'inventory-alert',
-        value: '3 Items',
-        label: 'Low Stock Alert',
-        sourceIcon: 'Package',
-        secondary: 'Reorder soon',
-        trend: 'down'
-    },
-    {
-        id: 'deliveries',
-        value: '2 Today',
-        label: 'Scheduled Deliveries',
-        sourceIcon: 'Truck',
-    },
-    {
-        id: 'cash-flow',
-        value: '$8.2k',
-        label: 'Projected Cash Flow',
-        sourceIcon: 'DollarSign',
-        secondary: 'Next 7 days',
-        trend: 'neutral'
-    },
-];
-
-// "Jump Back In" recent items for restaurant home view
-interface RecentItem {
-    id: string;
-    title: string;
-    description?: string;
-    icon: IconName;
-    meta?: string;
-}
-
-const recentItems: RecentItem[] = [
-    {
-        id: 'sysco-email',
-        title: 'Email Draft: Sysco Price Negotiation',
-        description: 'Follow up on produce pricing',
-        icon: 'Mail',
-        meta: '2h ago',
-    },
-    {
-        id: 'schedule-review',
-        title: 'Weekly Schedule Review',
-        description: 'Updated shifts for next week',
-        icon: 'Clock',
-        meta: 'Yesterday',
-    },
-    {
-        id: 'inventory-report',
-        title: 'Inventory Report',
-        description: 'Monthly stock analysis',
-        icon: 'Package',
-        meta: '2 days ago',
-    },
-];
-
-// "Run Agents" available agents for restaurant home view
-interface AgentAction {
-    id: string;
-    title: string;
-    description?: string;
-    icon: IconName;
-}
-
-const agentActions: AgentAction[] = [
-    {
-        id: 'inventory-agent',
-        title: 'Inventory Agent',
-        description: 'Track stock levels and reorder alerts',
-        icon: 'Package',
-    },
-    {
-        id: 'scheduling-agent',
-        title: 'Scheduling Agent',
-        description: 'Optimize staff schedules',
-        icon: 'Clock',
-    },
-    {
-        id: 'finance-agent',
-        title: 'Finance Agent',
-        description: 'Monitor cash flow and expenses',
-        icon: 'DollarSign',
-    },
-    {
-        id: 'supplier-agent',
-        title: 'Supplier Agent',
-        description: 'Manage vendor relationships',
-        icon: 'Truck',
-    },
 ];
 
 // Helper for time-based greeting
@@ -235,10 +128,13 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
     const { activeScenario } = useScenarios();
     const { composer } = useComposer();
     const chatSession = useChatSessionOptional();
-    const { saveMessage } = useRestaurant();
+    const { saveMessage, navigateToNav, openSecondaryPanel, selectPriority } = useRestaurant();
     const { conversationState, previousState } = useChatPanel();
     const [showGradient, setShowGradient] = useState(true);
     const gradientRef = useRef<HTMLDivElement>(null);
+    
+    // Modal state for "Agents coming soon" message
+    const [showAgentsModal, setShowAgentsModal] = useState(false);
 
     // Check if we have an active conversation (either old scenario system or new chat session)
     const hasActiveConversation = activeScenario || chatSession?.isSessionActive;
@@ -374,7 +270,14 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                                 ref={homeAnimRefs.chatInput as React.RefObject<HTMLDivElement>}
                                             >
                                                 <div className="main-content__chat-input-wrapper main-content__chat-input-wrapper--home">
-                                                    <ChatInput />
+                                                    <ChatInput 
+                                                        onSend={(message) => {
+                                                            if (message.trim() && chatSession?.handleUserInput) {
+                                                                chatSession.handleUserInput(message);
+                                                            }
+                                                        }}
+                                                        placeholder="Ask me anything about your restaurant..."
+                                                    />
                                                 </div>
                                             </div>
                                             
@@ -431,7 +334,17 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                                             secondary={insight.secondary}
                                                             trend={insight.trend}
                                                             onClick={() => {
-                                                                console.log('Insight clicked:', insight.label);
+                                                                // Navigate to priorities and select the specific priority
+                                                                if (insight.linkedNav === 'priorities' && insight.linkedPriorityId) {
+                                                                    // Navigate and open the panel first
+                                                                    navigateToNav('priorities');
+                                                                    openSecondaryPanel();
+                                                                    // Then select the priority (after navigateToNav clears selections)
+                                                                    // Use setTimeout to ensure state updates in correct order
+                                                                    setTimeout(() => {
+                                                                        selectPriority(insight.linkedPriorityId!);
+                                                                    }, 0);
+                                                                }
                                                             }}
                                                         />
                                                     ))}
@@ -449,7 +362,7 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                             >
                                                 {flags.restaurantJumpBackIn && (
                                                     <ActionList title="Jump Back In" maxItems={3}>
-                                                        {recentItems.map((item) => (
+                                                        {jumpBackInItems.map((item) => (
                                                             <ActionListItem
                                                                 key={item.id}
                                                                 title={item.title}
@@ -457,7 +370,10 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                                                 icon={item.icon}
                                                                 meta={item.meta}
                                                                 onClick={() => {
-                                                                    console.log('Recent item clicked:', item.title);
+                                                                    // Resume the seeded conversation
+                                                                    if (chatSession) {
+                                                                        chatSession.resumeSession(item.sessionId);
+                                                                    }
                                                                 }}
                                                             />
                                                         ))}
@@ -473,7 +389,8 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                                                                 description={agent.description}
                                                                 icon={agent.icon}
                                                                 onClick={() => {
-                                                                    console.log('Agent clicked:', agent.title);
+                                                                    // Show "agents coming soon" modal
+                                                                    setShowAgentsModal(true);
                                                                 }}
                                                             />
                                                         ))}
@@ -515,6 +432,20 @@ const MainContent: React.FC<MainContentProps> = ({ onMenuClick, isMobile, scenar
                     )}
                 </div>
             </div>
+            
+            {/* Agents Coming Soon Modal */}
+            <Modal show={showAgentsModal} onClose={() => setShowAgentsModal(false)}>
+                <div style={{ textAlign: 'center', padding: '1rem' }}>
+                    <Icons name="Bot" style={{ width: 48, height: 48, marginBottom: '1rem', opacity: 0.6 }} />
+                    <h3 style={{ margin: '0 0 0.5rem 0' }}>Agents are coming!</h3>
+                    <p style={{ margin: '0 0 1.5rem 0', opacity: 0.7 }}>
+                        Autonomous agents will soon be able to handle complex tasks for you.
+                    </p>
+                    <Button variant="filled" onClick={() => setShowAgentsModal(false)}>
+                        OK
+                    </Button>
+                </div>
+            </Modal>
         </main>
     );
 };

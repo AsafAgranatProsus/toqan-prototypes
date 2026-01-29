@@ -45,6 +45,7 @@ export const ChatSessionRenderer: React.FC<ChatSessionRendererProps> = ({
     currentNode,
     navigateToNode,
     endSession,
+    handleUserInput,
   } = useChatSession();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -79,8 +80,12 @@ export const ChatSessionRenderer: React.FC<ChatSessionRendererProps> = ({
   const handleButtonClick = (button: ReplyButton) => {
     if (button.nextNodeId) {
       navigateToNode(button.nextNodeId, button.label);
+    } else if (button.matchKeywords?.length) {
+      // Button has keywords but no specific node - start a new flow with the label
+      // This allows fallback buttons to trigger actual flows
+      handleUserInput(button.label);
     } else {
-      // End of flow
+      // End of flow (no next node, no keywords)
       endSession();
     }
   };

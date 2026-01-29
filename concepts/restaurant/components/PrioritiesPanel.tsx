@@ -6,12 +6,13 @@
  * Clicking a ticket starts a chat flow focused on that priority.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icons } from '../../../components/Icons/Icons';
 import Button from '../../../components/Button/Button';
 import { ResizeHandle } from '../../../components/ResizeHandle/ResizeHandle';
 import { useFeatureFlags } from '../../../context/FeatureFlagContext';
 import { useChatSessionOptional } from '../../../shared/chatSession';
+import { useRestaurant } from '../context/RestaurantContext';
 import { getFlowIdForPriority } from '../flows';
 import type { IconName } from '../../../types';
 import './PrioritiesPanel.css';
@@ -141,6 +142,62 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
   });
   const { isFeatureActive } = useFeatureFlags();
   const chatSession = useChatSessionOptional();
+  const { selectedPriorityId, selectPriority } = useRestaurant();
+  const hasProcessedSelection = useRef(false);
+
+  // Auto-select and start conversation when selectedPriorityId is set (from At a Glance)
+  useEffect(() => {
+    if (selectedPriorityId && isOpen && !hasProcessedSelection.current) {
+      const ticket = MOCK_PRIORITIES.find(t => t.id === selectedPriorityId);
+      if (ticket) {
+        // Mark as processed to prevent re-triggering
+        hasProcessedSelection.current = true;
+        
+        // Expand the group containing this ticket
+        setExpandedGroups(prev => ({ ...prev, [ticket.level]: true }));
+        
+        // Start the conversation for this ticket
+        if (chatSession) {
+          const flowId = getFlowIdForPriority(ticket.id);
+          if (flowId) {
+            chatSession.startSession({
+              type: 'contextItem',
+              flowId,
+              context: {
+                ticketId: ticket.id,
+                ticketTitle: ticket.title,
+                ticketSummary: ticket.summary,
+                ticketLevel: ticket.level,
+              },
+            });
+          } else {
+            chatSession.startSession({
+              type: 'contextItem',
+              userMessage: `Tell me about: ${ticket.title}`,
+              context: {
+                ticketId: ticket.id,
+                ticketTitle: ticket.title,
+                ticketSummary: ticket.summary,
+              },
+            });
+          }
+        }
+        
+        // Clear the selection after processing (with small delay for UI)
+        setTimeout(() => {
+          selectPriority(null);
+          hasProcessedSelection.current = false;
+        }, 100);
+      }
+    }
+  }, [selectedPriorityId, isOpen, chatSession, selectPriority]);
+
+  // Reset processed flag when panel closes
+  useEffect(() => {
+    if (!isOpen) {
+      hasProcessedSelection.current = false;
+    }
+  }, [isOpen]);
 
   // Handle clicking on a priority ticket
   const handleTicketClick = (ticket: PriorityTicket) => {
@@ -269,32 +326,38 @@ export const PrioritiesPanel: React.FC<PrioritiesPanelProps> = ({ isOpen, onClos
 
               {isExpanded && tickets.length > 0 && (
                 <div className="priorities-panel__tickets">
-                  {tickets.map(ticket => (
-                    <div
-                      key={ticket.id}
-                      className={`priorities-panel__ticket priorities-panel__ticket--${level} priorities-panel__ticket--clickable`}
-                      onClick={() => handleTicketClick(ticket)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          handleTicketClick(ticket);
-                        }
-                      }}
-                    >
-                      <Icons name={ticket.icon || levelMeta.icon} />
-                      <div className="priorities-panel__ticket-header">
+                  {tickets.map(ticket => {
+                    // Check if this ticket is currently active in the chat session
+                    const activeTicketId = chatSession?.activeSession?.triggerContext?.ticketId as string | undefined;
+                    const isActive = activeTicketId === ticket.id;
+                    
+                    return (
+                      <div
+                        key={ticket.id}
+                        className={`priorities-panel__ticket priorities-panel__ticket--${level} priorities-panel__ticket--clickable ${isActive ? 'priorities-panel__ticket--active' : ''}`}
+                        onClick={() => handleTicketClick(ticket)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleTicketClick(ticket);
+                          }
+                        }}
+                      >
+                        <Icons name={ticket.icon || levelMeta.icon} />
+                        <div className="priorities-panel__ticket-header">
 
 
-                        <span className="priorities-panel__ticket-title">{ticket.title}</span>
-                        {ticket.timestamp && (
-                          <span className="priorities-panel__ticket-time">{ticket.timestamp}</span>
-                        )}
-                        <p className="priorities-panel__ticket-summary">{ticket.summary}</p>
+                          <span className="priorities-panel__ticket-title">{ticket.title}</span>
+                          {ticket.timestamp && (
+                            <span className="priorities-panel__ticket-time">{ticket.timestamp}</span>
+                          )}
+                          <p className="priorities-panel__ticket-summary">{ticket.summary}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
